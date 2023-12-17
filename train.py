@@ -1,20 +1,25 @@
+### load preliminary ###
 import os
-
 import numpy as np
+
+### load torch ###
 import torch
 import torch.nn.functional as F
 from torch.autograd import Variable
 from torch.optim.lr_scheduler import ReduceLROnPlateau
 from torch.utils.data import DataLoader
 
+### load utils ###
 from configs.config import gen_args
 from tqdm import tqdm
 from datasets.dataset import DoughDataset
 from utils.robocraft_utils import prepare_input, get_scene_info, get_env_group
 from metrics.metric import ChamferLoss, EarthMoverLoss, HausdorffLoss
 from utils.optim import get_lr, count_parameters, my_collate, AverageMeter, Tee, get_optimizer
-from utils.utils import set_seed, matched_motion, load_checkpoint, save_checkpoint
+from utils.utils import set_seed, matched_motion, load_checkpoint, save_checkpoint, exists_or_mkdir
+from visualize.visualize import plt_render
 
+### load model ###
 from models.robocraft_model import Prior_Model
 
 
@@ -218,7 +223,7 @@ def main(args):
                 if i % args.log_per_iter == 0:
                     print()
                     print('Prior %s epoch[%d/%d] iter[%d/%d] LR: %.6f, loss: %.6f (%.6f), loss_raw: %.8f (%.8f)' % (
-                        phase, prior_epoch, args.n_epoch, i, len(dataloaders[phase]), get_lr(prior_optimizer),
+                        phase, prior_epoch, args.prior_n_epoch, i, len(dataloaders[phase]), get_lr(prior_optimizer),
                         loss.item(), prior_meter_loss.avg, loss_raw.item(), prior_meter_loss_raw.avg))
                     print('std_cluster', std_cluster)
                     if phase == 'train':
@@ -237,7 +242,9 @@ def main(args):
                     prior_optimizer.step()
 
                 if phase == 'train' and i > 0 and ((prior_epoch * len(dataloaders[phase])) + i) % args.ckp_per_iter == 0:
-                    model_path = '%s/prior_net_epoch_%d_iter_%d.pth' % (args.outf, prior_epoch, i)
+                    model_path = '%s/prior_net_epoch_%d_iter_%d' % (args.outf, prior_epoch, i)
+                    exists_or_mkdir(model_path)
+                    model_path = os.path.join(model_path, "prior_model.pth")
                     save_checkpoint(epoch=prior_epoch, model=prior_model, optimizer=prior_optimizer, step=prior_total_step, save_path=model_path)
                     # torch.save(prior_model.state_dict(), model_path)
                     prior_rollout_epoch = prior_epoch
@@ -245,16 +252,18 @@ def main(args):
 
 
             print('Prior %s epoch[%d/%d] Loss: %.6f, Best valid: %.6f' % (
-                phase, prior_epoch, args.prior_n_epoch, prior_meter_loss.avg, best_valid_loss))
+                phase, prior_epoch, args.prior_n_epoch, prior_meter_loss.avg, prior_best_valid_loss))
 
             with open(args.outf + '/prior_train.npy','wb') as f:
                 np.save(f, prior_training_stats)
 
             if phase == 'valid' and not args.eval:
                 scheduler.step(prior_meter_loss.avg)
-                if prior_meter_loss.avg < best_valid_loss:
-                    best_valid_loss = prior_meter_loss.avg
-                    best_model_path = '%s/prior_net_best.pth' % (args.outf)
+                if prior_meter_loss.avg < prior_best_valid_loss:
+                    prior_best_valid_loss = prior_meter_loss.avg
+                    best_model_path = '%s/prior_net_best' % (args.outf)
+                    exists_or_mkdir(best_model_path)
+                    best_model_path = os.path.join(best_model_path, "best_prior_model.pth")
                     save_checkpoint(epoch=prior_epoch, model=prior_model, optimizer=prior_optimizer, step=prior_total_step, save_path=best_model_path)
                     
 
@@ -280,6 +289,6 @@ if __name__ == '__main__':
     tee = Tee(os.path.join(args.outf, 'train.log'), 'w')
 
 
-    main()
+    main(args)
 
 

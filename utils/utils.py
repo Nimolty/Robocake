@@ -63,3 +63,12 @@ def save_checkpoint(epoch, model, optimizer, step, save_path):
               'step': step,
                 }
     torch.save(save_dict, save_path)
+
+
+##################### io #####################
+def exists_or_mkdir(path):
+    if not os.path.exists(path):
+        os.makedirs(path)
+        return False
+    else:
+        return True  

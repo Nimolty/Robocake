@@ -1,0 +1,10 @@
+#frames list: [119, 119, 119, 119, 119]
+Loading stat from data/data_ngrip_fixed/../stats.h5 ...
+Train dataset size: 456
+model #params: 443560
+
+Prior train epoch[0/20] iter[0/114] LR: 0.000100, loss: 0.039692 (0.029792), loss_raw: 0.07666536 (0.07650921)
+std_cluster None
+
+Prior train epoch[0/20] iter[100/114] LR: 0.000100, loss: 0.040472 (0.028734), loss_raw: 0.07778758 (0.07584841)
+std_cluster None

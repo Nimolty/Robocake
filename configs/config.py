@@ -138,6 +138,7 @@ eval
 parser.add_argument('--eval_epoch', type=int, default=-1, help='pretrained model')
 parser.add_argument('--eval_iter', type=int, default=-1, help='pretrained model')
 parser.add_argument('--eval_set', default='train')
+parser.add_argument('--eval_prior_path', type=str, default='')
 
 ### only useful for rl
 parser.add_argument("--algo", type=str, default='sac')
