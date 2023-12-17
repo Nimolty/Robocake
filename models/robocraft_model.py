@@ -371,10 +371,10 @@ class DynamicsPredictor(nn.Module):
 
 
 
-class Model(nn.Module):
+class Prior_Model(nn.Module):
     def __init__(self, args, use_gpu):
 
-        super(Model, self).__init__()
+        super(Prior_Model, self).__init__()
 
         self.args = args
         self.use_gpu = use_gpu

@@ -47,3 +47,19 @@ def matched_motion(p_cur, p_prev, n_particles):
     p_prev_new = torch.cat((new_y, p_prev[:, n_particles:, :]), dim=1)
     dist = torch.add(p_cur_new, -p_prev_new)
     return dist
+
+
+##################### load and save models #####################
+def load_checkpoint(save_path, device):
+    checkpoint = torch.load(save_path, map_location=device)
+    return checkpoint
+
+
+def save_checkpoint(epoch, model, optimizer, step, save_path):
+    save_dict = {
+              'epoch': epoch,
+              'model_state_dict': model.state_dict(),
+              'optimizer_state_dict': optimizer.state_dict(),
+              'step': step,
+                }
+    torch.save(save_dict, save_path)

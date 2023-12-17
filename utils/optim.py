@@ -17,6 +17,7 @@ from itertools import product
 from sklearn.cluster import KMeans
 from torch.autograd import Variable
 from torch.utils.data import Dataset
+import torch.optim as optim
 
 
 ######################## Neural Network Regarding Trainig #######################
@@ -70,6 +71,19 @@ def my_collate(batch):
     else:
         ret.append(None)
     return tuple(ret)
+
+
+def get_optimizer(params, optimizer_mode, lr, beta1, beta2=0.999, momentum=0.9):
+    """Returns an optimizer object."""
+    if optimizer_mode == 'Adam':
+        optimizer = optim.Adam(params, lr=lr, betas=(beta1, beta2))  
+    elif optimizer_mode == "SGD":
+        optimizer = optim.SGD(params, lr=lr, momentum=momentum)
+    else:
+        raise NotImplementedError(
+        f'Optimizer {optimizer_mode} not supported yet!')
+
+    return optimizer
 
 
 ######################## recording and loading ########################
