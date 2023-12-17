@@ -16,4 +16,32 @@ from utils.optim import get_lr, count_parameters, my_collate, AverageMeter, Tee
 from utils.utils import set_seed, matched_motion
 
 
+def main():
+
+    ### processing data ###
+    phases = ['train'] if args.valid == 0 else ['valid']
+    
+
+
+
+
+
+
+
+
+    pass
+
+
+
+if __name__ == '__main__':
+    args = gen_args()
+    set_seed(args.random_seed)
+    os.system('mkdir -p ' + args.dataf)
+    os.system('mkdir -p ' + args.outf)
+
+    tee = Tee(os.path.join(args.outf, 'train.log'), 'w')
+
+
+    main()
+
 

@@ -24,6 +24,7 @@ from torch.utils.data import Dataset
 
 from utils.robocraft_utils import load_data, get_scene_info, real_sim_remap, prepare_input, calc_rigid_transform
 
+
 class DoughDataset(Dataset):
 
     def __init__(self, args, phase):
