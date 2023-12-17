@@ -1,41 +1,49 @@
-import os
-
-import numpy as np 
-import cv2 
-import json
+import cv2
 import glob
+import h5py
+import matplotlib.pyplot as plt
+import multiprocessing as mp
+import numpy as np
+import open3d as o3d
+import os
+import random
+import scipy
+import sys
+import time
+import torch
 
-def stat_cloth(visual_cloth_path):
-    eval_dict = {"success": 1.0, "fail": 0.0}
-    vis_cloth_path_list = glob.glob(os.path.join(visual_cloth_path, '*.jpg'))
-    total_length = len(vis_cloth_path_list)
-    
-    score = 0.0
-    success_num = 0
-    for vis_cloth_path in vis_cloth_path_list:
-        vis_name = vis_cloth_path.split('/')[-1].split('-')
-        this_vis_score = float(vis_name[4])
-        success_or_fail = eval_dict[vis_name[5].replace('.jpg', '')]
-        score += this_vis_score / total_length
-        success_num += success_or_fail
-        
-    print(f"param_list", visual_cloth_path)
-    print(f"total_length: {total_length}")
-    print(f"success_num: {success_num}")
-    print(f"average_score: {score}")
+from collections import defaultdict
+from itertools import product
+from sklearn.cluster import KMeans
+from torch.autograd import Variable
+from torch.utils.data import Dataset
+
+def set_seed(seed):
+    torch.backends.cudnn.deterministic = True
+    torch.backends.cudnn.benchmark = False
+    torch.manual_seed(seed)
+    torch.cuda.manual_seed_all(seed)
+    np.random.seed(seed)
+    random.seed(seed)
 
 
+def matched_motion(p_cur, p_prev, n_particles):
+    x = p_cur[:, :n_particles, :]
+    y = p_prev[:, :n_particles, :]
 
-
-if __name__ == "__main__":
-    visual_cloth_path = f"./DeformableAffordance/visual/cloth"
-
-    param_list = ["strech_0.5_bend_0.5_shear_0.5",
-                  "strech_0.8_bend_1.0_shear_0.9",
-                  "strech_1.5_bend_1.5_shear_1.5",
-                  "strech_2.0_bend_0.5_shear_1.0",
-                  "strech_1.5_bend_1.2_shear_1.5"
-                ]
-    for param in param_list:
-        visual_cloth_path = f"./DeformableAffordance/visual/{param}/cloth"
-        stat_cloth(visual_cloth_path)
+    x_ = x[:, :, None, :].repeat(1, 1, y.size(1), 1)
+    y_ = y[:, None, :, :].repeat(1, y.size(1), 1, 1)
+    dis = torch.norm(torch.add(x_, -y_), 2, dim=3)
+    x_list = []
+    y_list = []
+    for i in range(dis.shape[0]):
+        cost_matrix = dis[i].detach().cpu().numpy()
+        ind1, ind2 = scipy.optimize.linear_sum_assignment(cost_matrix, maximize=False)
+        x_list.append(x[i, ind1])
+        y_list.append(y[i, ind2])
+    new_x = torch.stack(x_list)
+    new_y = torch.stack(y_list)
+    p_cur_new = torch.cat((new_x, p_cur[:, n_particles:, :]), dim=1)
+    p_prev_new = torch.cat((new_y, p_prev[:, n_particles:, :]), dim=1)
+    dist = torch.add(p_cur_new, -p_prev_new)
+    return dist
