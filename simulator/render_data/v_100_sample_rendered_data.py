@@ -666,9 +666,11 @@ def main(args):
     dir_list = sorted(glob.glob(os.path.join(data_dir, '*')))
 
     for vid_idx in range(0, len(dir_list)):
-        print(f'========== Video {vid_idx} ==========')
+        
         data_path = dir_list[vid_idx]
-        rollout_path = os.path.join(output_path, f"{vid_idx:03d}")
+        data_idx = int(data_path.split('/')[-1])
+        print(f'========== Video {data_idx} ==========')
+        rollout_path = os.path.join(output_path, f"{data_idx:03d}")
         os.system('mkdir -p ' + rollout_path)
 
         all_positions = []
