@@ -102,7 +102,7 @@ class TaichiEnv:
             import matplotlib.pyplot as plt
             plt.imshow(rgb_img)
             plt.show()
-        else:
+        elif mode == "img":
             return rgb_img, depth_img
 
     def step(self, action=None):

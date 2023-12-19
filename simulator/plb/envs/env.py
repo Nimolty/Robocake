@@ -6,15 +6,22 @@ import numpy as np
 from ..config import load
 from yacs.config import CfgNode
 from .utils import merge_lists
+from pdb import set_trace
 
 import sys
-dynamics_path = os.path.join(os.getcwd(), '..', '..', '..', 'robocraft')
+# dynamics_path = os.path.join(os.getcwd(), '..', '..', '..')
+dynamics_path = os.path.abspath(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(__file__)))))
+print(dynamics_path)
+
+# set_trace()
 sys.path.insert(1, dynamics_path)
 
+
+# set_trace()
 # for gnn models
 import torch
-from utils import load_data, get_scene_info, get_env_group, prepare_input
-from model import EarthMoverLoss, ChamferLoss, HausdorffLoss
+from utils.robocraft_utils import load_data, get_scene_info, get_env_group, prepare_input
+from metrics.metric import EarthMoverLoss, ChamferLoss, HausdorffLoss
 
 PATH = os.path.dirname(os.path.abspath(__file__))
 
