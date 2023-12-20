@@ -824,10 +824,15 @@ def main(args):
         
         data_path = dir_list[vid_idx]
         data_idx = int(data_path.split('/')[-1])
-        print(f'========== Video {data_idx} ==========')
+        
         rollout_path = os.path.join(output_path, f"{data_idx:03d}")
-        os.system('mkdir -p ' + rollout_path)
+        exists_or_mkdir(rollout_path)
+        rollout_path_list = glob.glob(os.path.join(rollout_path, '*'))
+        # set_trace()
+        if len(rollout_path_list) == 361:
+            continue
 
+        print(f'========== Video {data_idx} ==========')
         all_positions = []
         all_gt_positions = []
         prev_pcd = []

@@ -462,6 +462,59 @@ def fps(pts, K=300):
     return farthest_pts
 
 
+def prepare_crop(prev_pcd, back, prim_pos, prim_rot, sampled_points=None, gripper1=None, gripper2=None, cube=None):
+    if back:
+        prev_points = np.asarray(prev_pcd[-1].points)
+        sampled_points = prev_points
+    else:
+        assert (sampled_points is not None)
+        assert (gripper1 is not None)
+        assert (gripper2 is not None)
+        assert (cube is not None)
+        raw_pcd = gripper1 + gripper2 + cube
+        selected_mesh, _ =  o3d.geometry.TriangleMesh.create_from_point_cloud_poisson(raw_pcd, depth=8)
+        f = SDF(selected_mesh.vertices, selected_mesh.triangles)
+
+        sdf = f(sampled_points)
+        sampled_points = sampled_points[-sdf < 0, :]
+    
+    sampled_pcd = o3d.geometry.PointCloud()
+    sampled_pcd.points = o3d.utility.Vector3dVector(sampled_points)
+    
+    if visualize:
+        sampled_pcd.paint_uniform_color([0,0,0])
+        o3d_visualize([sampled_pcd])
+
+    if not back:
+        for tool_pos, tool_rot in zip(prim_pos, prim_rot):
+            # if not in the tool, then it's valid
+            inside_idx = is_inside(sampled_points, tool_pos, tool_rot)
+            sampled_points = sampled_points[inside_idx > 0]  
+
+        sampled_pcd.points = o3d.utility.Vector3dVector(sampled_points)
+    
+        if visualize:
+            sampled_pcd.paint_uniform_color([0,0,0])
+            o3d_visualize([sampled_pcd])
+
+        cl, inlier_ind = sampled_pcd.remove_statistical_outlier(nb_neighbors=40, std_ratio=1.5)
+        sampled_pcd = sampled_pcd.select_down_sample(inlier_ind)
+
+        if visualize:
+            sampled_pcd.paint_uniform_color([0,0,0])
+            o3d_visualize([sampled_pcd])
+
+    selected_points = fps(np.asarray(sampled_pcd.points), n_points)
+
+    if visualize:
+        fps_pcd = o3d.geometry.PointCloud()
+        fps_pcd.points = o3d.utility.Vector3dVector(selected_points)
+        fps_pcd.paint_uniform_color([0,0,0])
+        o3d_visualize([fps_pcd])
+
+    return sampled_pcd, selected_points    
+
+
 def crop(rest, cube, prev_pcd, grippers, prim_pos, prim_rot, n_points, back, visualize=False):
     if back:
         # print(f'touching status: {is_touching[0]} and {is_touching[1]}')
@@ -666,11 +719,13 @@ def main(args):
     dir_list = sorted(glob.glob(os.path.join(data_dir, '*')))
 
     for vid_idx in range(0, len(dir_list)):
+    # for vid_idx in range(42, 43):
         
         data_path = dir_list[vid_idx]
         data_idx = int(data_path.split('/')[-1])
         print(f'========== Video {data_idx} ==========')
         rollout_path = os.path.join(output_path, f"{data_idx:03d}")
+        prepare_pcd_path = os.path.join(args.prepare_pcd_dir, f"{data_idx:03d}")
         os.system('mkdir -p ' + rollout_path)
 
         all_positions = []
@@ -685,56 +740,29 @@ def main(args):
         store_physics_params(physics_params, rollout_path)
 
 
+
+
         for j in range(0, n_frame):
+        # for j in range(0, 30):
             back = (j % 40) >= 30
-
             print(f'+++++ Frame {j} +++++')
-            rgb = []
-            for k in range(n_cam):
-                rgb.append(cv2.imread(data_path + f"/{j:03d}_rgb_{k}.png", cv2.IMREAD_COLOR)[..., ::-1])
-            
             d_and_p = np.load(data_path + f"/{j:03d}_depth_prim.npy", allow_pickle=True)
-            cam_params = np.load(data_path + f"/cam_params.npy", allow_pickle=True).item()
-            gt_pos = np.load(data_path + f"/{j:03d}_gtp.npy", allow_pickle=True)
-            depth = d_and_p[:4]
-
-            pcd_all = im2threed(rgb, depth, cam_params)
-            rest, cube = process_raw_pcd(pcd_all, visualize=visualize)
-
-            prim_pos = [np.array(d_and_p[4][:3]), np.array(d_and_p[5][:3])]
             prim_rot = [np.array(d_and_p[4][3:]), np.array(d_and_p[5][3:])]
-
-            grippers = []
-            for k in range(len(prim_pos)):
-                gripper = o3d.geometry.TriangleMesh.create_cylinder(gripper_r, gripper_h)
-
-                gripper_pcd = gripper.sample_points_poisson_disk(500)
-                gripper_pcd.paint_uniform_color([0,0,0])
-                gripper_points = np.asarray(gripper_pcd.points)
-
-                gripper_points = (quat2mat(prim_rot[k]) @ euler2mat(np.pi / 2, 0, 0) @ gripper_points.T).T + prim_pos[k]
-
-                gripper_pcd.points = o3d.utility.Vector3dVector(gripper_points)
-
-                grippers.append(gripper_pcd)
-
-            if visualize:
-                print("Visualize grippers...")
-                cube.paint_uniform_color([0,0,0])
-                o3d_visualize([cube, grippers[0], grippers[1]])
+            prim_pos = [np.array(d_and_p[4][:3]), np.array(d_and_p[5][:3])]
+            gt_pos = np.load(data_path + f"/{j:03d}_gtp.npy", allow_pickle=True)
 
             if algo == 'crop':
-                selected_pcd, selected_points = crop(rest, cube, prev_pcd, grippers, prim_pos, prim_rot, n_points, back, visualize=visualize)
+                if back:
+                    selected_pcd, selected_points = prepare_crop(prev_pcd, back, prim_pos, prim_rot, sampled_points=None, gripper1=None, gripper2=None, cube=None)
+                else:
+                    sampled_points=np.loadtxt(os.path.join(prepare_pcd_path, f"{j:03d}_sampled_pts.txt"))
+                    gripper1 = o3d.io.read_point_cloud(os.path.join(prepare_pcd_path, f"{j:03d}_gripper1.pcd"))
+                    gripper2 = o3d.io.read_point_cloud(os.path.join(prepare_pcd_path, f"{j:03d}_gripper2.pcd"))
+                    cube = o3d.io.read_point_cloud(os.path.join(prepare_pcd_path, f"{j:03d}_cube.pcd"))
+                    selected_pcd, selected_points = prepare_crop(prev_pcd, back, prim_pos, prim_rot, 
+                                sampled_points=sampled_points, gripper1=gripper1, gripper2=gripper2, cube=cube)
             else:
-                cube_points = np.asarray(cube.points)
-                for tool_pos, tool_rot in zip(prim_pos, prim_rot):
-                    inside_idx = is_inside(cube_points, tool_pos, tool_rot)
-                    cube_points = cube_points[inside_idx > 0]
-                
-                cube_new = o3d.geometry.PointCloud()
-                cube_new.points = o3d.utility.Vector3dVector(cube_points)
-
-                selected_pcd, selected_points = patch(cube_new, prev_pcd, grippers, n_points, back, surface=False, visualize=visualize)
+                raise NotImplementedError
 
             prev_pcd.append(selected_pcd)
 
@@ -742,6 +770,8 @@ def main(args):
             chamfer_loss = chamfer_distance(torch.tensor(selected_points), torch.tensor(gt_pos))
             emd_loss_list.append(emd_loss)
             chamfer_loss_list.append(chamfer_loss)
+
+            
 
             if j >= 1:
                 prev_positions = update_position(n_shapes, prim_pos, positions=prev_positions, n_points=n_points)
@@ -786,7 +816,8 @@ def main(args):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument("--data_dir", default="/nvme/tianyang/Robocake_data")
-    parser.add_argument("-output_path", default="/nvme/tianyang/sample_Robocake_data")
+    parser.add_argument("--prepare_pcd_dir", default="/nvme/tianyang/sample_Robocake_prepare")
+    parser.add_argument("--output_path", default="/nvme/tianyang/sample_Robocake_data")
     args = parser.parse_args()
 
     main(args)
