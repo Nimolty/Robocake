@@ -423,6 +423,42 @@ def fps(pts, K=300):
     return farthest_pts
 
 
+def prepare_v100_data(rest, cube, grippers, prim_pos, prim_rot, n_points, back, visualize=False):
+    if back:
+        raise NotImplementedError
+    else:
+        lower = cube.get_min_bound()
+        upper = cube.get_max_bound()
+        sample_size = round(20 * n_points)
+        sampled_points = np.random.rand(sample_size, 3) * (upper - lower) + lower
+
+        gripper_label = np.where(np.array(rest.colors)[:, 2] >= 0.6)
+        grippers = rest.select_by_index(gripper_label[0])
+
+        labels = np.array(grippers.cluster_dbscan(eps=0.03, min_points=100))
+        gripper1 = grippers.select_by_index(np.where(labels == 0)[0])
+        gripper2 = grippers.select_by_index(np.where(labels > 0)[0])
+        for gripper in [gripper1, gripper2]:
+            gripper.normals = o3d.utility.Vector3dVector(np.zeros((1, 3)))  # invalidate existing normals
+            gripper.estimate_normals()
+            gripper.orient_normals_consistent_tangent_plane(100)
+            
+            center = gripper.get_center()
+            if np.dot(center - prim_pos[0], center - prim_pos[0]) < np.dot(center - prim_pos[1], center - prim_pos[1]):
+                center = prim_pos[0]
+            else:
+                center = prim_pos[1]
+            gripper = flip_inward_normals(gripper, center)
+
+        cube.normals = o3d.utility.Vector3dVector(np.zeros((1, 3)))  # invalidate existing normals
+        cube.estimate_normals()
+        cube.orient_normals_consistent_tangent_plane(100)
+        center = cube.get_center()
+        cube = flip_inward_normals(cube, center)
+
+        return sampled_points, gripper1, gripper2, cube
+
+
 def crop(rest, cube, prev_pcd, grippers, prim_pos, prim_rot, n_points, back, visualize=False):
     # set_trace()
     if back:
@@ -619,7 +655,7 @@ def gen_data_one_frame(rgb, depth, cam_params, prim_pos, prim_rot, tool_info, ba
     return selected_points
     
 
-def main(args):
+def main_origin(args):
     time_now = datetime.now().strftime("%d-%b-%Y-%H:%M:%S.%f")
 
     # cd = os.path.dirname(os.path.realpath(sys.argv[0]))
@@ -767,10 +803,109 @@ def main(args):
         plt_render([np.array(all_gt_positions), np.array(all_positions)], n_points, os.path.join(rollout_path, 'plt.gif'))
 
 
+def main(args):
+    time_now = datetime.now().strftime("%d-%b-%Y-%H:%M:%S.%f")
+
+    # cd = os.path.dirname(os.path.realpath(sys.argv[0]))
+    # output_path = os.path.join(cd, '..', '..', 'dataset', f'sample_{task_name}_{time_now}')
+    output_path = args.output_path
+    exists_or_mkdir(output_path)
+
+    ##### REPLACE with the output dir from last step #####
+    data_dir = args.data_dir
+    dir_list = sorted(glob.glob(os.path.join(data_dir, '*')))
+
+    # print(dir_list[:-6])
+    # print(len(dir_list))
+
+    # set_trace()
+
+    for vid_idx in range(int(args.start_idx), int(args.end_idx)):
+        
+        data_path = dir_list[vid_idx]
+        data_idx = int(data_path.split('/')[-1])
+        print(f'========== Video {data_idx} ==========')
+        rollout_path = os.path.join(output_path, f"{data_idx:03d}")
+        os.system('mkdir -p ' + rollout_path)
+
+        all_positions = []
+        all_gt_positions = []
+        prev_pcd = []
+        emd_loss_list = []
+        chamfer_loss_list = []
+
+        # load and save physics params
+        physics_params = np.load(data_path + f"/physics_params.npy", allow_pickle=True)
+        print(physics_params)
+        store_physics_params(physics_params, rollout_path)
+
+
+        for j in range(0, n_frame):
+            t1 = time.time()
+            # set_trace()
+            back = (j % 40) >= 30
+
+            print(f'+++++ Frame {j} +++++')
+            rgb = []
+            for k in range(n_cam):
+                rgb.append(cv2.imread(data_path + f"/{j:03d}_rgb_{k}.png", cv2.IMREAD_COLOR)[..., ::-1])
+            
+            d_and_p = np.load(data_path + f"/{j:03d}_depth_prim.npy", allow_pickle=True)
+            cam_params = np.load(data_path + f"/cam_params.npy", allow_pickle=True).item()
+            gt_pos = np.load(data_path + f"/{j:03d}_gtp.npy", allow_pickle=True)
+            depth = d_and_p[:4]
+
+            pcd_all = im2threed(rgb, depth, cam_params)
+            t2 = time.time()
+            # set_trace()
+            rest, cube = process_raw_pcd(pcd_all, visualize=visualize)
+            
+
+            prim_pos = [np.array(d_and_p[4][:3]), np.array(d_and_p[5][:3])]
+            prim_rot = [np.array(d_and_p[4][3:]), np.array(d_and_p[5][3:])]
+
+            grippers = []
+            for k in range(len(prim_pos)):
+                gripper = o3d.geometry.TriangleMesh.create_cylinder(gripper_r, gripper_h)
+
+                gripper_pcd = gripper.sample_points_poisson_disk(500)
+                gripper_pcd.paint_uniform_color([0,0,0])
+                gripper_points = np.asarray(gripper_pcd.points)
+
+                gripper_points = (quat2mat(prim_rot[k]) @ euler2mat(np.pi / 2, 0, 0) @ gripper_points.T).T + prim_pos[k]
+
+                gripper_pcd.points = o3d.utility.Vector3dVector(gripper_points)
+
+                grippers.append(gripper_pcd)
+
+            t3 = time.time()
+            # set_trace()
+            if visualize:
+                print("Visualize grippers...")
+                cube.paint_uniform_color([0,0,0])
+                o3d_visualize([cube, grippers[0], grippers[1]])
+
+            if algo == 'crop':
+                if not back:
+                    sampled_points, gripper1, gripper2, cube = prepare_v100_data(rest, cube, grippers, prim_pos, prim_rot, n_points, back, visualize=False)
+                    np.savetxt(os.path.join(rollout_path, f"{j:03d}_sampled_pts.txt"), sampled_points)
+                    o3d.io.write_point_cloud(os.path.join(rollout_path, f"{j:03d}_gripper1.pcd"), gripper1 , write_ascii=True) 
+                    o3d.io.write_point_cloud(os.path.join(rollout_path, f"{j:03d}_gripper2.pcd"), gripper2 , write_ascii=True) 
+                    o3d.io.write_point_cloud(os.path.join(rollout_path, f"{j:03d}_cube.pcd"), cube , write_ascii=True) 
+                else:
+                    pass
+            else:
+                raise ValueError
+
+
+
+
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument("--data_dir", default="/home/nimolty/Nimolty_Research/Basic_Settings/Robocake/simulator/dataset/ngrip_fixed_19-Dec-2023-14:41:16.483363")
     parser.add_argument("-output_path", default="/home/nimolty/Nimolty_Research/Basic_Settings/Robocake/simulator/dataset/sample_output")
+    parser.add_argument("--start_idx", default=0)
+    parser.add_argument("--end_idx", default=500)
     args = parser.parse_args()
 
     main(args)
