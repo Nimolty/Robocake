@@ -21,6 +21,7 @@ from visualize.visualize import plt_render
 
 ### load model ###
 from models.robocraft_model import Prior_Model
+from models.residual_model import Residual_Model
 
 
 def main(args):
@@ -44,31 +45,38 @@ def main(args):
 
     ########################## create model ##########################
     prior_model = Prior_Model(args, device).to(device)
-    print("model #params: %d" % count_parameters(prior_model))
+    print("prior model #params: %d" % count_parameters(prior_model))
+    residual_model = Residual_Model(args, device).to(device)
+    print("residual model #params: %d" % count_parameters(residual_model))
 
 
     ########################## load pretrained model ##########################
     if args.resume_prior_path:
         print("Loading saved prior ckpt from %s" % args.resume_prior_path)
-
         if args.stage == 'dy':
             prior_checkpoint = load_checkpoint(args.resume_prior_path, device)
             prior_model.load_state_dict(prior_checkpoint['model_state_dict'])
     
+    if args.resume_residual_path:
+        print("Loading saved residual ckpt from %s" % args.resume_residual_path)  
+        if args.stage == 'dy':
+            residual_checkpoint = load_checkpoint(args.resume_residual_path, device)
+            residual_model.load_state_dict(residual_checkpoint['model_state_dict'])
+    
 
     ########################## create optimizer ##########################
     if args.stage == 'dy':
-        prior_params = prior_model.dynamics_predictor.parameters()
+        residual_params = residual_model.dynamics_predictor.parameters()
     else:
         raise AssertionError("unknown stage: %s" % args.stage)
     
-    prior_optimizer = get_optimizer(params=prior_params, optimizer_mode=args.optimizer, lr=args.lr, beta1=args.beta1)
+    residual_optimizer = get_optimizer(params=residual_params, optimizer_mode=args.optimizer, lr=args.lr, beta1=args.beta1)
     # reduce learning rate when a metric has stopped improving
-    scheduler = ReduceLROnPlateau(prior_optimizer, 'min', factor=0.8, patience=3, verbose=True)
+    scheduler = ReduceLROnPlateau(residual_optimizer, 'min', factor=0.8, patience=3, verbose=True)
 
-    if args.resume_prior_path:
+    if args.resume_residual_path:
         if args.stage == 'dy':
-            prior_optimizer.load_state_dict(prior_checkpoint['optimizer_state_dict'])
+            residual_optimizer.load_state_dict(residual_checkpoint['optimizer_state_dict'])
     
     ########################## define loss ##########################
     chamfer_loss = ChamferLoss()
@@ -77,32 +85,32 @@ def main(args):
 
 
     ########################## start training ##########################
-    prior_start_epoch = 0
-    if args.resume_prior_path:
+    residual_start_epoch = 0
+    if args.resume_residual_path:
         if args.stage == 'dy':
-            prior_start_epoch = prior_checkpoint['epoch']
+            residual_start_epoch = residual_checkpoint['epoch']
 
-    prior_best_valid_loss = np.inf
-    prior_training_stats = {'args':vars(args), 'loss':[], 'loss_raw':[], 'iters': [], 'loss_emd': [], 'loss_motion': []}
-    prior_rollout_epoch = -1
-    prior_rollout_iter = -1
-    prior_total_step = 0
-    if args.resume_prior_path:
+    residual_best_valid_loss = np.inf
+    residual_training_stats = {'args':vars(args), 'loss':[], 'loss_raw':[], 'iters': [], 'loss_emd': [], 'loss_motion': []}
+    residual_rollout_epoch = -1
+    residual_rollout_iter = -1
+    residual_total_step = 0
+    if args.resume_residual_path:
         if args.stage == 'dy':
-            prior_total_step = prior_checkpoint['step']    
+            residual_total_step = residual_checkpoint['step']    
 
-    for prior_epoch in range(prior_start_epoch, args.prior_n_epoch):
+    for residual_epoch in range(residual_start_epoch, args.residual_n_epoch):
         for phase in phases:
+            prior_model.eval()
+            residual_model.train(phase == 'train')
 
-            prior_model.train(phase == 'train')
+            residual_meter_loss = AverageMeter()
+            residual_meter_loss_raw = AverageMeter()
+            residual_meter_loss_ref = AverageMeter()
+            residual_meter_loss_nxt = AverageMeter()
+            residual_meter_loss_param = AverageMeter()
 
-            prior_meter_loss = AverageMeter()
-            prior_meter_loss_raw = AverageMeter()
-            prior_meter_loss_ref = AverageMeter()
-            prior_meter_loss_nxt = AverageMeter()
-            prior_meter_loss_param = AverageMeter()
-
-            for i, data in enumerate(tqdm(dataloaders[phase], desc=f'Epoch {prior_epoch}/{args.prior_n_epoch}')):
+            for i, data in enumerate(tqdm(dataloaders[phase], desc=f'Epoch {residual_epoch}/{args.residual_n_epoch}')):
                 if args.stage == 'dy':
                     # attrs: B x (n_p + n_s) x attr_dim
                     # particles: B x seq_length x (n_p + n_s) x state_dim
@@ -176,15 +184,19 @@ def main(args):
 
                             # pred_pos (unnormalized): B x n_p x state_dim
                             # pred_motion_norm (normalized): B x n_p x state_dim
-                            pred_pos_p, pred_motion_norm, std_cluster = prior_model.predict_dynamics(inputs, j)
+                            prior_pred_pos_p, _, _ = prior_model.predict_dynamics(inputs, j)
+                            gt_pos = particles[:, args.n_his + j]
+                            gt_pos_p = gt_pos[:, :n_particle]
+                            prior_pred_pos = torch.cat([prior_pred_pos_p, gt_pos[:, n_particle:]], 1).unsqueeze(1)
+                            residual_inputs = [attrs, state_cur, Rr_cur, Rs_cur, Rn_cur, memory_init, groups_gt, cluster_onehot, prior_pred_pos]
 
+                            pred_pos_p, pred_motion_norm, std_cluster = residual_model.predict_dynamics(residual_inputs, j)
                             # concatenate the state of the shapes
                             # pred_pos (unnormalized): B x (n_p + n_s) x state_dim
                             gt_pos = particles[:, args.n_his + j]
                             gt_pos_p = gt_pos[:, :n_particle]
                             # gt_sdf = sdf_list[:, args.n_his]
                             pred_pos = torch.cat([pred_pos_p, gt_pos[:, n_particle:]], 1)
-
 
                             # gt_motion_norm (normalized): B x (n_p + n_s) x state_dim
                             # pred_motion_norm (normalized): B x (n_p + n_s) x state_dim
@@ -215,66 +227,57 @@ def main(args):
                                 loss += args.stdreg_weight * std_cluster
                             loss_raw = F.l1_loss(pred_pos_p, gt_pos_p)
 
-                            prior_meter_loss.update(loss.item(), B)
-                            prior_meter_loss_raw.update(loss_raw.item(), B)
+                            residual_meter_loss.update(loss.item(), B)
+                            residual_meter_loss_raw.update(loss_raw.item(), B)
                     
 
 
                 if i % args.log_per_iter == 0:
                     print()
-                    print('Prior %s epoch[%d/%d] iter[%d/%d] LR: %.6f, loss: %.6f (%.6f), loss_raw: %.8f (%.8f)' % (
-                        phase, prior_epoch, args.prior_n_epoch, i, len(dataloaders[phase]), get_lr(prior_optimizer),
-                        loss.item(), prior_meter_loss.avg, loss_raw.item(), prior_meter_loss_raw.avg))
+                    print('residual %s epoch[%d/%d] iter[%d/%d] LR: %.6f, loss: %.6f (%.6f), loss_raw: %.8f (%.8f)' % (
+                        phase, residual_epoch, args.residual_n_epoch, i, len(dataloaders[phase]), get_lr(residual_optimizer),
+                        loss.item(), residual_meter_loss.avg, loss_raw.item(), residual_meter_loss_raw.avg))
                     print('std_cluster', std_cluster)
                     if phase == 'train':
-                        prior_training_stats['loss'].append(loss.item())
-                        prior_training_stats['loss_raw'].append(loss_raw.item())
-                        prior_training_stats['iters'].append(prior_epoch * len(dataloaders[phase]) + i)
+                        residual_training_stats['loss'].append(loss.item())
+                        residual_training_stats['loss_raw'].append(loss_raw.item())
+                        residual_training_stats['iters'].append(residual_epoch * len(dataloaders[phase]) + i)
                     # with open(args.outf + '/train.npy', 'wb') as f:
                     #     np.save(f, training_stats)
 
-                prior_total_step += 1
+                residual_total_step += 1
 
                 # update model parameters
                 if phase == 'train':
-                    prior_optimizer.zero_grad()
+                    residual_optimizer.zero_grad()
                     loss.backward()
-                    prior_optimizer.step()
+                    residual_optimizer.step()
 
-                if phase == 'train' and i > 0 and ((prior_epoch * len(dataloaders[phase])) + i) % args.ckp_per_iter == 0:
-                    model_path = '%s/prior_net_epoch_%d_iter_%d' % (args.outf, prior_epoch, i)
+                if phase == 'train' and i > 0 and ((residual_epoch * len(dataloaders[phase])) + i) % args.ckp_per_iter == 0:
+                    model_path = '%s/residual_net_epoch_%d_iter_%d' % (args.outf, residual_epoch, i)
                     exists_or_mkdir(model_path)
-                    model_path = os.path.join(model_path, "prior_model.pth")
-                    save_checkpoint(epoch=prior_epoch, model=prior_model, optimizer=prior_optimizer, step=prior_total_step, save_path=model_path)
+                    model_path = os.path.join(model_path, "residual_model.pth")
+                    save_checkpoint(epoch=residual_epoch, model=residual_model, optimizer=residual_optimizer, step=residual_total_step, save_path=model_path)
                     # torch.save(prior_model.state_dict(), model_path)
-                    prior_rollout_epoch = prior_epoch
-                    prior_rollout_iter = i
+                    residual_rollout_epoch = residual_epoch
+                    residual_rollout_iter = i
 
 
-            print('Prior %s epoch[%d/%d] Loss: %.6f, Best valid: %.6f' % (
-                phase, prior_epoch, args.prior_n_epoch, prior_meter_loss.avg, prior_best_valid_loss))
+            print('residual %s epoch[%d/%d] Loss: %.6f, Best valid: %.6f' % (
+                phase, residual_epoch, args.residual_n_epoch, residual_meter_loss.avg, residual_best_valid_loss))
 
-            with open(args.outf + '/prior_train.npy','wb') as f:
-                np.save(f, prior_training_stats)
+            with open(args.outf + '/residual_train.npy','wb') as f:
+                np.save(f, residual_training_stats)
 
             if phase == 'valid' and not args.eval:
-                scheduler.step(prior_meter_loss.avg)
-                if prior_meter_loss.avg < prior_best_valid_loss:
-                    prior_best_valid_loss = prior_meter_loss.avg
-                    best_model_path = '%s/prior_net_best' % (args.outf)
+                scheduler.step(residual_meter_loss.avg)
+                if residual_meter_loss.avg < residual_best_valid_loss:
+                    residual_best_valid_loss = residual_meter_loss.avg
+                    best_model_path = '%s/residual_net_best' % (args.outf)
                     exists_or_mkdir(best_model_path)
-                    best_model_path = os.path.join(best_model_path, "best_prior_model.pth")
-                    save_checkpoint(epoch=prior_epoch, model=prior_model, optimizer=prior_optimizer, step=prior_total_step, save_path=best_model_path)
+                    best_model_path = os.path.join(best_model_path, "best_residual_model.pth")
+                    save_checkpoint(epoch=residual_epoch, model=residual_model, optimizer=residual_optimizer, step=residual_total_step, save_path=best_model_path)
                     
-
-    
-
-
-
-
-
-
-
 
     pass
 

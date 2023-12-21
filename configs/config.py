@@ -85,6 +85,7 @@ parser.add_argument('--log_per_iter', type=int, default=100)
 parser.add_argument('--ckp_per_iter', type=int, default=1000)
 
 parser.add_argument('--prior_n_epoch', type=int, default=100) # 100 FOR TEST, *1000* 
+parser.add_argument('--residual_n_epoch', type=int, default=100)
 parser.add_argument('--beta1', type=float, default=0.9)
 parser.add_argument('--lr', type=float, default=0.0001)
 parser.add_argument('--optimizer', default='Adam', help='Adam|SGD')
@@ -100,7 +101,7 @@ parser.add_argument('--resume', type=int, default=0)
 parser.add_argument('--resume_epoch', type=int, default=0)
 parser.add_argument('--resume_iter', type=int, default=0)
 parser.add_argument('--resume_prior_path', type=str, default='')
-parser.add_argument('--resume_adapter_path', type=str, default='')
+parser.add_argument('--resume_residual_path', type=str, default='')
 
 # data augmentation
 parser.add_argument('--augment_ratio', type=float, default=0.05)
