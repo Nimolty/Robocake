@@ -726,7 +726,12 @@ def main(args):
         print(f'========== Video {data_idx} ==========')
         rollout_path = os.path.join(output_path, f"{data_idx:03d}")
         prepare_pcd_path = os.path.join(args.prepare_pcd_dir, f"{data_idx:03d}")
-        os.system('mkdir -p ' + rollout_path)
+        # os.system('mkdir -p ' + rollout_path)
+        exists_or_mkdir(rollout_path)
+
+        rollout_path_list = glob.glob(os.path.join(rollout_path, "*"))
+        if len(rollout_path_list) == 240:
+            continue
 
         all_positions = []
         all_gt_positions = []
