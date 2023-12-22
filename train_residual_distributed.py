@@ -16,21 +16,32 @@ from datasets.dataset import DoughDataset
 from utils.robocraft_utils import prepare_input, get_scene_info, get_env_group
 from metrics.metric import ChamferLoss, EarthMoverLoss, HausdorffLoss
 from utils.optim import get_lr, count_parameters, my_collate, AverageMeter, Tee, get_optimizer
-from utils.utils import set_seed, matched_motion, load_checkpoint, save_checkpoint, exists_or_mkdir
+from utils.utils import set_seed, matched_motion, load_checkpoint, save_checkpoint, exists_or_mkdir, reduce_mean
 from visualize.visualize import plt_render
+from pdb import set_trace
 
 ### load model ###
-from models.robocraft_model import Prior_Model
-from models.residual_model import Residual_Model
+from models.prior_model_distributed import Prior_Model
+from models.residual_model_distributed import Residual_Model
+
+### parallel training ###
+from torch.utils.data.distributed import DistributedSampler
 
 
 def main(args):
-    device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-    use_gpu = torch.cuda.is_available()
+    ########################## set local rank ##########################
+    if args.local_rank != -1:
+        torch.cuda.set_device(args.local_rank)
+        device=torch.device("cuda",args.local_rank)
+        torch.distributed.init_process_group(backend="nccl", init_method='env://')
+        use_gpu = True
+    else:
+        raise NotImplementedError
 
     ########################## processing data ##########################
     phases = ['train'] if args.valid == 0 else ['train', 'valid']
     datasets = {phase: DoughDataset(args, phase) for phase in phases}
+    samplers = {phase: DistributedSampler(datasets[phase]) for phase in phases}
 
     # for phase in phases:
     #     datasets[phase].load_data(args.env)
@@ -38,9 +49,10 @@ def main(args):
     print(f"Train dataset size: {len(datasets['train'])}")
     dataloaders = {phase: DataLoader(
         datasets[phase],
+        sampler=samplers[phase],
         batch_size=args.batch_size,
-        shuffle=True if phase == 'train' else False,
         num_workers=args.num_workers,
+        pin_memory=True,
         collate_fn=my_collate) for phase in phases} # TODO: understand the logics of my_collate
 
     ########################## create model ##########################
@@ -48,7 +60,12 @@ def main(args):
     print("prior model #params: %d" % count_parameters(prior_model))
     residual_model = Residual_Model(args, device).to(device)
     print("residual model #params: %d" % count_parameters(residual_model))
-
+    prior_model = torch.nn.SyncBatchNorm.convert_sync_batchnorm(prior_model).to(device)
+    prior_model = torch.nn.parallel.DistributedDataParallel(prior_model, device_ids=[args.local_rank],
+                                                output_device=args.local_rank,find_unused_parameters=True)
+    residual_model = torch.nn.SyncBatchNorm.convert_sync_batchnorm(residual_model).to(device)
+    residual_model = torch.nn.parallel.DistributedDataParallel(residual_model, device_ids=[args.local_rank],
+                                                output_device=args.local_rank,find_unused_parameters=True)
 
     ########################## load pretrained model ##########################
     if args.resume_prior_path:
@@ -64,9 +81,11 @@ def main(args):
             residual_model.load_state_dict(residual_checkpoint['model_state_dict'])
     
 
+    num_gpus = torch.cuda.device_count()
+
     ########################## create optimizer ##########################
     if args.stage == 'dy':
-        residual_params = residual_model.dynamics_predictor.parameters()
+        residual_params = residual_model.parameters()
     else:
         raise AssertionError("unknown stage: %s" % args.stage)
     
@@ -101,6 +120,7 @@ def main(args):
 
     for residual_epoch in range(residual_start_epoch, args.residual_n_epoch):
         for phase in phases:
+            samplers[phase].set_epoch(residual_epoch)
             print("phase", phase)
             print("epoch", residual_epoch)
             prior_model.eval()
@@ -141,7 +161,7 @@ def main(args):
 
                     # memory: B x mem_nlayer x (n_particle + n_shape) x nf_memory
                     # for now, only used as a placeholder
-                    memory_init = prior_model.init_memory(B, n_particle + n_shape)
+                    memory_init = prior_model.module.init_memory(B, n_particle + n_shape)
                     loss = 0
                     for j in range(args.sequence_length - args.n_his):
                         with torch.set_grad_enabled(phase == 'train'):
@@ -188,13 +208,16 @@ def main(args):
 
                             # pred_pos (unnormalized): B x n_p x state_dim
                             # pred_motion_norm (normalized): B x n_p x state_dim
-                            prior_pred_pos_p, _, _ = prior_model.predict_dynamics(inputs, j)
+                            prior_pred_pos_p, _, _ = prior_model(inputs, j)
                             gt_pos = particles[:, args.n_his + j]
                             gt_pos_p = gt_pos[:, :n_particle]
                             prior_pred_pos = torch.cat([prior_pred_pos_p, gt_pos[:, n_particle:]], 1).unsqueeze(1)
                             residual_inputs = [attrs, state_cur, Rr_cur, Rs_cur, Rn_cur, memory_init, groups_gt, cluster_onehot, prior_pred_pos]
 
-                            pred_pos_p, pred_motion_norm, std_cluster = residual_model.predict_dynamics(residual_inputs, j)
+                            # set_trace()
+                            print(torch.where(memory_init !=0))
+
+                            pred_pos_p, pred_motion_norm, std_cluster = residual_model(residual_inputs, j)
                             # concatenate the state of the shapes
                             # pred_pos (unnormalized): B x (n_p + n_s) x state_dim
                             gt_pos = particles[:, args.n_his + j]
@@ -210,7 +233,7 @@ def main(args):
                             else:
                                 gt_motion = particles[:, args.n_his] - particles[:, args.n_his - 1]
 
-                            mean_d, std_d = prior_model.stat[2:]
+                            mean_d, std_d = prior_model.module.stat[2:]
                             gt_motion_norm = (gt_motion - mean_d) / std_d
                             pred_motion_norm = torch.cat([pred_motion_norm, gt_motion_norm[:, n_particle:]], 1)
                             if args.loss_type == 'emd_chamfer_h':
@@ -256,11 +279,14 @@ def main(args):
                     residual_optimizer.zero_grad()
                     loss.backward()
                     residual_optimizer.step()
+                
+                torch.distributed.barrier()
+                loss = reduce_mean(loss, num_gpus)
 
                 if phase == 'train' and i > 0 and ((residual_epoch * len(dataloaders[phase])) + i) % args.ckp_per_iter == 0:
                     model_path = '%s/residual_net_epoch_%d_iter_%d' % (args.outf, residual_epoch, i)
                     exists_or_mkdir(model_path)
-                    model_path = os.path.join(model_path, "residual_model.pth")
+                    model_path = os.path.join(model_path, f"residual_model_{device}.pth")
                     save_checkpoint(epoch=residual_epoch, model=residual_model, optimizer=residual_optimizer, step=residual_total_step, save_path=model_path)
                     # torch.save(prior_model.state_dict(), model_path)
                     residual_rollout_epoch = residual_epoch

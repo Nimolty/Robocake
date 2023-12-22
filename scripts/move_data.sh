@@ -7,22 +7,22 @@ if [[ $# -eq 0 ]] ; then
     exit 0
 fi
 
-training_set_dir="./data/data_$1/train"
+training_set_dir="/nvme/tianyang/robocake_data/data_$1/train"
 if [ ! -d "$training_set_dir" ] || [ -z "$(ls -A $training_set_dir)" ]; then
-    mkdir -p ./data/data_$1/train
-    cp -r ./simulator/dataset/$2/* $training_set_dir
+    mkdir -p /nvme/tianyang/robocake_data/data_$1/train
+    cp -r /nvme/tianyang/$2/* $training_set_dir
 else
     echo 'The training set already exists!'
 fi
 
-valid_set_dir="./data/data_$1/valid"
+valid_set_dir="/nvme/tianyang/robocake_data/data_$1/valid"
 training_set_size=`find $training_set_dir/* -maxdepth 0 -type d | wc -l`
 valid_set_size=$((training_set_size / 5))
 
 echo "Training set size: $training_set_size"
 
 if [ ! -d "$valid_set_dir" ] || [ -z "$(ls -A $valid_set_dir)" ]; then
-    mkdir -p ./data/data_$1/valid
+    mkdir -p /nvme/tianyang/robocake_data/data_$1/valid
     for i in $(seq -f "%03g" 0 $((valid_set_size - 1))); do
         cp -r $training_set_dir/$i $valid_set_dir
     done

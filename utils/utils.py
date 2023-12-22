@@ -17,6 +17,7 @@ from itertools import product
 from sklearn.cluster import KMeans
 from torch.autograd import Variable
 from torch.utils.data import Dataset
+from torch import distributed as dist
 
 def set_seed(seed):
     torch.backends.cudnn.deterministic = True
@@ -72,3 +73,10 @@ def exists_or_mkdir(path):
         return False
     else:
         return True  
+    
+#################### parallel training ####################
+def reduce_mean(losses, num_gpus):
+    rt = losses.clone()
+    dist.all_reduce(rt, op=dist.reduce_op.SUM)
+    rt /= num_gpus
+    return rt

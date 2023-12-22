@@ -35,13 +35,16 @@ class DoughDataset(Dataset):
         # self.stat_path = os.path.join(self.args.dataf, '..', 'stats.h5')
 
         self.n_frame_list = []
-        vid_list = sorted(glob.glob(os.path.join(self.data_dir, '*')))
+        self.vid_list = sorted(glob.glob(os.path.join(self.data_dir, '*')))
+        self.vid_list.sort()
         # print(vid_list)
-        for vid_idx in range(len(vid_list)):
-            frame_list = sorted(glob.glob(os.path.join(vid_list[vid_idx], 'shape_*.h5')))
-            gt_frame_list = sorted(glob.glob(os.path.join(vid_list[vid_idx], 'shape_gt_*.h5')))
+        for vid_idx in range(len(self.vid_list)):
+            frame_list = sorted(glob.glob(os.path.join(self.vid_list[vid_idx], 'shape_*.h5')))
+            gt_frame_list = sorted(glob.glob(os.path.join(self.vid_list[vid_idx], 'shape_gt_*.h5')))
             self.n_frame_list.append(len(frame_list) - len(gt_frame_list))
         print(f"#frames list: {self.n_frame_list}")
+
+        # self.n_rollout = len
 
         if args.gen_data:
             os.system('mkdir -p ' + self.data_dir)
@@ -66,7 +69,7 @@ class DoughDataset(Dataset):
         Each data point is consisted of a whole trajectory
         """
         args = self.args
-        return self.n_rollout * (args.time_step - args.sequence_length + 1)
+        return len(self.vid_list) * (args.time_step - args.sequence_length + 1)
 
     # def load_data(self, name):
     #     print("Loading stat from %s ..." % self.stat_path)
@@ -110,7 +113,8 @@ class DoughDataset(Dataset):
                     # else:
                     #     pass
                         # data_path = os.path.join(self.data_dir, str(idx_rollout).zfill(3), str(t) + '.h5')
-                    data_path = os.path.join(self.data_dir, str(idx_rollout).zfill(3), frame_name)
+                    # data_path = os.path.join(self.data_dir, str(idx_rollout).zfill(3), frame_name)
+                    data_path = os.path.join(self.vid_list[idx_rollout], frame_name)
                 else:
                     data_path = os.path.join(self.data_dir, str(idx_rollout), str(t) + '.h5')
                 data = load_data(self.data_names, data_path)

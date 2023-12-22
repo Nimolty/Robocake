@@ -162,7 +162,7 @@ class DynamicsPredictor(nn.Module):
         Rr_cur_t = Rr_cur.transpose(1, 2).contiguous()
         Rs_cur_t = Rs_cur.transpose(1, 2).contiguous()
 
-        set_trace()
+        # set_trace()
 
         # number of particles that need prediction
         B, N = attrs.size(0), attrs.size(1)
@@ -193,7 +193,7 @@ class DynamicsPredictor(nn.Module):
         # instance_center: B x n_instance x (n_his * state_dim)
         instance_center = p_instance.transpose(1, 2).bmm(state_norm_t[:, :n_p])
 
-        set_trace()
+        # set_trace()
         instance_center /= torch.sum(p_instance, 1).unsqueeze(-1) + args.eps
 
         # c_per_particle: B x n_p x (n_his * state_dim)
@@ -202,7 +202,7 @@ class DynamicsPredictor(nn.Module):
         c = (1 - p_rigid_per_particle) * state_norm_t[:, :n_p] + p_rigid_per_particle * c_per_particle
         offset[:, :n_p] = state_norm_t[:, :n_p] - c
 
-        set_trace()
+        # set_trace()
 
         # memory_t: B x N x (mem_nlayer * nf_memory)
         # physics_param: B x N x 1
@@ -222,7 +222,7 @@ class DynamicsPredictor(nn.Module):
             g_s = g_s.cuda()
         g = torch.cat([g, g_s], 1)
 
-        set_trace()
+        # set_trace()
 
         # receiver_attr, sender_attr
         # attrs_r: B x n_rel x -1
@@ -256,7 +256,7 @@ class DynamicsPredictor(nn.Module):
         if verbose:
             print("relation encode:", relation_encode.size())
 
-        set_trace()
+        # set_trace()
 
         for i in range(args.pstep):
             if verbose:
@@ -286,7 +286,7 @@ class DynamicsPredictor(nn.Module):
                  print("particle effect:", particle_effect.size())
 
 
-        set_trace()
+        # set_trace()
         # non_rigid_motion: B x n_p x state_dim
         non_rigid_motion = self.non_rigid_predictor(particle_effect[:, :n_p].contiguous())
 
@@ -327,7 +327,7 @@ class DynamicsPredictor(nn.Module):
         rigid_motion = (p_1 - p_0).view(B, n_instance, n_p, state_dim)
         rigid_motion = (rigid_motion - mean_d) / std_d
 
-        set_trace()
+        # set_trace()
 
         """regularize non regid motion within a cluster"""
         if cluster is not None:
@@ -380,7 +380,7 @@ class DynamicsPredictor(nn.Module):
         if verbose:
             print('pred_pos', pred_pos.size())
 
-        set_trace()
+        # set_trace()
 
         # pred_pos (unnormalized): B x n_p x state_dim
         # pred_motion_norm (normalized): B x n_p x state_dim

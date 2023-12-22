@@ -438,12 +438,11 @@ class Residual_Model(nn.Module):
             mem = mem.cuda()
         return mem
 
-    def predict_dynamics(self, inputs, j=0):
+    def forward(self, inputs, j=0):
         """
         return:
         ret - predicted position of all particles, shape (n_particles, 3)
         """
         ret = self.dynamics_predictor(inputs, self.stat, self.args.verbose_model, j=j)
         return ret
-
 

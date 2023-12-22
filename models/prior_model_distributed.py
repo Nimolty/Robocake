@@ -96,7 +96,7 @@ class DynamicsPredictor(nn.Module):
             self.quat_offset = self.quat_offset.cuda()
 
         # ParticleEncoder
-        input_dim = attr_dim + 1 + (n_his + 1) * state_dim * 2 + mem_dim
+        input_dim = attr_dim + 1 + n_his * state_dim * 2 + mem_dim
         self.particle_encoder = Encoder(input_dim, nf_particle, nf_effect)
 
         # RelationEncoder
@@ -149,7 +149,6 @@ class DynamicsPredictor(nn.Module):
 
         # attrs: B x N x attr_dim
         # state (unnormalized): B x n_his x N x state_dim
-        # prior_pred_state (unnormalized): B x 1 x N x state_dim
         # Rr_cur, Rs_cur: B x n_rel x N
         # memory: B x mem_nlayer x N x nf_memory
         # group:
@@ -157,7 +156,7 @@ class DynamicsPredictor(nn.Module):
         #   p_instance: B x n_particle x n_instance
         #   physics_param: B x n_particle
         # cluster: num_of_particles (N) x num_of_clusters (k)
-        attrs, state, Rr_cur, Rs_cur, Rn_cur, memory, group, cluster, prior_pred_state = inputs
+        attrs, state, Rr_cur, Rs_cur, Rn_cur, memory, group, cluster = inputs
         p_rigid, p_instance, physics_param = group
         # Rr_cur_t, Rs_cur_t: B x N x n_rel
         Rr_cur_t = Rr_cur.transpose(1, 2).contiguous()
@@ -167,7 +166,6 @@ class DynamicsPredictor(nn.Module):
 
         # number of particles that need prediction
         B, N = attrs.size(0), attrs.size(1)
-        # n_his = state.shape[1]
         n_p = p_instance.size(1)
         n_s = attrs.size(1) - n_p
 
@@ -176,40 +174,30 @@ class DynamicsPredictor(nn.Module):
         # state_norm (normalized): B x n_his x N x state_dim
         # [0, n_his - 1): state_residual
         # [n_his - 1, n_his): the current position
-        state_res_norm = (state[:, 1:n_his] - state[:, 0:n_his-1] - mean_d) / std_d
-
-        ######################## we don't remove n_his-1 previous history delta movement ########################
-        #state_res_norm[:, :, :301, :] = 0
-        #################################################
-
-        # current state cur norm
+        state_res_norm = (state[:, 1:] - state[:, :-1] - mean_d) / std_d
+        state_res_norm[:, :, :301, :] = 0
         state_cur_norm = (state[:, -1:] - mean_p) / std_p
-        # prior pred state cur norm
-        prior_pred_state_cur_norm = (prior_pred_state - mean_p) / std_p
-
-
-        state_norm = torch.cat([state_res_norm, state_cur_norm, prior_pred_state_cur_norm], 1)
-
-        # state_norm_t (normalized): B x N x ((n_his+1) * state_dim)
-        state_norm_t = state_norm.transpose(1, 2).contiguous().view(B, N, (n_his+1) * state_dim)
+        state_norm = torch.cat([state_res_norm, state_cur_norm], 1)
+        # state_norm_t (normalized): B x N x (n_his * state_dim)
+        state_norm_t = state_norm.transpose(1, 2).contiguous().view(B, N, n_his * state_dim)
 
         # add offset to center-of-mass for rigids to attr
-        # offset: B x N x ((n_his+1) * state_dim)
-        offset = torch.zeros(B, N, (n_his + 1) * state_dim)
+        # offset: B x N x (n_his * state_dim)
+        offset = torch.zeros(B, N, n_his * state_dim)
         if self.use_gpu:
             offset = offset.cuda()
 
         # p_rigid_per_particle: B x n_p x 1
         p_rigid_per_particle = torch.sum(p_instance * p_rigid[:, None, :], 2, keepdim=True)  # this is trying to keep both instance label and rigidity label
 
-        # instance_center: B x n_instance x ((n_his+1) * state_dim)
+        # instance_center: B x n_instance x (n_his * state_dim)
         instance_center = p_instance.transpose(1, 2).bmm(state_norm_t[:, :n_p])
 
         # set_trace()
         instance_center /= torch.sum(p_instance, 1).unsqueeze(-1) + args.eps
 
-        # c_per_particle: B x n_p x ((n_his+1) * state_dim)
-        # particle offset: B x n_p x ((n_his+1) * state_dim)
+        # c_per_particle: B x n_p x (n_his * state_dim)
+        # particle offset: B x n_p x (n_his * state_dim)
         c_per_particle = p_instance.bmm(instance_center)
         c = (1 - p_rigid_per_particle) * state_norm_t[:, :n_p] + p_rigid_per_particle * c_per_particle
         offset[:, :n_p] = state_norm_t[:, :n_p] - c
@@ -218,16 +206,13 @@ class DynamicsPredictor(nn.Module):
 
         # memory_t: B x N x (mem_nlayer * nf_memory)
         # physics_param: B x N x 1
-        # attrs: B x N x (attr_dim + 1 + (n_his+1) * state_dim + mem_nlayer * nf_memory)
+        # attrs: B x N x (attr_dim + 1 + n_his * state_dim + mem_nlayer * nf_memory)
         memory_t = memory.transpose(1, 2).contiguous().view(B, N, -1)
         physics_param_s = torch.zeros(B, n_s, 1)
         if self.use_gpu:
             physics_param_s = physics_param_s.cuda()
         physics_param = torch.cat([physics_param[:, :, None], physics_param_s], 1)
-
-        # set_trace()
         attrs = torch.cat([attrs, physics_param, offset, memory_t], 2)
-        # set_trace()
 
         # group info
         # g: B x N x n_instance
@@ -403,10 +388,10 @@ class DynamicsPredictor(nn.Module):
 
 
 
-class Residual_Model(nn.Module):
+class Prior_Model(nn.Module):
     def __init__(self, args, use_gpu):
 
-        super(Residual_Model, self).__init__()
+        super(Prior_Model, self).__init__()
 
         self.args = args
         self.use_gpu = use_gpu
@@ -438,7 +423,7 @@ class Residual_Model(nn.Module):
             mem = mem.cuda()
         return mem
 
-    def predict_dynamics(self, inputs, j=0):
+    def forward(self, inputs, j=0):
         """
         return:
         ret - predicted position of all particles, shape (n_particles, 3)

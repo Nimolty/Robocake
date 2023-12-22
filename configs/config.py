@@ -1,6 +1,7 @@
 import argparse
 import numpy as np
 from datetime import datetime
+import os
 
 ### build arguments
 parser = argparse.ArgumentParser()
@@ -25,7 +26,7 @@ parser.add_argument('--stdreg_weight', type=float, default=0.0)
 parser.add_argument('--matched_motion', type=int, default=0)
 parser.add_argument('--matched_motion_weight', type=float, default=0.0)
 
-parser.add_argument('--valid', type=int, default=0)
+parser.add_argument('--valid', type=int, default=1)
 parser.add_argument('--eval', type=int, default=0)
 parser.add_argument('--verbose_data', type=int, default=0)
 parser.add_argument('--verbose_model', type=int, default=0)
@@ -152,6 +153,13 @@ parser.add_argument("--num_steps", type=int, default=None)
 parser.add_argument("--rllr", type=float, default=0.1)
 parser.add_argument("--optim", type=str, default='Adam', choices=['Adam', 'Momentum'])
 
+# data folder
+parser.add_argument("--dataf", type=str, default="/nvme/tianyang/robocake_data/data_ngrip_fixed")
+parser.add_argument("--outf", type=str, default="/nvme/tianyang/robocake_data/dump_ngrip_fixed")
+
+# distributed parallel training
+parser.add_argument("--local_rank", default=os.getenv('LOCAL_RANK', -1), type=int)
+
 def gen_args():
     args = parser.parse_args()
 
@@ -162,9 +170,9 @@ def gen_args():
     args.physics_param_range = (-5., -5.)
 
     # path to data
-    args.dataf = f'data/data_{args.data_type}'
+    # args.dataf = f'data/data_{args.data_type}'
     # path to output
-    args.outf =  f'dump/dump_{args.data_type}/out_{datetime.now().strftime("%d-%b-%Y-%H:%M:%S.%f")}'
+    # args.outf =  f'dump/dump_{args.data_type}/out_{datetime.now().strftime("%d-%b-%Y-%H:%M:%S.%f")}'
 
     args.mean_p = np.array([0.50932539, 0.11348496, 0.49837578])
     args.std_p = np.array([0.06474939, 0.04888084, 0.05906044])
