@@ -32,8 +32,8 @@ def main(args):
     phases = ['train'] if args.valid == 0 else ['valid']
     datasets = {phase: DoughDataset(args, phase) for phase in phases}
 
-    for phase in phases:
-        datasets[phase].load_data(args.env)
+    # for phase in phases:
+    #     datasets[phase].load_data(args.env)
 
     print(f"Train dataset size: {len(datasets['train'])}")
     dataloaders = {phase: DataLoader(

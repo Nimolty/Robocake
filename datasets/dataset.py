@@ -32,7 +32,7 @@ class DoughDataset(Dataset):
         self.phase = phase
         self.data_dir = os.path.join(self.args.dataf, phase)
         self.vision_dir = self.data_dir + '_vision'
-        self.stat_path = os.path.join(self.args.dataf, '..', 'stats.h5')
+        # self.stat_path = os.path.join(self.args.dataf, '..', 'stats.h5')
 
         self.n_frame_list = []
         vid_list = sorted(glob.glob(os.path.join(self.data_dir, '*')))
@@ -68,9 +68,9 @@ class DoughDataset(Dataset):
         args = self.args
         return self.n_rollout * (args.time_step - args.sequence_length + 1)
 
-    def load_data(self, name):
-        print("Loading stat from %s ..." % self.stat_path)
-        self.stat = load_data(self.data_names[:1], self.stat_path)
+    # def load_data(self, name):
+    #     print("Loading stat from %s ..." % self.stat_path)
+    #     self.stat = load_data(self.data_names[:1], self.stat_path)
 
     def __getitem__(self, idx):
         """
