@@ -2,6 +2,7 @@ import matplotlib.animation as animation
 import matplotlib.pyplot as plt
 import matplotlib
 import numpy as np
+import wandb
 
 matplotlib.rcParams["legend.loc"] = 'lower right'
 
@@ -121,7 +122,7 @@ def plt_render(particles_set, n_particle, render_path):
     anim = animation.FuncAnimation(fig, update, frames=np.arange(0, n_frames), blit=False)
 
     # plt.show()
-    anim.save(render_path, writer=animation.PillowWriter(fps=20))
+    anim.save(render_path, writer=animation.PillowWriter(fps=10))
 
 
 def plt_render_frames_rm(particles_set, n_particle, render_path):
@@ -277,3 +278,167 @@ def plt_render_frames(particles_set, target_shape, n_particle, render_path):
         plt.tight_layout()
         # plt.show()
         plt.savefig(f'{render_path}/{str(step).zfill(3)}.pdf')
+        
+
+from pdb import set_trace
+##### training visualisation #####
+def plt_render_training_gif(particles_set, n_particle, render_path):
+    n_frames = particles_set[0].shape[0]
+    rows = 2
+    cols = 3
+
+    fig, big_axes = plt.subplots(rows, 1, figsize=(9, 6))
+    row_titles = ['GT', 'Sample']
+    views = [(90, 90), (0, 90), (45, 135)]
+    plot_info_all = {}
+    for i in range(rows):
+        big_axes[i].set_title(row_titles[i], fontweight='semibold')
+        big_axes[i].axis('off')
+
+        plot_info = []
+        for j in range(cols):
+            ax = fig.add_subplot(rows, cols, i * cols + j + 1, projection='3d')
+            ax.view_init(*views[j])
+            points, shapes = visualize_points(ax, particles_set[i][0], n_particle)
+            plot_info.append((points, shapes))
+
+        plot_info_all[row_titles[i]] = plot_info
+
+    plt.tight_layout()
+    # set_trace()
+    # plt.show()
+
+    def update(step):
+        outputs = []
+        for i in range(rows):
+            states = particles_set[i]
+            for j in range(cols):
+                points, shapes = plot_info_all[row_titles[i]][j]
+                points._offsets3d = (states[step, :n_particle, 0], states[step, :n_particle, 2], states[step, :n_particle, 1])
+                shapes._offsets3d = (states[step, n_particle:, 0], states[step, n_particle:, 2], states[step, n_particle:, 1])
+                outputs.append(points)
+                outputs.append(shapes)
+        return outputs
+
+    anim = animation.FuncAnimation(fig, update, frames=np.arange(0, n_frames), blit=False)
+    
+    
+    set_trace()
+    
+    # plt.show()
+    anim.save(render_path, writer=animation.PillowWriter(fps=10))
+    
+def plt_render_image_blend(curr_shape, target_shape, n_particle, render_path):
+    # curr_shape : [B, N, 3]
+    # target_shape : [B, N, 3]
+    
+    rows = 1
+    cols = 3
+
+    fig, big_axes = plt.subplots(rows, 1, figsize=(9, 3))
+    # plt.gca().invert_yaxis()
+    row_titles = ['Training']
+    # views = [(90, 90)]
+    views = [(90, 90), (0, 90), (45, 135)]
+    plot_info_all = {}
+    for b in range(1):
+        for i in range(rows):
+            curr_states = curr_shape[b]
+            target_states = target_shape[b]
+            if rows == 1:
+                big_axes.set_title(row_titles[i], fontweight='semibold')
+                big_axes.axis('off')
+            else:  
+                big_axes[i].set_title(row_titles[i], fontweight='semibold')
+                big_axes[i].axis('off')
+    
+            plot_info = []
+            for j in range(cols):
+                ax = fig.add_subplot(rows, cols, i * cols + j + 1, projection='3d')
+                ax.axis('off')
+                ax.view_init(*views[j])
+                target_points, target_shapes = visualize_points_helper(ax, target_states, n_particle, p_color='c', alpha=1.0)
+                points, shapes = visualize_points_helper(ax, curr_states, n_particle)
+                plot_info.append((target_points, target_shapes, points, shapes))
+    
+            plot_info_all[row_titles[i]] = plot_info
+
+
+    for step in range(curr_shape.shape[0]): # range(n_frames):
+        for i in range(rows):
+            curr_states = curr_shape
+            target_states = target_shape
+            for j in range(cols):
+                target_points, target_shapes, points, shapes = plot_info_all[row_titles[i]][j]
+                points._offsets3d = (curr_states[step, :n_particle, 0], curr_states[step, :n_particle, 2], curr_states[step, :n_particle, 1])
+                shapes._offsets3d = (curr_states[step, n_particle+9:, 0], curr_states[step, n_particle+9:, 2], curr_states[step, n_particle+9:, 1])
+                target_points._offsets3d = (target_states[step, :n_particle, 0], target_states[step, :n_particle, 2], target_states[step, :n_particle, 1])
+                target_shapes._offsets3d = (target_states[step, n_particle+9:, 0], target_states[step, n_particle+9:, 2], target_states[step, n_particle+9:, 1])
+                
+        plt.tight_layout()
+        # plt.show()
+        plt.savefig(f'{render_path}_{str(step).zfill(3)}.pdf')
+
+def plt_render_image_split(curr_shape, target_shape, n_particle, pstep_idx):
+    # curr_shape : [B, N, 3]
+    # target_shape : [B, N, 3]
+    all_shape = [curr_shape, target_shape]
+    rows = 2
+    cols = 3
+
+    fig, big_axes = plt.subplots(rows, 1, figsize=(9, 6))
+    # plt.gca().invert_yaxis()
+    row_titles = ["GT", "Pred"]
+    # views = [(90, 90)]
+    views = [(90, 90), (0, 90), (45, 135)]
+    plot_info_all = {}
+    for b in range(1):
+        for i in range(rows):
+            big_axes[i].set_title(row_titles[i], fontweight='semibold')
+            big_axes[i].axis('off')
+    
+            plot_info = []
+            for j in range(cols):
+                ax = fig.add_subplot(rows, cols, i * cols + j + 1, projection='3d')
+                # ax.axis('off')
+                ax.view_init(*views[j])
+                points, shapes = visualize_points_helper(ax, all_shape[i][b], n_particle)
+                plot_info.append((points, shapes))
+    
+            plot_info_all[row_titles[i]] = plot_info
+
+
+
+    for step in range(all_shape[0].shape[0]): # range(n_frames):
+        for i in range(rows):
+            # curr_states, target_states = all_shape
+            curr_states = all_shape[i]
+            for j in range(cols):
+                points, shapes = plot_info_all[row_titles[i]][j]
+                points._offsets3d = (curr_states[step, :n_particle, 0], curr_states[step, :n_particle, 2], curr_states[step, :n_particle, 1])
+                shapes._offsets3d = (curr_states[step, n_particle+9:, 0], curr_states[step, n_particle+9:, 2], curr_states[step, n_particle+9:, 1])
+
+                
+        plt.tight_layout()
+        # plt.show()
+        plt.savefig(f'visualize/step_{str(pstep_idx)}_bs_{str(step)}.png')
+
+if __name__ == "__main__":
+    curr_shape = np.random.random((4, 331, 3))
+    target_shape = np.random.random((4, 331, 3))
+    # print(pts1.shape)
+    # particles_set = [pts1, pts2]
+    n_particle = 300
+    render_path = f"./plt"
+    # plt_render_training(particles_set, n_particle, render_path)
+    plt_render_image_split(curr_shape, target_shape, n_particle, render_path)
+
+
+
+
+
+
+
+
+
+

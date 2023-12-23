@@ -832,7 +832,7 @@ def main(args):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument("--data_dir", default="")
-    parser.add_argument("--prepare_pcd_dir", default="/nvme/tianyang/sample_Robocake_prepare")
+    parser.add_argument("--prepare_pcd_dir", default="/nvme/tianyang/prepare_Robocake_data")
     parser.add_argument("--output_path", default="/nvme/tianyang/sample_Robocake_data")
     args = parser.parse_args()
 

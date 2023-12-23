@@ -17,7 +17,7 @@ from utils.robocraft_utils import prepare_input, get_scene_info, get_env_group
 from metrics.metric import ChamferLoss, EarthMoverLoss, HausdorffLoss
 from utils.optim import get_lr, count_parameters, my_collate, AverageMeter, Tee, get_optimizer
 from utils.utils import set_seed, matched_motion, load_checkpoint, save_checkpoint, exists_or_mkdir
-from visualize.visualize import plt_render
+from visualize.visualize import plt_render_image_split
 from pdb import set_trace
 
 ### load model ###
@@ -156,6 +156,8 @@ def main(args):
                     memory_init = prior_model.init_memory(B, n_particle + n_shape)
                     loss = 0
                     loss_dict = {}
+                    # if i % args.vis_per_iter == 0:
+                        
                     for j in range(args.sequence_length - args.n_his):
                         with torch.set_grad_enabled(phase == 'train'):
                             # state_cur (unnormalized): B x n_his x (n_p + n_s) x state_dim
@@ -209,6 +211,9 @@ def main(args):
                             gt_pos_p = gt_pos[:, :n_particle]
                             # gt_sdf = sdf_list[:, args.n_his]
                             pred_pos = torch.cat([pred_pos_p, gt_pos[:, n_particle:]], 1)
+                            
+                            if i % args.vis_per_iter == 0:
+                                plt_render_image_split(pred_pos.detach().cpu().numpy(), gt_pos.detach().cpu().numpy(), n_particle, pstep_idx=i)
 
 
                             # gt_motion_norm (normalized): B x (n_p + n_s) x state_dim
@@ -280,6 +285,11 @@ def main(args):
                 
                 wandb.log({f"{phase}_prior_total_weighted_loss" : loss_dict["loss_1"]})# , step=this_step)
                 wandb.log({f"{phase}_prior_total_loss_raw" : loss_raw.item()})# , step=this_step)
+                
+                if i % args.vis_per_iter == 0:
+                    for pstep_idx in range(args.sequence_length - args.n_his):
+                        for step in range(B):
+                            wandb.log({"vis_plot": wandb.Image(f'visualize/step_{str(pstep_idx)}_bs_{str(step)}.png')})
 
                 # update model parameters
                 if phase == 'train':
