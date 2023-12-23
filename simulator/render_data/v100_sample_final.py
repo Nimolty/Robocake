@@ -472,9 +472,12 @@ def prepare_crop(prev_pcd, back, prim_pos, prim_rot, sampled_points=None, grippe
         assert (gripper2 is not None)
         assert (cube is not None)
         raw_pcd = gripper1 + gripper2 + cube
-        selected_mesh, _ =  o3d.geometry.TriangleMesh.create_from_point_cloud_poisson(raw_pcd, depth=8)
-        f = SDF(selected_mesh.vertices, selected_mesh.triangles)
 
+        # Here we get the Poisson surface reconstruction to get a smoothed mesh
+        selected_mesh, _ =  o3d.geometry.TriangleMesh.create_from_point_cloud_poisson(raw_pcd, depth=8)
+
+        # 
+        f = SDF(selected_mesh.vertices, selected_mesh.triangles)
         sdf = f(sampled_points)
         sampled_points = sampled_points[-sdf < 0, :]
     
@@ -715,23 +718,28 @@ def main(args):
     exists_or_mkdir(output_path)
 
     ##### REPLACE with the output dir from last step #####
-    data_dir = args.data_dir
-    dir_list = sorted(glob.glob(os.path.join(data_dir, '*')))
+    # data_dir = args.data_dir
+    # dir_list = sorted(glob.glob(os.path.join(data_dir, '*')))
 
-    for vid_idx in range(0, len(dir_list)):
+    prepare_pcd_dir = args.prepare_pcd_dir
+    prepare_pcd_dir_list = sorted(glob.glob(os.path.join(prepare_pcd_dir, '*')))
+
+    for vid_idx in range(0, len(prepare_pcd_dir_list)):
     # for vid_idx in range(42, 43):
         
-        data_path = dir_list[vid_idx]
-        data_idx = int(data_path.split('/')[-1])
+        prepare_pcd_path = prepare_pcd_dir_list[vid_idx]
+        data_idx = int(prepare_pcd_path.split('/')[-1])
         print(f'========== Video {data_idx} ==========')
         rollout_path = os.path.join(output_path, f"{data_idx:03d}")
-        prepare_pcd_path = os.path.join(args.prepare_pcd_dir, f"{data_idx:03d}")
+        
         # os.system('mkdir -p ' + rollout_path)
         exists_or_mkdir(rollout_path)
 
         rollout_path_list = glob.glob(os.path.join(rollout_path, "*"))
         if len(rollout_path_list) == 240:
             continue
+
+        # set_trace()
 
         all_positions = []
         all_gt_positions = []
@@ -740,7 +748,7 @@ def main(args):
         chamfer_loss_list = []
 
         # load and save physics params
-        physics_params = np.load(data_path + f"/physics_params.npy", allow_pickle=True)
+        physics_params = np.load(prepare_pcd_path + f"/physics_params.npy", allow_pickle=True)
         print(physics_params)
         store_physics_params(physics_params, rollout_path)
 
@@ -751,10 +759,13 @@ def main(args):
         # for j in range(0, 30):
             back = (j % 40) >= 30
             print(f'+++++ Frame {j} +++++')
-            d_and_p = np.load(data_path + f"/{j:03d}_depth_prim.npy", allow_pickle=True)
-            prim_rot = [np.array(d_and_p[4][3:]), np.array(d_and_p[5][3:])]
-            prim_pos = [np.array(d_and_p[4][:3]), np.array(d_and_p[5][:3])]
-            gt_pos = np.load(data_path + f"/{j:03d}_gtp.npy", allow_pickle=True)
+            try:
+                d_and_p = np.load(prepare_pcd_path + f"/{j:03d}_depth_prim.npy", allow_pickle=True)
+                prim_rot = [np.array(d_and_p[0][3:]), np.array(d_and_p[1][3:])]
+                prim_pos = [np.array(d_and_p[0][:3]), np.array(d_and_p[1][:3])]
+                gt_pos = np.load(prepare_pcd_path + f"/{j:03d}_gtp.npy", allow_pickle=True) 
+            except:
+                raise NotImplementedError                
 
             if algo == 'crop':
                 if back:
@@ -820,7 +831,7 @@ def main(args):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument("--data_dir", default="/nvme/tianyang/Robocake_data")
+    parser.add_argument("--data_dir", default="")
     parser.add_argument("--prepare_pcd_dir", default="/nvme/tianyang/sample_Robocake_prepare")
     parser.add_argument("--output_path", default="/nvme/tianyang/sample_Robocake_data")
     args = parser.parse_args()
