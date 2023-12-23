@@ -18,6 +18,7 @@ from metrics.metric import ChamferLoss, EarthMoverLoss, HausdorffLoss
 from utils.optim import get_lr, count_parameters, my_collate, AverageMeter, Tee, get_optimizer
 from utils.utils import set_seed, matched_motion, load_checkpoint, save_checkpoint, exists_or_mkdir
 from visualize.visualize import plt_render
+from pdb import set_trace
 
 ### load model ###
 from models.robocraft_model import Prior_Model
@@ -31,6 +32,7 @@ import socket
 def main(args):
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     use_gpu = torch.cuda.is_available()
+    num_gpus = torch.cuda.device_count()
     ##########################      wandb      ##########################
     run_dir = os.path.join(args.run_dir, args.experiment_name, str(args.exp_id))
     exists_or_mkdir(run_dir)
@@ -45,7 +47,7 @@ def main(args):
                reinit=True)
 
     ########################## processing data ##########################
-    phases = ['train'] if args.valid == 0 else ['valid']
+    phases = ['train'] if args.valid == 0 else ['train', 'valid']
     datasets = {phase: DoughDataset(args, phase) for phase in phases}
 
     # for phase in phases:
@@ -104,9 +106,11 @@ def main(args):
     prior_rollout_epoch = -1
     prior_rollout_iter = -1
     prior_total_step = 0
+    prior_valid_step = 0
     if args.resume_prior_path:
         if args.stage == 'dy':
-            prior_total_step = prior_checkpoint['step']    
+            prior_total_step = prior_checkpoint["epoch"] * (int(datasets["train"].__len__()) / args.batch_size / num_gpus)  
+            prior_valid_step = prior_checkpoint["epoch"] * (int(datasets["valid"].__len__()) / args.batch_size / num_gpus) 
 
     for prior_epoch in range(prior_start_epoch, args.prior_n_epoch):
         for phase in phases:
@@ -120,6 +124,9 @@ def main(args):
             prior_meter_loss_param = AverageMeter()
 
             for i, data in enumerate(tqdm(dataloaders[phase], desc=f'Epoch {prior_epoch}/{args.prior_n_epoch}')):
+
+                # if i > 10:
+                #     break
                 if args.stage == 'dy':
                     # attrs: B x (n_p + n_s) x attr_dim
                     # particles: B x seq_length x (n_p + n_s) x state_dim
@@ -256,17 +263,23 @@ def main(args):
                     # with open(args.outf + '/train.npy', 'wb') as f:
                     #     np.save(f, training_stats)
 
-                prior_total_step += 1
-                ### save wandb stats ###
-                wandb.log({f"{phase}_prior_total_weighted_loss_0" : loss_dict["loss_0"]}, step=prior_total_step)
-                wandb.log({f"{phase}_prior_emd_weighted_loss_0" : loss_dict["emd_loss_0"]}, step=prior_total_step)
-                wandb.log({f"{phase}_prior_chamfer_weighted_loss_0" : loss_dict["chamfer_loss_0"]}, step=prior_total_step)
-                wandb.log({f"{phase}_prior_total_weighted_loss_1" : loss_dict["loss_1"] - loss_dict["loss_0"]}, step=prior_total_step)
-                wandb.log({f"{phase}_prior_emd_weighted_loss_1" : loss_dict["emd_loss_1"]}, step=prior_total_step)
-                wandb.log({f"{phase}_prior_chamfer_weighted_loss_1" : loss_dict["chamfer_loss_1"]}, step=prior_total_step)
+                if phase == "train":
+                    prior_total_step += 1
+                    this_step = prior_total_step
+                elif phase == "valid":
+                    prior_valid_step += 1
+                    this_step = prior_valid_step
                 
-                wandb.log({f"{phase}_prior_total_weighted_loss" : loss_dict["loss_1"]}, step=prior_total_step)
-                wandb.log({f"{phase}_prior_total_loss_raw" : loss_raw.item()}, step=prior_total_step)
+                ### save wandb stats ###
+                wandb.log({f"{phase}_prior_total_weighted_loss_0" : loss_dict["loss_0"]}) #, step=this_step)
+                wandb.log({f"{phase}_prior_emd_weighted_loss_0" : loss_dict["emd_loss_0"]}) #, step=this_step)
+                wandb.log({f"{phase}_prior_chamfer_weighted_loss_0" : loss_dict["chamfer_loss_0"]}) #, step=this_step)
+                wandb.log({f"{phase}_prior_total_weighted_loss_1" : loss_dict["loss_1"] - loss_dict["loss_0"]}) # , step=this_step)
+                wandb.log({f"{phase}_prior_emd_weighted_loss_1" : loss_dict["emd_loss_1"]}) # , step=this_step)
+                wandb.log({f"{phase}_prior_chamfer_weighted_loss_1" : loss_dict["chamfer_loss_1"]}) # , step=this_step)
+                
+                wandb.log({f"{phase}_prior_total_weighted_loss" : loss_dict["loss_1"]})# , step=this_step)
+                wandb.log({f"{phase}_prior_total_loss_raw" : loss_raw.item()})# , step=this_step)
 
                 # update model parameters
                 if phase == 'train':
@@ -290,7 +303,9 @@ def main(args):
             with open(args.outf + '/prior_train.npy','wb') as f:
                 np.save(f, prior_training_stats)
 
-            if phase == 'valid' and not args.eval:
+            # set_trace()
+            if phase == 'valid':
+                # set_trace()
                 scheduler.step(prior_meter_loss.avg)
                 if prior_meter_loss.avg < prior_best_valid_loss:
                     prior_best_valid_loss = prior_meter_loss.avg
@@ -309,6 +324,7 @@ if __name__ == '__main__':
     set_seed(args.random_seed)
     # os.system('mkdir -p ' + args.dataf)
     # os.system('mkdir -p ' + args.outf)
+    args.outf = os.path.join(args.outf,  str(args.exp_id))
     exists_or_mkdir(args.dataf)
     exists_or_mkdir(args.outf)
 
