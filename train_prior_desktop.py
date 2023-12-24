@@ -203,7 +203,7 @@ def main(args):
                             inputs = [attrs, state_cur, Rr_cur, Rs_cur, Rn_cur, memory_init, groups_gt, cluster_onehot]
 
                             # pred_pos (unnormalized): B x n_p x state_dim
-                            # pred_motion_norm (normalized): B x n_p x state_dim
+                            # pred_motion_norm (normalized): B x n_p x state_dim 
                             pred_pos_p, pred_motion_norm, std_cluster = prior_model.predict_dynamics(inputs, j)
 
                             # concatenate the state of the shapes
@@ -213,17 +213,11 @@ def main(args):
                             # gt_sdf = sdf_list[:, args.n_his]
                             pred_pos = torch.cat([pred_pos_p, gt_pos[:, n_particle:]], 1)
                             
-<<<<<<< HEAD
-                            if i % args.vis_per_iter == 0:
-                                print("render")
-                                plt_render_image_split(pred_pos.detach().cpu().numpy(), gt_pos.detach().cpu().numpy(), n_particle, pstep_idx=j)
-=======
                             pos_list.append([pred_pos.detach().cpu().numpy(), gt_pos.detach().cpu().numpy()])
                             
 #                            if i % args.vis_per_iter == 0:
 #                                print("render")
 #                                plt_render_image_split(pred_pos.detach().cpu().numpy(), gt_pos.detach().cpu().numpy(), n_particle, pstep_idx=j)
->>>>>>> 6e27a7872a266f36c1ed8b6fa4fd52c3d193a28b
 
 
                             # gt_motion_norm (normalized): B x (n_p + n_s) x state_dim
@@ -286,17 +280,6 @@ def main(args):
                     this_step = prior_valid_step
                 
                 # ### save wandb stats ###
-<<<<<<< HEAD
-                wandb.log({f"{phase}_prior_total_weighted_loss_0" : loss_dict["loss_0"]}) #, step=this_step)
-                wandb.log({f"{phase}_prior_emd_weighted_loss_0" : loss_dict["emd_loss_0"]}) #, step=this_step)
-                wandb.log({f"{phase}_prior_chamfer_weighted_loss_0" : loss_dict["chamfer_loss_0"]}) #, step=this_step)
-                wandb.log({f"{phase}_prior_total_weighted_loss_1" : loss_dict["loss_1"] - loss_dict["loss_0"]}) # , step=this_step)
-                wandb.log({f"{phase}_prior_emd_weighted_loss_1" : loss_dict["emd_loss_1"]}) # , step=this_step)
-                wandb.log({f"{phase}_prior_chamfer_weighted_loss_1" : loss_dict["chamfer_loss_1"]}) # , step=this_step)
-                
-                wandb.log({f"{phase}_prior_total_weighted_loss" : loss_dict["loss_1"]})# , step=this_step)
-                wandb.log({f"{phase}_prior_total_loss_raw" : loss_raw.item()})# , step=this_step)
-=======
                 if phase == "train":
                     if i % args.wandb_train_log_per_iter == 0:  
                         wandb.log({f"{phase}_residual_total_weighted_loss" : loss.item()}) #, step=this_step)
@@ -307,19 +290,14 @@ def main(args):
                         wandb.log({f"{phase}_residual_total_weighted_loss" : loss.item()}) #, step=this_step)
                         wandb.log({f"{phase}_residual_emd_weighted_loss_1" : emd_l.item()}) #, step=this_step)
                         wandb.log({f"{phase}_residual_chamfer_weighted_loss_1" : chamfer_l.item()}) #, step=this_step)
->>>>>>> 6e27a7872a266f36c1ed8b6fa4fd52c3d193a28b
                 
                 if i % args.wandb_vis_log_per_iter == 0:
                     for pstep_idx, pos in enumerate(pos_list):
                         pred_pos_np, gt_pos_np = pos
                         plt_render_image_split(pred_pos.detach().cpu().numpy(), gt_pos.detach().cpu().numpy(), n_particle, pstep_idx=pstep_idx)
                         for step in range(B):
-<<<<<<< HEAD
-                            wandb.log({f"{phase}_vis_plot": wandb.Image(f'visualize/step_{str(pstep_idx)}_bs_{str(step)}.png')})
-=======
                             wandb.log({f"{phase}_vis_plot_step_{str(pstep_idx)}": wandb.Image(f'visualize/step_{str(pstep_idx)}_bs_{str(step)}.png')})
                     
->>>>>>> 6e27a7872a266f36c1ed8b6fa4fd52c3d193a28b
 
                 # update model parameters
                 if phase == 'train':
