@@ -86,6 +86,12 @@ def get_optimizer(params, optimizer_mode, lr, beta1, beta2=0.999, momentum=0.9):
     return optimizer
 
 
+def distributed_concat(tensor,dim=0):
+    output_tensors = [tensor.clone() for _ in range(torch.distributed.get_world_size())]
+    torch.distributed.all_gather(output_tensors, tensor)
+    concat = torch.cat(output_tensors, dim=dim)
+    return concat
+
 ######################## recording and loading ########################
 class AverageMeter(object):
     def __init__(self):

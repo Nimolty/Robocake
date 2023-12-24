@@ -203,7 +203,7 @@ def main(args):
                             inputs = [attrs, state_cur, Rr_cur, Rs_cur, Rn_cur, memory_init, groups_gt, cluster_onehot]
 
                             # pred_pos (unnormalized): B x n_p x state_dim
-                            # pred_motion_norm (normalized): B x n_p x state_dim
+                            # pred_motion_norm (normalized): B x n_p x state_dim 
                             pred_pos_p, pred_motion_norm, std_cluster = prior_model.predict_dynamics(inputs, j)
 
                             # concatenate the state of the shapes
