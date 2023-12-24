@@ -16,8 +16,8 @@ from datasets.dataset import DoughDataset
 from utils.robocraft_utils import prepare_input, get_scene_info, get_env_group
 from metrics.metric import ChamferLoss, EarthMoverLoss, HausdorffLoss
 from utils.optim import get_lr, count_parameters, my_collate, AverageMeter, Tee, get_optimizer
-from utils.utils import set_seed, matched_motion, load_checkpoint, save_checkpoint, exists_or_mkdir, reduce_mean
-from visualize.visualize import plt_render
+from utils.utils import set_seed, matched_motion, load_checkpoint, save_checkpoint, exists_or_mkdir, reduce_mean, load_model
+from visualize.visualize import plt_render, plt_render_image_split
 from pdb import set_trace
 
 ### load model ###
@@ -26,6 +26,9 @@ from models.residual_model_distributed import Residual_Model
 
 ### parallel training ###
 from torch.utils.data.distributed import DistributedSampler
+from torch import distributed as dist
+import wandb
+import socket
 
 
 def main(args):
@@ -37,6 +40,19 @@ def main(args):
         use_gpu = True
     else:
         raise NotImplementedError
+    ##########################      wandb      ##########################
+    if dist.get_rank() == 0:
+        run_dir = os.path.join(args.run_dir, args.experiment_name, str(args.exp_id))
+        exists_or_mkdir(run_dir)
+        wandb.init(config=args,
+                   project=args.project_name,
+                   entity=args.team_name,
+                   notes=socket.gethostname(),
+                   name=args.experiment_name+"_"+str(args.exp_id),
+                   group=args.experiment_name+"_"+str(args.exp_id),
+                   dir=run_dir,
+                   job_type="training",
+                   reinit=True)
 
     ########################## processing data ##########################
     phases = ['train'] if args.valid == 0 else ['train', 'valid']
@@ -72,13 +88,13 @@ def main(args):
         print("Loading saved prior ckpt from %s" % args.resume_prior_path)
         if args.stage == 'dy':
             prior_checkpoint = load_checkpoint(args.resume_prior_path, device)
-            prior_model.load_state_dict(prior_checkpoint['model_state_dict'])
+            prior_model = load_model(prior_model, prior_checkpoint['model_state_dict'])
     
     if args.resume_residual_path:
         print("Loading saved residual ckpt from %s" % args.resume_residual_path)  
         if args.stage == 'dy':
             residual_checkpoint = load_checkpoint(args.resume_residual_path, device)
-            residual_model.load_state_dict(residual_checkpoint['model_state_dict'])
+            residual_model = load_model(residual_model, residual_checkpoint['model_state_dict'])
     
 
     num_gpus = torch.cuda.device_count()
@@ -116,7 +132,8 @@ def main(args):
     residual_total_step = 0
     if args.resume_residual_path:
         if args.stage == 'dy':
-            residual_total_step = residual_checkpoint['step']    
+            # residual_total_step = residual_checkpoint['step']  
+            residual_total_step = residual_checkpoint["epoch"] * (int(datasets["train"].__len__()) / args.batch_size / num_gpus)   
 
     for residual_epoch in range(residual_start_epoch, args.residual_n_epoch):
         for phase in phases:
@@ -133,8 +150,8 @@ def main(args):
             residual_meter_loss_param = AverageMeter()
 
             for i, data in enumerate(tqdm(dataloaders[phase], desc=f'Epoch {residual_epoch}/{args.residual_n_epoch}')):
-                if i > 10:
-                    break
+#                if i > 10:
+#                    break
                 if args.stage == 'dy':
                     # attrs: B x (n_p + n_s) x attr_dim
                     # particles: B x seq_length x (n_p + n_s) x state_dim
@@ -163,6 +180,7 @@ def main(args):
                     # for now, only used as a placeholder
                     memory_init = prior_model.module.init_memory(B, n_particle + n_shape)
                     loss = 0
+                    pos_list = []
                     for j in range(args.sequence_length - args.n_his):
                         with torch.set_grad_enabled(phase == 'train'):
                             # state_cur (unnormalized): B x n_his x (n_p + n_s) x state_dim
@@ -215,7 +233,7 @@ def main(args):
                             residual_inputs = [attrs, state_cur, Rr_cur, Rs_cur, Rn_cur, memory_init, groups_gt, cluster_onehot, prior_pred_pos]
 
                             # set_trace()
-                            print(torch.where(memory_init !=0))
+                            # print(torch.where(memory_init !=0))
 
                             pred_pos_p, pred_motion_norm, std_cluster = residual_model(residual_inputs, j)
                             # concatenate the state of the shapes
@@ -224,6 +242,8 @@ def main(args):
                             gt_pos_p = gt_pos[:, :n_particle]
                             # gt_sdf = sdf_list[:, args.n_his]
                             pred_pos = torch.cat([pred_pos_p, gt_pos[:, n_particle:]], 1)
+                            
+                            pos_list.append([pred_pos.detach().cpu().numpy(), gt_pos.detach().cpu().numpy()])
 
                             # gt_motion_norm (normalized): B x (n_p + n_s) x state_dim
                             # pred_motion_norm (normalized): B x (n_p + n_s) x state_dim
@@ -271,8 +291,8 @@ def main(args):
                         residual_training_stats['iters'].append(residual_epoch * len(dataloaders[phase]) + i)
                     # with open(args.outf + '/train.npy', 'wb') as f:
                     #     np.save(f, training_stats)
-
-                residual_total_step += 1
+                if phase == "train":
+                    residual_total_step += 1
 
                 # update model parameters
                 if phase == 'train':
@@ -282,11 +302,33 @@ def main(args):
                 
                 torch.distributed.barrier()
                 loss = reduce_mean(loss, num_gpus)
+                emd_l = reduce_mean(emd_l, num_gpus)
+                chamfer_l = reduce_mean(chamfer_l, num_gpus)
+                
+                if phase == "train":
+                    if i % args.wandb_train_log_per_iter == 0 and dist.get_rank() == 0:  
+                        wandb.log({f"{phase}_residual_total_weighted_loss" : loss.item()}) #, step=this_step)
+                        wandb.log({f"{phase}_residual_emd_weighted_loss_1" : emd_l.item()}) #, step=this_step)
+                        wandb.log({f"{phase}_residual_chamfer_weighted_loss_1" : chamfer_l.item()}) #, step=this_step)
+                elif phase == "valid":
+                    if i % args.wandb_valid_log_per_iter == 0 and dist.get_rank() == 0:
+                        wandb.log({f"{phase}_residual_total_weighted_loss" : loss.item()}) #, step=this_step)
+                        wandb.log({f"{phase}_residual_emd_weighted_loss_1" : emd_l.item()}) #, step=this_step)
+                        wandb.log({f"{phase}_residual_chamfer_weighted_loss_1" : chamfer_l.item()}) #, step=this_step)
+                
+                if i % args.wandb_vis_log_per_iter == 0 and dist.get_rank() == 0:
+                    for pstep_idx, pos in enumerate(pos_list):
+                        pred_pos_np, gt_pos_np = pos
+                        plt_render_image_split(pred_pos.detach().cpu().numpy(), gt_pos.detach().cpu().numpy(), n_particle, pstep_idx=pstep_idx)
+                        for step in range(B):
+                            wandb.log({f"{phase}_vis_plot_step_{str(pstep_idx)}": wandb.Image(f'visualize/step_{str(pstep_idx)}_bs_{str(step)}.png')})
+                    
+                
 
                 if phase == 'train' and i > 0 and ((residual_epoch * len(dataloaders[phase])) + i) % args.ckp_per_iter == 0:
                     model_path = '%s/residual_net_epoch_%d_iter_%d' % (args.outf, residual_epoch, i)
                     exists_or_mkdir(model_path)
-                    model_path = os.path.join(model_path, f"residual_model_{device}.pth")
+                    model_path = os.path.join(model_path, f"residual_model.pth")
                     save_checkpoint(epoch=residual_epoch, model=residual_model, optimizer=residual_optimizer, step=residual_total_step, save_path=model_path)
                     # torch.save(prior_model.state_dict(), model_path)
                     residual_rollout_epoch = residual_epoch
@@ -299,7 +341,7 @@ def main(args):
             with open(args.outf + '/residual_train.npy','wb') as f:
                 np.save(f, residual_training_stats)
 
-            if phase == 'valid' and not args.eval:
+            if phase == 'valid':
                 scheduler.step(residual_meter_loss.avg)
                 if residual_meter_loss.avg < residual_best_valid_loss:
                     residual_best_valid_loss = residual_meter_loss.avg
@@ -307,8 +349,9 @@ def main(args):
                     exists_or_mkdir(best_model_path)
                     best_model_path = os.path.join(best_model_path, "best_residual_model.pth")
                     save_checkpoint(epoch=residual_epoch, model=residual_model, optimizer=residual_optimizer, step=residual_total_step, save_path=best_model_path)
-                    
-
+    
+    if dist.get_rank() == 0:             
+        wandb.finish()
     pass
 
 
@@ -316,6 +359,7 @@ def main(args):
 if __name__ == '__main__':
     args = gen_args()
     set_seed(args.random_seed)
+    args.outf = os.path.join(args.outf, str(args.exp_id))
     exists_or_mkdir(args.dataf)
     exists_or_mkdir(args.outf)
     # os.system('mkdir -p ' + args.dataf)

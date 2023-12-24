@@ -83,7 +83,7 @@ parser.add_argument('--n_rollout', type=int, default=0)
 parser.add_argument('--train_valid_ratio', type=float, default=0.9)
 parser.add_argument('--num_workers', type=int, default=4)
 parser.add_argument('--log_per_iter', type=int, default=100)
-parser.add_argument('--ckp_per_iter', type=int, default=1000)
+parser.add_argument('--ckp_per_iter', type=int, default=500)
 
 parser.add_argument('--prior_n_epoch', type=int, default=100) # 100 FOR TEST, *1000* 
 parser.add_argument('--residual_n_epoch', type=int, default=100)
@@ -167,7 +167,9 @@ parser.add_argument("--experiment_name", type=str,default="prior_model_desktop")
 parser.add_argument("--scenario_name", type=str, default="nimolty")
 parser.add_argument("--run_dir", type=str, default="/home/tianyang/Robocake/wandb")
 parser.add_argument("--exp_id", type=int, default=0)
-parser.add_argument("--vis_per_iter", type=int, default=100)
+parser.add_argument("--wandb_vis_log_per_iter", type=int, default=500)
+parser.add_argument("--wandb_train_log_per_iter", type=int, default=500)
+parser.add_argument("--wandb_valid_log_per_iter", type=int, default=200)
 
 
 def gen_args():
