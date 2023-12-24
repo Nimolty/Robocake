@@ -1,1 +1,0 @@
-{"train_residual_total_weighted_loss": 0.03886960446834564, "_timestamp": 1703431389.0962563, "_runtime": 17.954755306243896, "_step": 2, "train_residual_emd_weighted_loss_1": 0.01679573953151703, "train_residual_chamfer_weighted_loss_1": 0.0031181760132312775, "_wandb": {"runtime": 15}}
