@@ -156,6 +156,7 @@ def main(args):
                     memory_init = prior_model.init_memory(B, n_particle + n_shape)
                     loss = 0
                     loss_dict = {}
+                    pos_list = []
                     # if i % args.vis_per_iter == 0:
                         
                     for j in range(args.sequence_length - args.n_his):
@@ -212,8 +213,11 @@ def main(args):
                             # gt_sdf = sdf_list[:, args.n_his]
                             pred_pos = torch.cat([pred_pos_p, gt_pos[:, n_particle:]], 1)
                             
-                            if i % args.vis_per_iter == 0:
-                                plt_render_image_split(pred_pos.detach().cpu().numpy(), gt_pos.detach().cpu().numpy(), n_particle, pstep_idx=j)
+                            pos_list.append([pred_pos.detach().cpu().numpy(), gt_pos.detach().cpu().numpy()])
+                            
+#                            if i % args.vis_per_iter == 0:
+#                                print("render")
+#                                plt_render_image_split(pred_pos.detach().cpu().numpy(), gt_pos.detach().cpu().numpy(), n_particle, pstep_idx=j)
 
 
                             # gt_motion_norm (normalized): B x (n_p + n_s) x state_dim
@@ -275,21 +279,25 @@ def main(args):
                     prior_valid_step += 1
                     this_step = prior_valid_step
                 
-                ### save wandb stats ###
-                wandb.log({f"{phase}_prior_total_weighted_loss_0" : loss_dict["loss_0"]}) #, step=this_step)
-                wandb.log({f"{phase}_prior_emd_weighted_loss_0" : loss_dict["emd_loss_0"]}) #, step=this_step)
-                wandb.log({f"{phase}_prior_chamfer_weighted_loss_0" : loss_dict["chamfer_loss_0"]}) #, step=this_step)
-                wandb.log({f"{phase}_prior_total_weighted_loss_1" : loss_dict["loss_1"] - loss_dict["loss_0"]}) # , step=this_step)
-                wandb.log({f"{phase}_prior_emd_weighted_loss_1" : loss_dict["emd_loss_1"]}) # , step=this_step)
-                wandb.log({f"{phase}_prior_chamfer_weighted_loss_1" : loss_dict["chamfer_loss_1"]}) # , step=this_step)
+                # ### save wandb stats ###
+                if phase == "train":
+                    if i % args.wandb_train_log_per_iter == 0:  
+                        wandb.log({f"{phase}_residual_total_weighted_loss" : loss.item()}) #, step=this_step)
+                        wandb.log({f"{phase}_residual_emd_weighted_loss_1" : emd_l.item()}) #, step=this_step)
+                        wandb.log({f"{phase}_residual_chamfer_weighted_loss_1" : chamfer_l.item()}) #, step=this_step)
+                elif phase == "valid":
+                    if i % args.wandb_valid_log_per_iter == 0:
+                        wandb.log({f"{phase}_residual_total_weighted_loss" : loss.item()}) #, step=this_step)
+                        wandb.log({f"{phase}_residual_emd_weighted_loss_1" : emd_l.item()}) #, step=this_step)
+                        wandb.log({f"{phase}_residual_chamfer_weighted_loss_1" : chamfer_l.item()}) #, step=this_step)
                 
-                wandb.log({f"{phase}_prior_total_weighted_loss" : loss_dict["loss_1"]})# , step=this_step)
-                wandb.log({f"{phase}_prior_total_loss_raw" : loss_raw.item()})# , step=this_step)
-                
-                if i % args.vis_per_iter == 0:
-                    for pstep_idx in range(args.sequence_length - args.n_his):
+                if i % args.wandb_vis_log_per_iter == 0:
+                    for pstep_idx, pos in enumerate(pos_list):
+                        pred_pos_np, gt_pos_np = pos
+                        plt_render_image_split(pred_pos.detach().cpu().numpy(), gt_pos.detach().cpu().numpy(), n_particle, pstep_idx=pstep_idx)
                         for step in range(B):
-                            wandb.log({"vis_plot": wandb.Image(f'visualize/step_{str(pstep_idx)}_bs_{str(step)}.png')})
+                            wandb.log({f"{phase}_vis_plot_step_{str(pstep_idx)}": wandb.Image(f'visualize/step_{str(pstep_idx)}_bs_{str(step)}.png')})
+                    
 
                 # update model parameters
                 if phase == 'train':
