@@ -213,7 +213,8 @@ def main(args):
                             pred_pos = torch.cat([pred_pos_p, gt_pos[:, n_particle:]], 1)
                             
                             if i % args.vis_per_iter == 0:
-                                plt_render_image_split(pred_pos.detach().cpu().numpy(), gt_pos.detach().cpu().numpy(), n_particle, pstep_idx=i)
+                                print("render")
+                                plt_render_image_split(pred_pos.detach().cpu().numpy(), gt_pos.detach().cpu().numpy(), n_particle, pstep_idx=j)
 
 
                             # gt_motion_norm (normalized): B x (n_p + n_s) x state_dim
@@ -275,7 +276,7 @@ def main(args):
                     prior_valid_step += 1
                     this_step = prior_valid_step
                 
-                ### save wandb stats ###
+                # ### save wandb stats ###
                 wandb.log({f"{phase}_prior_total_weighted_loss_0" : loss_dict["loss_0"]}) #, step=this_step)
                 wandb.log({f"{phase}_prior_emd_weighted_loss_0" : loss_dict["emd_loss_0"]}) #, step=this_step)
                 wandb.log({f"{phase}_prior_chamfer_weighted_loss_0" : loss_dict["chamfer_loss_0"]}) #, step=this_step)
@@ -289,7 +290,7 @@ def main(args):
                 if i % args.vis_per_iter == 0:
                     for pstep_idx in range(args.sequence_length - args.n_his):
                         for step in range(B):
-                            wandb.log({"vis_plot": wandb.Image(f'visualize/step_{str(pstep_idx)}_bs_{str(step)}.png')})
+                            wandb.log({f"{phase}_vis_plot": wandb.Image(f'visualize/step_{str(pstep_idx)}_bs_{str(step)}.png')})
 
                 # update model parameters
                 if phase == 'train':
