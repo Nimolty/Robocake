@@ -65,6 +65,37 @@ def save_checkpoint(epoch, model, optimizer, step, save_path):
                 }
     torch.save(save_dict, save_path)
 
+def load_model(model, load_model_state_dict):
+    state_dict = {}
+    for k in load_model_state_dict:
+        if k.startswith('module') and not k.startswith('module_list'):
+          state_dict[k] = load_model_state_dict[k]
+        else:
+          state_dict[f"module.{k}"] = load_model_state_dict[k]
+    model_state_dict = model.state_dict()
+    
+#    for k in state_dict:
+#      # print("k",k)
+#        if k in model_state_dict:
+#            if (state_dict[k].shape != model_state_dict[k].shape):
+#                print('Reusing parameter {}, required shape{}, '\
+#                  'loaded shape{}.'.format(k, model_state_dict[k].shape, state_dict[k].shape))
+#                if state_dict[k].shape[0] < model_state_dict[k].shape[0]:
+#                    model_state_dict[k][:state_dict[k].shape[0]] = state_dict[k]
+#                else:
+#                    model_state_dict[k] = state_dict[k][:model_state_dict[k].shape[0]]
+#                state_dict[k] = model_state_dict[k]
+#        else:
+#            print('Drop parameter {}.'.format(k))
+
+    for k in model_state_dict:
+      if not (k in state_dict):
+        print('No param {}.'.format(k))
+        state_dict[k] = model_state_dict[k]
+    model.load_state_dict(state_dict, strict=True)
+    return model
+
+
 
 ##################### io #####################
 def exists_or_mkdir(path):

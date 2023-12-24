@@ -1,0 +1,1394 @@
+2023-12-24 23:29:34,419 INFO    StreamThr :61499 [internal.py:wandb_internal():89] W&B internal server running at pid: 61499, started at: 2023-12-24 23:29:34.419128
+2023-12-24 23:29:34,421 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: status
+2023-12-24 23:29:34,433 INFO    WriterThread:61499 [datastore.py:open_for_write():85] open: /home/tianyang/Robocake/wandb/residual_model_v100v4/0/wandb/run-20231224_232934-e7t43g1z/run-e7t43g1z.wandb
+2023-12-24 23:29:34,434 DEBUG   SenderThread:61499 [sender.py:send():382] send: header
+2023-12-24 23:29:34,473 DEBUG   SenderThread:61499 [sender.py:send():382] send: run
+2023-12-24 23:29:35,276 INFO    SenderThread:61499 [dir_watcher.py:__init__():211] watching files in: /home/tianyang/Robocake/wandb/residual_model_v100v4/0/wandb/run-20231224_232934-e7t43g1z/files
+2023-12-24 23:29:35,276 INFO    SenderThread:61499 [sender.py:_start_run_threads():1139] run started: e7t43g1z with start time 1703431774.418832
+2023-12-24 23:29:35,295 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: check_version
+2023-12-24 23:29:35,295 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: check_version
+2023-12-24 23:29:35,610 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: run_start
+2023-12-24 23:29:35,622 DEBUG   HandlerThread:61499 [system_info.py:__init__():32] System info init
+2023-12-24 23:29:35,622 DEBUG   HandlerThread:61499 [system_info.py:__init__():47] System info init done
+2023-12-24 23:29:35,622 INFO    HandlerThread:61499 [system_monitor.py:start():194] Starting system monitor
+2023-12-24 23:29:35,622 INFO    SystemMonitor:61499 [system_monitor.py:_start():158] Starting system asset monitoring threads
+2023-12-24 23:29:35,623 INFO    HandlerThread:61499 [system_monitor.py:probe():214] Collecting system info
+2023-12-24 23:29:35,623 INFO    SystemMonitor:61499 [interfaces.py:start():190] Started cpu monitoring
+2023-12-24 23:29:35,624 INFO    SystemMonitor:61499 [interfaces.py:start():190] Started disk monitoring
+2023-12-24 23:29:35,624 INFO    SystemMonitor:61499 [interfaces.py:start():190] Started gpu monitoring
+2023-12-24 23:29:35,625 INFO    SystemMonitor:61499 [interfaces.py:start():190] Started memory monitoring
+2023-12-24 23:29:35,625 INFO    SystemMonitor:61499 [interfaces.py:start():190] Started network monitoring
+2023-12-24 23:29:35,673 DEBUG   HandlerThread:61499 [system_info.py:probe():196] Probing system
+2023-12-24 23:29:35,684 DEBUG   HandlerThread:61499 [system_info.py:_probe_git():181] Probing git
+2023-12-24 23:29:35,703 DEBUG   HandlerThread:61499 [system_info.py:_probe_git():189] Probing git done
+2023-12-24 23:29:35,703 DEBUG   HandlerThread:61499 [system_info.py:probe():244] Probing system done
+2023-12-24 23:29:35,703 DEBUG   HandlerThread:61499 [system_monitor.py:probe():223] {'os': 'Linux-3.10.0-957.el7.x86_64-x86_64-with-centos-7.6.1810-Core', 'python': '3.7.16', 'heartbeatAt': '2023-12-24T15:29:35.674020', 'startedAt': '2023-12-24T15:29:34.407667', 'docker': None, 'cuda': None, 'args': ('--local_rank=0', '--stage', 'dy', '--data_type', 'ngrip_fixed', '--residual_n_epoch', '5000', '--ckp_per_iter', '100', '--dataf', '/nvme/tianyang/residual_robocake_data/data_ngrip_fixed', '--outf', '/nvme/tianyang/residual_robocake_data/dump_ngrip_fixed', '--resume_prior_path', '/home/tianyang/Robocake/prior/dump_ngrip_fixed_desktop/3/prior_net_epoch_99_iter_1325/prior_model.pth', '--exp_id', '0', '--experiment_name', 'residual_model_v100v4'), 'state': 'running', 'program': '/home/tianyang/Robocake/train_residual_distributed.py', 'codePathLocal': 'train_residual_distributed.py', 'codePath': 'train_residual_distributed.py', 'git': {'remote': 'https://github.com/Nimolty/Robocake.git', 'commit': 'c89f66ff7653cf97d99b0eee002ca616cf5c1633'}, 'email': 'v100v4', 'root': '/home/tianyang/Robocake', 'host': 'localhost.localdomain', 'username': 'tianyang', 'executable': '/home/tianyang/anaconda3/envs/test/bin/python', 'cpu_count': 24, 'cpu_count_logical': 48, 'cpu_freq': {'current': 3201.0, 'min': 1200.0, 'max': 3201.0}, 'cpu_freq_per_core': [{'current': 3201.0, 'min': 1200.0, 'max': 3201.0}, {'current': 3201.0, 'min': 1200.0, 'max': 3201.0}, {'current': 3201.0, 'min': 1200.0, 'max': 3201.0}, {'current': 3201.0, 'min': 1200.0, 'max': 3201.0}, {'current': 3201.0, 'min': 1200.0, 'max': 3201.0}, {'current': 3201.0, 'min': 1200.0, 'max': 3201.0}, {'current': 3201.0, 'min': 1200.0, 'max': 3201.0}, {'current': 3201.0, 'min': 1200.0, 'max': 3201.0}, {'current': 3201.0, 'min': 1200.0, 'max': 3201.0}, {'current': 3201.0, 'min': 1200.0, 'max': 3201.0}, {'current': 3201.0, 'min': 1200.0, 'max': 3201.0}, {'current': 3201.0, 'min': 1200.0, 'max': 3201.0}, {'current': 3201.0, 'min': 1200.0, 'max': 3201.0}, {'current': 3201.0, 'min': 1200.0, 'max': 3201.0}, {'current': 3201.0, 'min': 1200.0, 'max': 3201.0}, {'current': 3201.0, 'min': 1200.0, 'max': 3201.0}, {'current': 3201.0, 'min': 1200.0, 'max': 3201.0}, {'current': 3201.0, 'min': 1200.0, 'max': 3201.0}, {'current': 3201.0, 'min': 1200.0, 'max': 3201.0}, {'current': 3201.0, 'min': 1200.0, 'max': 3201.0}, {'current': 3201.0, 'min': 1200.0, 'max': 3201.0}, {'current': 3201.0, 'min': 1200.0, 'max': 3201.0}, {'current': 3201.0, 'min': 1200.0, 'max': 3201.0}, {'current': 3201.0, 'min': 1200.0, 'max': 3201.0}, {'current': 3201.0, 'min': 1200.0, 'max': 3201.0}, {'current': 3201.0, 'min': 1200.0, 'max': 3201.0}, {'current': 3201.0, 'min': 1200.0, 'max': 3201.0}, {'current': 3201.0, 'min': 1200.0, 'max': 3201.0}, {'current': 3201.0, 'min': 1200.0, 'max': 3201.0}, {'current': 3201.0, 'min': 1200.0, 'max': 3201.0}, {'current': 3201.0, 'min': 1200.0, 'max': 3201.0}, {'current': 3201.0, 'min': 1200.0, 'max': 3201.0}, {'current': 3201.0, 'min': 1200.0, 'max': 3201.0}, {'current': 3201.0, 'min': 1200.0, 'max': 3201.0}, {'current': 3201.0, 'min': 1200.0, 'max': 3201.0}, {'current': 3201.0, 'min': 1200.0, 'max': 3201.0}, {'current': 3201.0, 'min': 1200.0, 'max': 3201.0}, {'current': 3201.0, 'min': 1200.0, 'max': 3201.0}, {'current': 3201.0, 'min': 1200.0, 'max': 3201.0}, {'current': 3201.0, 'min': 1200.0, 'max': 3201.0}, {'current': 3201.0, 'min': 1200.0, 'max': 3201.0}, {'current': 3201.0, 'min': 1200.0, 'max': 3201.0}, {'current': 3201.0, 'min': 1200.0, 'max': 3201.0}, {'current': 3201.0, 'min': 1200.0, 'max': 3201.0}, {'current': 3201.0, 'min': 1200.0, 'max': 3201.0}, {'current': 3201.0, 'min': 1200.0, 'max': 3201.0}, {'current': 3201.0, 'min': 1200.0, 'max': 3201.0}, {'current': 3201.0, 'min': 1200.0, 'max': 3201.0}], 'disk': {'/': {'total': 490.50256729125977, 'used': 34.887020111083984}}, 'gpu': 'Tesla V100-SXM2-32GB', 'gpu_count': 8, 'gpu_devices': [{'name': 'Tesla V100-SXM2-32GB', 'memory_total': 34359738368}, {'name': 'Tesla V100-SXM2-32GB', 'memory_total': 34359738368}, {'name': 'Tesla V100-SXM2-32GB', 'memory_total': 34359738368}, {'name': 'Tesla V100-SXM2-32GB', 'memory_total': 34359738368}, {'name': 'Tesla V100-SXM2-32GB', 'memory_total': 34359738368}, {'name': 'Tesla V100-SXM2-32GB', 'memory_total': 34359738368}, {'name': 'Tesla V100-SXM2-32GB', 'memory_total': 34359738368}, {'name': 'Tesla V100-SXM2-32GB', 'memory_total': 34359738368}], 'memory': {'total': 376.3885688781738}}
+2023-12-24 23:29:35,703 INFO    HandlerThread:61499 [system_monitor.py:probe():224] Finished collecting system info
+2023-12-24 23:29:35,703 INFO    HandlerThread:61499 [system_monitor.py:probe():227] Publishing system info
+2023-12-24 23:29:35,703 DEBUG   HandlerThread:61499 [system_info.py:_save_pip():53] Saving list of pip packages installed into the current environment
+2023-12-24 23:29:35,704 DEBUG   HandlerThread:61499 [system_info.py:_save_pip():68] Saving pip packages done
+2023-12-24 23:29:35,704 DEBUG   HandlerThread:61499 [system_info.py:_save_conda():76] Saving list of conda packages installed into the current environment
+2023-12-24 23:29:36,279 INFO    Thread-12 :61499 [dir_watcher.py:_on_file_created():271] file/dir created: /home/tianyang/Robocake/wandb/residual_model_v100v4/0/wandb/run-20231224_232934-e7t43g1z/files/conda-environment.yaml
+2023-12-24 23:29:36,280 INFO    Thread-12 :61499 [dir_watcher.py:_on_file_created():271] file/dir created: /home/tianyang/Robocake/wandb/residual_model_v100v4/0/wandb/run-20231224_232934-e7t43g1z/files/requirements.txt
+2023-12-24 23:29:38,953 DEBUG   HandlerThread:61499 [system_info.py:_save_conda():87] Saving conda packages done
+2023-12-24 23:29:38,955 INFO    HandlerThread:61499 [system_monitor.py:probe():229] Finished publishing system info
+2023-12-24 23:29:38,958 DEBUG   SenderThread:61499 [sender.py:send():382] send: files
+2023-12-24 23:29:38,958 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-metadata.json with policy now
+2023-12-24 23:29:38,966 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: stop_status
+2023-12-24 23:29:38,966 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: stop_status
+2023-12-24 23:29:38,969 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: internal_messages
+2023-12-24 23:29:39,278 INFO    Thread-12 :61499 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/tianyang/Robocake/wandb/residual_model_v100v4/0/wandb/run-20231224_232934-e7t43g1z/files/conda-environment.yaml
+2023-12-24 23:29:39,278 INFO    Thread-12 :61499 [dir_watcher.py:_on_file_created():271] file/dir created: /home/tianyang/Robocake/wandb/residual_model_v100v4/0/wandb/run-20231224_232934-e7t43g1z/files/wandb-metadata.json
+2023-12-24 23:29:39,413 DEBUG   SenderThread:61499 [sender.py:send():382] send: telemetry
+2023-12-24 23:29:39,834 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: status_report
+2023-12-24 23:29:40,278 INFO    Thread-12 :61499 [dir_watcher.py:_on_file_created():271] file/dir created: /home/tianyang/Robocake/wandb/residual_model_v100v4/0/wandb/run-20231224_232934-e7t43g1z/files/output.log
+2023-12-24 23:29:42,279 INFO    Thread-12 :61499 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/tianyang/Robocake/wandb/residual_model_v100v4/0/wandb/run-20231224_232934-e7t43g1z/files/output.log
+2023-12-24 23:29:43,571 INFO    wandb-upload_0:61499 [upload_job.py:push():131] Uploaded file /tmp/tmpy99efl05wandb/9h2t2f4j-wandb-metadata.json
+2023-12-24 23:29:44,863 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: status_report
+2023-12-24 23:29:46,280 INFO    Thread-12 :61499 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/tianyang/Robocake/wandb/residual_model_v100v4/0/wandb/run-20231224_232934-e7t43g1z/files/output.log
+2023-12-24 23:29:47,280 INFO    Thread-12 :61499 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/tianyang/Robocake/wandb/residual_model_v100v4/0/wandb/run-20231224_232934-e7t43g1z/files/output.log
+2023-12-24 23:29:50,142 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: status_report
+2023-12-24 23:29:50,193 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:29:50,194 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:29:50,195 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:29:50,195 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:29:50,251 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:29:50,252 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:29:50,252 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:29:50,253 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:29:50,253 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:29:50,253 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:29:50,254 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:29:50,254 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:29:50,281 INFO    Thread-12 :61499 [dir_watcher.py:_on_file_created():271] file/dir created: /home/tianyang/Robocake/wandb/residual_model_v100v4/0/wandb/run-20231224_232934-e7t43g1z/files/wandb-summary.json
+2023-12-24 23:29:51,282 INFO    Thread-12 :61499 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/tianyang/Robocake/wandb/residual_model_v100v4/0/wandb/run-20231224_232934-e7t43g1z/files/output.log
+2023-12-24 23:29:52,282 INFO    Thread-12 :61499 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/tianyang/Robocake/wandb/residual_model_v100v4/0/wandb/run-20231224_232934-e7t43g1z/files/output.log
+2023-12-24 23:29:53,965 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: stop_status
+2023-12-24 23:29:53,965 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: internal_messages
+2023-12-24 23:29:53,965 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: stop_status
+2023-12-24 23:29:54,445 DEBUG   SenderThread:61499 [sender.py:send():382] send: files
+2023-12-24 23:29:54,445 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file media/images/train_vis_plot_step_0_3_6ac6628ebc438ea986d4.png with policy now
+2023-12-24 23:29:54,484 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:29:54,485 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:29:54,485 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:29:54,486 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:29:54,486 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:29:54,487 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:29:54,487 DEBUG   SenderThread:61499 [sender.py:send():382] send: files
+2023-12-24 23:29:54,487 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file media/images/train_vis_plot_step_0_4_a00e8ad42fb58b78e6ba.png with policy now
+2023-12-24 23:29:54,487 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:29:54,487 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:29:54,488 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:29:54,488 DEBUG   SenderThread:61499 [sender.py:send():382] send: files
+2023-12-24 23:29:54,488 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file media/images/train_vis_plot_step_0_5_324d09992612f747d128.png with policy now
+2023-12-24 23:29:54,489 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:29:54,489 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:29:54,489 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:29:54,494 DEBUG   SenderThread:61499 [sender.py:send():382] send: files
+2023-12-24 23:29:54,494 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file media/images/train_vis_plot_step_0_6_02f42efadd40ad88c1a2.png with policy now
+2023-12-24 23:29:54,494 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:29:54,495 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:29:54,495 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:29:54,496 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:29:55,283 INFO    Thread-12 :61499 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/tianyang/Robocake/wandb/residual_model_v100v4/0/wandb/run-20231224_232934-e7t43g1z/files/wandb-summary.json
+2023-12-24 23:29:55,283 INFO    Thread-12 :61499 [dir_watcher.py:_on_file_created():271] file/dir created: /home/tianyang/Robocake/wandb/residual_model_v100v4/0/wandb/run-20231224_232934-e7t43g1z/files/media/images/train_vis_plot_step_0_4_a00e8ad42fb58b78e6ba.png
+2023-12-24 23:29:55,283 INFO    Thread-12 :61499 [dir_watcher.py:_on_file_created():271] file/dir created: /home/tianyang/Robocake/wandb/residual_model_v100v4/0/wandb/run-20231224_232934-e7t43g1z/files/media/images/train_vis_plot_step_0_6_02f42efadd40ad88c1a2.png
+2023-12-24 23:29:55,284 INFO    Thread-12 :61499 [dir_watcher.py:_on_file_created():271] file/dir created: /home/tianyang/Robocake/wandb/residual_model_v100v4/0/wandb/run-20231224_232934-e7t43g1z/files/media/images/train_vis_plot_step_0_5_324d09992612f747d128.png
+2023-12-24 23:29:55,284 INFO    Thread-12 :61499 [dir_watcher.py:_on_file_created():271] file/dir created: /home/tianyang/Robocake/wandb/residual_model_v100v4/0/wandb/run-20231224_232934-e7t43g1z/files/media/images/train_vis_plot_step_0_3_6ac6628ebc438ea986d4.png
+2023-12-24 23:29:55,284 INFO    Thread-12 :61499 [dir_watcher.py:_on_file_created():271] file/dir created: /home/tianyang/Robocake/wandb/residual_model_v100v4/0/wandb/run-20231224_232934-e7t43g1z/files/media
+2023-12-24 23:29:55,284 INFO    Thread-12 :61499 [dir_watcher.py:_on_file_created():271] file/dir created: /home/tianyang/Robocake/wandb/residual_model_v100v4/0/wandb/run-20231224_232934-e7t43g1z/files/media/images
+2023-12-24 23:29:55,476 INFO    wandb-upload_0:61499 [upload_job.py:push():131] Uploaded file /tmp/tmpy99efl05wandb/f02p0uap-media/images/train_vis_plot_step_0_3_6ac6628ebc438ea986d4.png
+2023-12-24 23:29:55,496 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: status_report
+2023-12-24 23:29:55,581 INFO    wandb-upload_2:61499 [upload_job.py:push():131] Uploaded file /tmp/tmpy99efl05wandb/hnqypwsn-media/images/train_vis_plot_step_0_4_a00e8ad42fb58b78e6ba.png
+2023-12-24 23:29:55,675 INFO    wandb-upload_3:61499 [upload_job.py:push():131] Uploaded file /tmp/tmpy99efl05wandb/862gsnho-media/images/train_vis_plot_step_0_5_324d09992612f747d128.png
+2023-12-24 23:29:55,916 INFO    wandb-upload_1:61499 [upload_job.py:push():131] Uploaded file /tmp/tmpy99efl05wandb/8xbey7aw-media/images/train_vis_plot_step_0_6_02f42efadd40ad88c1a2.png
+2023-12-24 23:29:56,803 INFO    wandb-upload_4:61499 [upload_job.py:push():131] Uploaded file /tmp/tmpy99efl05wandb/k24h2yzn-media/images/train_vis_plot_step_0_5_324d09992612f747d128.png
+2023-12-24 23:29:57,118 INFO    wandb-upload_6:61499 [upload_job.py:push():131] Uploaded file /tmp/tmpy99efl05wandb/wmoymazu-media/images/train_vis_plot_step_0_3_6ac6628ebc438ea986d4.png
+2023-12-24 23:29:57,137 DEBUG   SenderThread:61499 [sender.py:send():382] send: files
+2023-12-24 23:29:57,137 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file media/images/train_vis_plot_step_1_7_6ac6628ebc438ea986d4.png with policy now
+2023-12-24 23:29:57,137 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:29:57,138 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:29:57,138 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:29:57,139 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:29:57,153 DEBUG   SenderThread:61499 [sender.py:send():382] send: files
+2023-12-24 23:29:57,153 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:29:57,153 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file media/images/train_vis_plot_step_1_8_a00e8ad42fb58b78e6ba.png with policy now
+2023-12-24 23:29:57,154 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:29:57,154 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:29:57,154 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:29:57,168 DEBUG   SenderThread:61499 [sender.py:send():382] send: files
+2023-12-24 23:29:57,169 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:29:57,169 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file media/images/train_vis_plot_step_1_9_324d09992612f747d128.png with policy now
+2023-12-24 23:29:57,170 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:29:57,170 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:29:57,170 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:29:57,184 DEBUG   SenderThread:61499 [sender.py:send():382] send: files
+2023-12-24 23:29:57,185 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:29:57,185 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file media/images/train_vis_plot_step_1_10_02f42efadd40ad88c1a2.png with policy now
+2023-12-24 23:29:57,186 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:29:57,186 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:29:57,186 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:29:57,284 INFO    Thread-12 :61499 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/tianyang/Robocake/wandb/residual_model_v100v4/0/wandb/run-20231224_232934-e7t43g1z/files/wandb-summary.json
+2023-12-24 23:29:57,284 INFO    Thread-12 :61499 [dir_watcher.py:_on_file_created():271] file/dir created: /home/tianyang/Robocake/wandb/residual_model_v100v4/0/wandb/run-20231224_232934-e7t43g1z/files/media/images/train_vis_plot_step_1_9_324d09992612f747d128.png
+2023-12-24 23:29:57,284 INFO    Thread-12 :61499 [dir_watcher.py:_on_file_created():271] file/dir created: /home/tianyang/Robocake/wandb/residual_model_v100v4/0/wandb/run-20231224_232934-e7t43g1z/files/media/images/train_vis_plot_step_1_10_02f42efadd40ad88c1a2.png
+2023-12-24 23:29:57,285 INFO    Thread-12 :61499 [dir_watcher.py:_on_file_created():271] file/dir created: /home/tianyang/Robocake/wandb/residual_model_v100v4/0/wandb/run-20231224_232934-e7t43g1z/files/media/images/train_vis_plot_step_1_7_6ac6628ebc438ea986d4.png
+2023-12-24 23:29:57,285 INFO    Thread-12 :61499 [dir_watcher.py:_on_file_created():271] file/dir created: /home/tianyang/Robocake/wandb/residual_model_v100v4/0/wandb/run-20231224_232934-e7t43g1z/files/media/images/train_vis_plot_step_1_8_a00e8ad42fb58b78e6ba.png
+2023-12-24 23:29:57,285 INFO    Thread-12 :61499 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/tianyang/Robocake/wandb/residual_model_v100v4/0/wandb/run-20231224_232934-e7t43g1z/files/media/images
+2023-12-24 23:29:57,591 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:29:57,592 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:29:57,593 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:29:57,593 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:29:57,594 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:29:57,594 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:29:57,594 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:29:57,595 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:29:57,595 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:29:57,595 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:29:57,595 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:29:57,595 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:29:57,962 INFO    wandb-upload_7:61499 [upload_job.py:push():131] Uploaded file /tmp/tmpy99efl05wandb/4t9r5fp1-media/images/train_vis_plot_step_0_4_a00e8ad42fb58b78e6ba.png
+2023-12-24 23:29:58,214 INFO    wandb-upload_1:61499 [upload_job.py:push():131] Uploaded file /tmp/tmpy99efl05wandb/aysqdvjo-media/images/train_vis_plot_step_1_7_6ac6628ebc438ea986d4.png
+2023-12-24 23:29:58,248 INFO    wandb-upload_10:61499 [upload_job.py:push():131] Uploaded file /tmp/tmpy99efl05wandb/pb1j1esp-media/images/train_vis_plot_step_1_8_a00e8ad42fb58b78e6ba.png
+2023-12-24 23:29:58,274 INFO    wandb-upload_5:61499 [upload_job.py:push():131] Uploaded file /tmp/tmpy99efl05wandb/47vhd9di-media/images/train_vis_plot_step_0_6_02f42efadd40ad88c1a2.png
+2023-12-24 23:29:58,284 INFO    Thread-12 :61499 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/tianyang/Robocake/wandb/residual_model_v100v4/0/wandb/run-20231224_232934-e7t43g1z/files/wandb-summary.json
+2023-12-24 23:29:58,380 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:29:58,381 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:29:58,381 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:29:58,382 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:29:58,382 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:29:58,383 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:29:58,383 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:29:58,383 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:29:58,383 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:29:58,384 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:29:58,384 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:29:58,384 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:29:58,501 INFO    wandb-upload_12:61499 [upload_job.py:push():131] Uploaded file /tmp/tmpy99efl05wandb/0zmuuidi-media/images/train_vis_plot_step_1_10_02f42efadd40ad88c1a2.png
+2023-12-24 23:29:58,511 INFO    wandb-upload_11:61499 [upload_job.py:push():131] Uploaded file /tmp/tmpy99efl05wandb/c74fup6g-media/images/train_vis_plot_step_1_9_324d09992612f747d128.png
+2023-12-24 23:29:58,950 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:29:58,951 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:29:58,951 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:29:58,952 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:29:58,952 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:29:58,953 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:29:58,953 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:29:58,953 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:29:58,954 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:29:58,954 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:29:58,954 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:29:58,954 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:29:59,285 INFO    Thread-12 :61499 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/tianyang/Robocake/wandb/residual_model_v100v4/0/wandb/run-20231224_232934-e7t43g1z/files/wandb-summary.json
+2023-12-24 23:29:59,285 INFO    Thread-12 :61499 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/tianyang/Robocake/wandb/residual_model_v100v4/0/wandb/run-20231224_232934-e7t43g1z/files/output.log
+2023-12-24 23:29:59,349 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:29:59,350 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:29:59,350 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:29:59,351 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:29:59,351 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:29:59,352 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:29:59,352 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:29:59,352 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:29:59,353 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:29:59,353 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:29:59,353 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:29:59,353 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:29:59,477 INFO    wandb-upload_13:61499 [upload_job.py:push():131] Uploaded file /tmp/tmpy99efl05wandb/u9b7s04b-media/images/train_vis_plot_step_1_7_6ac6628ebc438ea986d4.png
+2023-12-24 23:29:59,494 INFO    wandb-upload_0:61499 [upload_job.py:push():131] Uploaded file /tmp/tmpy99efl05wandb/u6n2f5z7-media/images/train_vis_plot_step_1_8_a00e8ad42fb58b78e6ba.png
+2023-12-24 23:29:59,726 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:29:59,727 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:29:59,727 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:29:59,727 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:29:59,728 INFO    wandb-upload_2:61499 [upload_job.py:push():131] Uploaded file /tmp/tmpy99efl05wandb/1k7mco2n-media/images/train_vis_plot_step_1_10_02f42efadd40ad88c1a2.png
+2023-12-24 23:29:59,729 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:29:59,730 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:29:59,730 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:29:59,730 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:29:59,731 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:29:59,731 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:29:59,731 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:29:59,731 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:30:00,277 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:30:00,278 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:30:00,279 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:30:00,279 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:30:00,280 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:30:00,283 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:30:00,283 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:30:00,283 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:30:00,284 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:30:00,284 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:30:00,284 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:30:00,284 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:30:00,285 INFO    Thread-12 :61499 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/tianyang/Robocake/wandb/residual_model_v100v4/0/wandb/run-20231224_232934-e7t43g1z/files/wandb-summary.json
+2023-12-24 23:30:00,682 INFO    wandb-upload_16:61499 [upload_job.py:push():131] Uploaded file /tmp/tmpy99efl05wandb/il23z8tu-media/images/train_vis_plot_step_1_9_324d09992612f747d128.png
+2023-12-24 23:30:00,832 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:30:00,833 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:30:00,834 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:30:00,834 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:30:00,835 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:30:00,835 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: status_report
+2023-12-24 23:30:00,835 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:30:00,836 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:30:00,836 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:30:00,836 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:30:00,836 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:30:00,837 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:30:00,837 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:30:01,286 INFO    Thread-12 :61499 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/tianyang/Robocake/wandb/residual_model_v100v4/0/wandb/run-20231224_232934-e7t43g1z/files/wandb-summary.json
+2023-12-24 23:30:01,286 INFO    Thread-12 :61499 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/tianyang/Robocake/wandb/residual_model_v100v4/0/wandb/run-20231224_232934-e7t43g1z/files/output.log
+2023-12-24 23:30:01,307 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:30:01,307 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:30:01,308 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:30:01,308 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:30:01,309 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:30:01,309 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:30:01,310 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:30:01,310 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:30:01,310 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:30:01,310 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:30:01,311 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:30:01,311 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:30:01,843 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:30:01,843 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:30:01,844 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:30:01,844 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:30:01,845 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:30:01,845 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:30:01,846 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:30:01,846 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:30:01,846 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:30:01,846 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:30:01,846 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:30:01,847 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:30:02,286 INFO    Thread-12 :61499 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/tianyang/Robocake/wandb/residual_model_v100v4/0/wandb/run-20231224_232934-e7t43g1z/files/wandb-summary.json
+2023-12-24 23:30:02,646 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:30:02,647 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:30:02,647 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:30:02,648 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:30:02,648 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:30:02,651 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:30:02,651 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:30:02,652 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:30:02,652 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:30:02,652 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:30:02,652 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:30:02,653 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:30:03,287 INFO    Thread-12 :61499 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/tianyang/Robocake/wandb/residual_model_v100v4/0/wandb/run-20231224_232934-e7t43g1z/files/wandb-summary.json
+2023-12-24 23:30:03,287 INFO    Thread-12 :61499 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/tianyang/Robocake/wandb/residual_model_v100v4/0/wandb/run-20231224_232934-e7t43g1z/files/output.log
+2023-12-24 23:30:05,288 INFO    Thread-12 :61499 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/tianyang/Robocake/wandb/residual_model_v100v4/0/wandb/run-20231224_232934-e7t43g1z/files/output.log
+2023-12-24 23:30:05,891 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: status_report
+2023-12-24 23:30:06,289 INFO    Thread-12 :61499 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/tianyang/Robocake/wandb/residual_model_v100v4/0/wandb/run-20231224_232934-e7t43g1z/files/config.yaml
+2023-12-24 23:30:06,290 INFO    Thread-12 :61499 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/tianyang/Robocake/wandb/residual_model_v100v4/0/wandb/run-20231224_232934-e7t43g1z/files/output.log
+2023-12-24 23:30:08,460 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:30:08,461 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:30:08,462 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:30:08,463 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:30:08,463 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:30:08,464 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:30:08,465 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:30:08,465 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:30:08,466 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:30:08,466 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:30:08,466 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:30:08,467 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:30:08,990 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: stop_status
+2023-12-24 23:30:08,990 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: stop_status
+2023-12-24 23:30:08,994 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: internal_messages
+2023-12-24 23:30:09,291 INFO    Thread-12 :61499 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/tianyang/Robocake/wandb/residual_model_v100v4/0/wandb/run-20231224_232934-e7t43g1z/files/wandb-summary.json
+2023-12-24 23:30:10,292 INFO    Thread-12 :61499 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/tianyang/Robocake/wandb/residual_model_v100v4/0/wandb/run-20231224_232934-e7t43g1z/files/output.log
+2023-12-24 23:30:11,275 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: status_report
+2023-12-24 23:30:11,976 DEBUG   SenderThread:61499 [sender.py:send():382] send: files
+2023-12-24 23:30:11,976 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file media/images/valid_vis_plot_step_0_44_ca4676fef71ea93f1b1c.png with policy now
+2023-12-24 23:30:12,015 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:30:12,016 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:30:12,016 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:30:12,017 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:30:12,017 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:30:12,020 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:30:12,020 DEBUG   SenderThread:61499 [sender.py:send():382] send: files
+2023-12-24 23:30:12,020 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file media/images/valid_vis_plot_step_0_45_36e53740fa3d33d67de4.png with policy now
+2023-12-24 23:30:12,020 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:30:12,021 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:30:12,021 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:30:12,021 DEBUG   SenderThread:61499 [sender.py:send():382] send: files
+2023-12-24 23:30:12,021 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file media/images/valid_vis_plot_step_0_46_3591ecbf47dfb39b8914.png with policy now
+2023-12-24 23:30:12,022 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:30:12,022 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:30:12,022 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:30:12,027 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:30:12,027 DEBUG   SenderThread:61499 [sender.py:send():382] send: files
+2023-12-24 23:30:12,027 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file media/images/valid_vis_plot_step_0_47_fffff76178d5d22ef258.png with policy now
+2023-12-24 23:30:12,028 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:30:12,028 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:30:12,028 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:30:12,296 INFO    Thread-12 :61499 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/tianyang/Robocake/wandb/residual_model_v100v4/0/wandb/run-20231224_232934-e7t43g1z/files/wandb-summary.json
+2023-12-24 23:30:12,296 INFO    Thread-12 :61499 [dir_watcher.py:_on_file_created():271] file/dir created: /home/tianyang/Robocake/wandb/residual_model_v100v4/0/wandb/run-20231224_232934-e7t43g1z/files/media/images/valid_vis_plot_step_0_44_ca4676fef71ea93f1b1c.png
+2023-12-24 23:30:12,297 INFO    Thread-12 :61499 [dir_watcher.py:_on_file_created():271] file/dir created: /home/tianyang/Robocake/wandb/residual_model_v100v4/0/wandb/run-20231224_232934-e7t43g1z/files/media/images/valid_vis_plot_step_0_46_3591ecbf47dfb39b8914.png
+2023-12-24 23:30:12,297 INFO    Thread-12 :61499 [dir_watcher.py:_on_file_created():271] file/dir created: /home/tianyang/Robocake/wandb/residual_model_v100v4/0/wandb/run-20231224_232934-e7t43g1z/files/media/images/valid_vis_plot_step_0_45_36e53740fa3d33d67de4.png
+2023-12-24 23:30:12,297 INFO    Thread-12 :61499 [dir_watcher.py:_on_file_created():271] file/dir created: /home/tianyang/Robocake/wandb/residual_model_v100v4/0/wandb/run-20231224_232934-e7t43g1z/files/media/images/valid_vis_plot_step_0_47_fffff76178d5d22ef258.png
+2023-12-24 23:30:12,298 INFO    Thread-12 :61499 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/tianyang/Robocake/wandb/residual_model_v100v4/0/wandb/run-20231224_232934-e7t43g1z/files/media/images
+2023-12-24 23:30:13,191 INFO    wandb-upload_18:61499 [upload_job.py:push():131] Uploaded file /tmp/tmpy99efl05wandb/t6wlmmt6-media/images/valid_vis_plot_step_0_45_36e53740fa3d33d67de4.png
+2023-12-24 23:30:13,240 INFO    wandb-upload_19:61499 [upload_job.py:push():131] Uploaded file /tmp/tmpy99efl05wandb/r8q3t3gq-media/images/valid_vis_plot_step_0_46_3591ecbf47dfb39b8914.png
+2023-12-24 23:30:13,271 INFO    wandb-upload_17:61499 [upload_job.py:push():131] Uploaded file /tmp/tmpy99efl05wandb/cyswumn4-media/images/valid_vis_plot_step_0_44_ca4676fef71ea93f1b1c.png
+2023-12-24 23:30:13,474 INFO    wandb-upload_20:61499 [upload_job.py:push():131] Uploaded file /tmp/tmpy99efl05wandb/hxam1k8j-media/images/valid_vis_plot_step_0_47_fffff76178d5d22ef258.png
+2023-12-24 23:30:14,602 INFO    wandb-upload_22:61499 [upload_job.py:push():131] Uploaded file /tmp/tmpy99efl05wandb/13vr1mhh-media/images/valid_vis_plot_step_0_45_36e53740fa3d33d67de4.png
+2023-12-24 23:30:14,615 INFO    wandb-upload_21:61499 [upload_job.py:push():131] Uploaded file /tmp/tmpy99efl05wandb/i3ijry8t-media/images/valid_vis_plot_step_0_46_3591ecbf47dfb39b8914.png
+2023-12-24 23:30:14,662 DEBUG   SenderThread:61499 [sender.py:send():382] send: files
+2023-12-24 23:30:14,662 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file media/images/valid_vis_plot_step_1_48_ca4676fef71ea93f1b1c.png with policy now
+2023-12-24 23:30:14,662 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:30:14,663 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:30:14,663 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:30:14,664 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:30:14,678 DEBUG   SenderThread:61499 [sender.py:send():382] send: files
+2023-12-24 23:30:14,678 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file media/images/valid_vis_plot_step_1_49_36e53740fa3d33d67de4.png with policy now
+2023-12-24 23:30:14,678 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:30:14,679 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:30:14,679 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:30:14,680 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:30:14,694 DEBUG   SenderThread:61499 [sender.py:send():382] send: files
+2023-12-24 23:30:14,694 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file media/images/valid_vis_plot_step_1_50_3591ecbf47dfb39b8914.png with policy now
+2023-12-24 23:30:14,694 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:30:14,695 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:30:14,695 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:30:14,696 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:30:14,710 DEBUG   SenderThread:61499 [sender.py:send():382] send: files
+2023-12-24 23:30:14,710 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:30:14,710 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file media/images/valid_vis_plot_step_1_51_fffff76178d5d22ef258.png with policy now
+2023-12-24 23:30:14,712 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:30:14,712 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:30:14,712 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:30:14,774 INFO    wandb-upload_14:61499 [upload_job.py:push():131] Uploaded file /tmp/tmpy99efl05wandb/23qcenbk-media/images/valid_vis_plot_step_0_47_fffff76178d5d22ef258.png
+2023-12-24 23:30:15,012 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:30:15,013 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:30:15,013 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:30:15,014 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:30:15,014 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:30:15,014 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:30:15,015 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:30:15,015 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:30:15,015 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:30:15,015 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:30:15,015 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:30:15,016 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:30:15,298 INFO    Thread-12 :61499 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/tianyang/Robocake/wandb/residual_model_v100v4/0/wandb/run-20231224_232934-e7t43g1z/files/wandb-summary.json
+2023-12-24 23:30:15,298 INFO    Thread-12 :61499 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/tianyang/Robocake/wandb/residual_model_v100v4/0/wandb/run-20231224_232934-e7t43g1z/files/output.log
+2023-12-24 23:30:15,298 INFO    Thread-12 :61499 [dir_watcher.py:_on_file_created():271] file/dir created: /home/tianyang/Robocake/wandb/residual_model_v100v4/0/wandb/run-20231224_232934-e7t43g1z/files/media/images/valid_vis_plot_step_1_48_ca4676fef71ea93f1b1c.png
+2023-12-24 23:30:15,298 INFO    Thread-12 :61499 [dir_watcher.py:_on_file_created():271] file/dir created: /home/tianyang/Robocake/wandb/residual_model_v100v4/0/wandb/run-20231224_232934-e7t43g1z/files/media/images/valid_vis_plot_step_1_51_fffff76178d5d22ef258.png
+2023-12-24 23:30:15,299 INFO    Thread-12 :61499 [dir_watcher.py:_on_file_created():271] file/dir created: /home/tianyang/Robocake/wandb/residual_model_v100v4/0/wandb/run-20231224_232934-e7t43g1z/files/media/images/valid_vis_plot_step_1_50_3591ecbf47dfb39b8914.png
+2023-12-24 23:30:15,299 INFO    Thread-12 :61499 [dir_watcher.py:_on_file_created():271] file/dir created: /home/tianyang/Robocake/wandb/residual_model_v100v4/0/wandb/run-20231224_232934-e7t43g1z/files/media/images/valid_vis_plot_step_1_49_36e53740fa3d33d67de4.png
+2023-12-24 23:30:15,299 INFO    Thread-12 :61499 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/tianyang/Robocake/wandb/residual_model_v100v4/0/wandb/run-20231224_232934-e7t43g1z/files/media/images
+2023-12-24 23:30:15,352 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:30:15,353 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:30:15,353 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:30:15,353 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:30:15,354 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:30:15,354 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:30:15,355 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:30:15,355 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:30:15,355 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:30:15,356 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:30:15,356 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:30:15,356 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:30:15,685 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:30:15,685 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:30:15,686 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:30:15,686 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:30:15,687 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:30:15,687 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:30:15,688 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:30:15,688 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:30:15,688 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:30:15,688 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:30:15,689 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:30:15,689 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:30:15,897 INFO    wandb-upload_26:61499 [upload_job.py:push():131] Uploaded file /tmp/tmpy99efl05wandb/bfutucq0-media/images/valid_vis_plot_step_1_49_36e53740fa3d33d67de4.png
+2023-12-24 23:30:15,946 INFO    wandb-upload_27:61499 [upload_job.py:push():131] Uploaded file /tmp/tmpy99efl05wandb/0uy5ixoo-media/images/valid_vis_plot_step_1_50_3591ecbf47dfb39b8914.png
+2023-12-24 23:30:15,947 INFO    wandb-upload_28:61499 [upload_job.py:push():131] Uploaded file /tmp/tmpy99efl05wandb/crlol7d3-media/images/valid_vis_plot_step_1_51_fffff76178d5d22ef258.png
+2023-12-24 23:30:15,989 INFO    wandb-upload_25:61499 [upload_job.py:push():131] Uploaded file /tmp/tmpy99efl05wandb/ai0s9f08-media/images/valid_vis_plot_step_1_48_ca4676fef71ea93f1b1c.png
+2023-12-24 23:30:16,001 INFO    wandb-upload_24:61499 [upload_job.py:push():131] Uploaded file /tmp/tmpy99efl05wandb/bjdnstn1-media/images/valid_vis_plot_step_0_44_ca4676fef71ea93f1b1c.png
+2023-12-24 23:30:16,031 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:30:16,031 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:30:16,032 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:30:16,032 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:30:16,033 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:30:16,033 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:30:16,034 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:30:16,034 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:30:16,034 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:30:16,034 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:30:16,034 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:30:16,035 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:30:16,298 INFO    Thread-12 :61499 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/tianyang/Robocake/wandb/residual_model_v100v4/0/wandb/run-20231224_232934-e7t43g1z/files/wandb-summary.json
+2023-12-24 23:30:16,386 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:30:16,387 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:30:16,387 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:30:16,388 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:30:16,389 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:30:16,389 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: status_report
+2023-12-24 23:30:16,389 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:30:16,390 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:30:16,390 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:30:16,390 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:30:16,390 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:30:16,391 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:30:16,391 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:30:16,732 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:30:16,733 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:30:16,734 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:30:16,734 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:30:16,735 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:30:16,738 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:30:16,738 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:30:16,738 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:30:16,739 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:30:16,739 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:30:16,739 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:30:16,739 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:30:17,299 INFO    Thread-12 :61499 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/tianyang/Robocake/wandb/residual_model_v100v4/0/wandb/run-20231224_232934-e7t43g1z/files/wandb-summary.json
+2023-12-24 23:30:17,299 INFO    Thread-12 :61499 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/tianyang/Robocake/wandb/residual_model_v100v4/0/wandb/run-20231224_232934-e7t43g1z/files/output.log
+2023-12-24 23:30:17,318 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:30:17,318 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:30:17,319 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:30:17,320 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:30:17,320 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:30:17,320 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:30:17,321 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:30:17,321 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:30:17,321 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:30:17,321 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:30:17,322 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:30:17,322 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:30:17,374 INFO    wandb-upload_3:61499 [upload_job.py:push():131] Uploaded file /tmp/tmpy99efl05wandb/7i3bnz01-media/images/valid_vis_plot_step_1_50_3591ecbf47dfb39b8914.png
+2023-12-24 23:30:17,459 INFO    wandb-upload_30:61499 [upload_job.py:push():131] Uploaded file /tmp/tmpy99efl05wandb/d31ifjxd-media/images/valid_vis_plot_step_1_49_36e53740fa3d33d67de4.png
+2023-12-24 23:30:17,600 INFO    wandb-upload_31:61499 [upload_job.py:push():131] Uploaded file /tmp/tmpy99efl05wandb/wdaa27ta-media/images/valid_vis_plot_step_1_48_ca4676fef71ea93f1b1c.png
+2023-12-24 23:30:17,808 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:30:17,808 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:30:17,809 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:30:17,809 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:30:17,810 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:30:17,811 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:30:17,811 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:30:17,811 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:30:17,812 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:30:17,812 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:30:17,812 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:30:17,812 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:30:18,299 INFO    Thread-12 :61499 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/tianyang/Robocake/wandb/residual_model_v100v4/0/wandb/run-20231224_232934-e7t43g1z/files/wandb-summary.json
+2023-12-24 23:30:18,326 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:30:18,327 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:30:18,327 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:30:18,328 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:30:18,328 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:30:18,329 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:30:18,329 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:30:18,329 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:30:18,330 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:30:18,330 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:30:18,330 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:30:18,330 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:30:18,658 INFO    wandb-upload_32:61499 [upload_job.py:push():131] Uploaded file /tmp/tmpy99efl05wandb/sp7izsyd-media/images/valid_vis_plot_step_1_51_fffff76178d5d22ef258.png
+2023-12-24 23:30:18,766 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:30:18,767 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:30:18,768 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:30:18,768 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:30:18,769 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:30:18,772 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:30:18,772 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:30:18,772 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:30:18,773 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:30:18,773 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:30:18,773 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:30:18,773 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:30:19,300 INFO    Thread-12 :61499 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/tianyang/Robocake/wandb/residual_model_v100v4/0/wandb/run-20231224_232934-e7t43g1z/files/wandb-summary.json
+2023-12-24 23:30:19,300 INFO    Thread-12 :61499 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/tianyang/Robocake/wandb/residual_model_v100v4/0/wandb/run-20231224_232934-e7t43g1z/files/output.log
+2023-12-24 23:30:21,301 INFO    Thread-12 :61499 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/tianyang/Robocake/wandb/residual_model_v100v4/0/wandb/run-20231224_232934-e7t43g1z/files/output.log
+2023-12-24 23:30:21,935 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: status_report
+2023-12-24 23:30:22,302 INFO    Thread-12 :61499 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/tianyang/Robocake/wandb/residual_model_v100v4/0/wandb/run-20231224_232934-e7t43g1z/files/output.log
+2023-12-24 23:30:23,303 INFO    Thread-12 :61499 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/tianyang/Robocake/wandb/residual_model_v100v4/0/wandb/run-20231224_232934-e7t43g1z/files/output.log
+2023-12-24 23:30:24,048 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: stop_status
+2023-12-24 23:30:24,049 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: stop_status
+2023-12-24 23:30:24,049 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: internal_messages
+2023-12-24 23:30:24,189 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:30:24,190 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:30:24,190 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:30:24,385 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:30:24,385 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:30:24,386 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:30:24,386 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:30:24,386 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:30:24,387 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:30:24,387 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:30:24,387 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:30:24,387 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:30:25,304 INFO    Thread-12 :61499 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/tianyang/Robocake/wandb/residual_model_v100v4/0/wandb/run-20231224_232934-e7t43g1z/files/wandb-summary.json
+2023-12-24 23:30:26,305 INFO    Thread-12 :61499 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/tianyang/Robocake/wandb/residual_model_v100v4/0/wandb/run-20231224_232934-e7t43g1z/files/output.log
+2023-12-24 23:30:27,388 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: status_report
+2023-12-24 23:30:27,823 DEBUG   SenderThread:61499 [sender.py:send():382] send: files
+2023-12-24 23:30:27,824 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file media/images/train_vis_plot_step_0_85_1cf4ad2989f580e2188a.png with policy now
+2023-12-24 23:30:27,824 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:30:27,824 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:30:27,825 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:30:27,825 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:30:27,840 DEBUG   SenderThread:61499 [sender.py:send():382] send: files
+2023-12-24 23:30:27,840 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file media/images/train_vis_plot_step_0_86_ebc76e7e1c983ebc97ee.png with policy now
+2023-12-24 23:30:27,840 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:30:27,841 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:30:27,841 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:30:27,841 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:30:27,856 DEBUG   SenderThread:61499 [sender.py:send():382] send: files
+2023-12-24 23:30:27,856 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file media/images/train_vis_plot_step_0_87_af1635a5373ceb083b24.png with policy now
+2023-12-24 23:30:27,856 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:30:27,857 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:30:27,857 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:30:27,857 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:30:27,872 DEBUG   SenderThread:61499 [sender.py:send():382] send: files
+2023-12-24 23:30:27,872 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file media/images/train_vis_plot_step_0_88_b77d56479c58e6ac59ce.png with policy now
+2023-12-24 23:30:27,872 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:30:27,873 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:30:27,873 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:30:27,874 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:30:28,306 INFO    Thread-12 :61499 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/tianyang/Robocake/wandb/residual_model_v100v4/0/wandb/run-20231224_232934-e7t43g1z/files/wandb-summary.json
+2023-12-24 23:30:28,306 INFO    Thread-12 :61499 [dir_watcher.py:_on_file_created():271] file/dir created: /home/tianyang/Robocake/wandb/residual_model_v100v4/0/wandb/run-20231224_232934-e7t43g1z/files/media/images/train_vis_plot_step_0_87_af1635a5373ceb083b24.png
+2023-12-24 23:30:28,306 INFO    Thread-12 :61499 [dir_watcher.py:_on_file_created():271] file/dir created: /home/tianyang/Robocake/wandb/residual_model_v100v4/0/wandb/run-20231224_232934-e7t43g1z/files/media/images/train_vis_plot_step_0_85_1cf4ad2989f580e2188a.png
+2023-12-24 23:30:28,307 INFO    Thread-12 :61499 [dir_watcher.py:_on_file_created():271] file/dir created: /home/tianyang/Robocake/wandb/residual_model_v100v4/0/wandb/run-20231224_232934-e7t43g1z/files/media/images/train_vis_plot_step_0_86_ebc76e7e1c983ebc97ee.png
+2023-12-24 23:30:28,307 INFO    Thread-12 :61499 [dir_watcher.py:_on_file_created():271] file/dir created: /home/tianyang/Robocake/wandb/residual_model_v100v4/0/wandb/run-20231224_232934-e7t43g1z/files/media/images/train_vis_plot_step_0_88_b77d56479c58e6ac59ce.png
+2023-12-24 23:30:28,307 INFO    Thread-12 :61499 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/tianyang/Robocake/wandb/residual_model_v100v4/0/wandb/run-20231224_232934-e7t43g1z/files/media/images
+2023-12-24 23:30:29,029 INFO    wandb-upload_7:61499 [upload_job.py:push():131] Uploaded file /tmp/tmpy99efl05wandb/164itps5-media/images/train_vis_plot_step_0_85_1cf4ad2989f580e2188a.png
+2023-12-24 23:30:29,052 INFO    wandb-upload_35:61499 [upload_job.py:push():131] Uploaded file /tmp/tmpy99efl05wandb/8yrbdkhn-media/images/train_vis_plot_step_0_87_af1635a5373ceb083b24.png
+2023-12-24 23:30:29,057 INFO    wandb-upload_34:61499 [upload_job.py:push():131] Uploaded file /tmp/tmpy99efl05wandb/98txoark-media/images/train_vis_plot_step_0_86_ebc76e7e1c983ebc97ee.png
+2023-12-24 23:30:29,057 INFO    wandb-upload_36:61499 [upload_job.py:push():131] Uploaded file /tmp/tmpy99efl05wandb/twikakjc-media/images/train_vis_plot_step_0_88_b77d56479c58e6ac59ce.png
+2023-12-24 23:30:30,363 INFO    wandb-upload_39:61499 [upload_job.py:push():131] Uploaded file /tmp/tmpy99efl05wandb/pnvr4q4r-media/images/train_vis_plot_step_0_88_b77d56479c58e6ac59ce.png
+2023-12-24 23:30:30,406 INFO    wandb-upload_37:61499 [upload_job.py:push():131] Uploaded file /tmp/tmpy99efl05wandb/a5kotapt-media/images/train_vis_plot_step_0_85_1cf4ad2989f580e2188a.png
+2023-12-24 23:30:30,459 INFO    wandb-upload_38:61499 [upload_job.py:push():131] Uploaded file /tmp/tmpy99efl05wandb/c5a6418b-media/images/train_vis_plot_step_0_86_ebc76e7e1c983ebc97ee.png
+2023-12-24 23:30:30,495 DEBUG   SenderThread:61499 [sender.py:send():382] send: files
+2023-12-24 23:30:30,495 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file media/images/train_vis_plot_step_1_89_1cf4ad2989f580e2188a.png with policy now
+2023-12-24 23:30:30,495 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:30:30,496 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:30:30,497 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:30:30,497 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:30:30,512 DEBUG   SenderThread:61499 [sender.py:send():382] send: files
+2023-12-24 23:30:30,512 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file media/images/train_vis_plot_step_1_90_ebc76e7e1c983ebc97ee.png with policy now
+2023-12-24 23:30:30,512 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:30:30,513 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:30:30,513 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:30:30,513 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:30:30,528 DEBUG   SenderThread:61499 [sender.py:send():382] send: files
+2023-12-24 23:30:30,528 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file media/images/train_vis_plot_step_1_91_af1635a5373ceb083b24.png with policy now
+2023-12-24 23:30:30,528 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:30:30,529 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:30:30,529 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:30:30,529 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:30:30,544 DEBUG   SenderThread:61499 [sender.py:send():382] send: files
+2023-12-24 23:30:30,544 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file media/images/train_vis_plot_step_1_92_b77d56479c58e6ac59ce.png with policy now
+2023-12-24 23:30:30,544 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:30:30,545 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:30:30,545 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:30:30,545 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:30:30,910 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:30:30,911 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:30:30,911 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:30:30,912 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:30:30,913 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:30:30,913 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:30:30,913 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:30:30,913 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:30:30,914 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:30:30,914 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:30:30,914 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:30:30,915 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:30:31,308 INFO    Thread-12 :61499 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/tianyang/Robocake/wandb/residual_model_v100v4/0/wandb/run-20231224_232934-e7t43g1z/files/wandb-summary.json
+2023-12-24 23:30:31,308 INFO    Thread-12 :61499 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/tianyang/Robocake/wandb/residual_model_v100v4/0/wandb/run-20231224_232934-e7t43g1z/files/output.log
+2023-12-24 23:30:31,308 INFO    Thread-12 :61499 [dir_watcher.py:_on_file_created():271] file/dir created: /home/tianyang/Robocake/wandb/residual_model_v100v4/0/wandb/run-20231224_232934-e7t43g1z/files/media/images/train_vis_plot_step_1_92_b77d56479c58e6ac59ce.png
+2023-12-24 23:30:31,309 INFO    Thread-12 :61499 [dir_watcher.py:_on_file_created():271] file/dir created: /home/tianyang/Robocake/wandb/residual_model_v100v4/0/wandb/run-20231224_232934-e7t43g1z/files/media/images/train_vis_plot_step_1_90_ebc76e7e1c983ebc97ee.png
+2023-12-24 23:30:31,309 INFO    Thread-12 :61499 [dir_watcher.py:_on_file_created():271] file/dir created: /home/tianyang/Robocake/wandb/residual_model_v100v4/0/wandb/run-20231224_232934-e7t43g1z/files/media/images/train_vis_plot_step_1_91_af1635a5373ceb083b24.png
+2023-12-24 23:30:31,309 INFO    Thread-12 :61499 [dir_watcher.py:_on_file_created():271] file/dir created: /home/tianyang/Robocake/wandb/residual_model_v100v4/0/wandb/run-20231224_232934-e7t43g1z/files/media/images/train_vis_plot_step_1_89_1cf4ad2989f580e2188a.png
+2023-12-24 23:30:31,309 INFO    Thread-12 :61499 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/tianyang/Robocake/wandb/residual_model_v100v4/0/wandb/run-20231224_232934-e7t43g1z/files/media/images
+2023-12-24 23:30:31,490 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:30:31,491 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:30:31,492 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:30:31,492 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:30:31,493 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:30:31,496 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:30:31,496 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:30:31,496 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:30:31,496 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:30:31,497 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:30:31,497 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:30:31,497 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:30:31,555 INFO    wandb-upload_40:61499 [upload_job.py:push():131] Uploaded file /tmp/tmpy99efl05wandb/g9i56kok-media/images/train_vis_plot_step_0_87_af1635a5373ceb083b24.png
+2023-12-24 23:30:31,780 INFO    wandb-upload_23:61499 [upload_job.py:push():131] Uploaded file /tmp/tmpy99efl05wandb/vtk4n131-media/images/train_vis_plot_step_1_89_1cf4ad2989f580e2188a.png
+2023-12-24 23:30:31,791 INFO    wandb-upload_22:61499 [upload_job.py:push():131] Uploaded file /tmp/tmpy99efl05wandb/dfbbwov2-media/images/train_vis_plot_step_1_90_ebc76e7e1c983ebc97ee.png
+2023-12-24 23:30:31,794 INFO    wandb-upload_43:61499 [upload_job.py:push():131] Uploaded file /tmp/tmpy99efl05wandb/qzf56hdb-media/images/train_vis_plot_step_1_91_af1635a5373ceb083b24.png
+2023-12-24 23:30:31,813 INFO    wandb-upload_11:61499 [upload_job.py:push():131] Uploaded file /tmp/tmpy99efl05wandb/clblynea-media/images/train_vis_plot_step_1_92_b77d56479c58e6ac59ce.png
+2023-12-24 23:30:32,082 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:30:32,082 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:30:32,083 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:30:32,083 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:30:32,085 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:30:32,086 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:30:32,089 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:30:32,089 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:30:32,090 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:30:32,091 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:30:32,091 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:30:32,091 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:30:32,309 INFO    Thread-12 :61499 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/tianyang/Robocake/wandb/residual_model_v100v4/0/wandb/run-20231224_232934-e7t43g1z/files/wandb-summary.json
+2023-12-24 23:30:32,763 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:30:32,764 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:30:32,765 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:30:32,765 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:30:32,766 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:30:32,766 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: status_report
+2023-12-24 23:30:32,767 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:30:32,767 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:30:32,767 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:30:32,768 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:30:32,768 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:30:32,768 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:30:32,768 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:30:33,309 INFO    Thread-12 :61499 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/tianyang/Robocake/wandb/residual_model_v100v4/0/wandb/run-20231224_232934-e7t43g1z/files/wandb-summary.json
+2023-12-24 23:30:33,310 INFO    Thread-12 :61499 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/tianyang/Robocake/wandb/residual_model_v100v4/0/wandb/run-20231224_232934-e7t43g1z/files/output.log
+2023-12-24 23:30:33,384 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:30:33,385 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:30:33,386 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:30:33,386 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:30:33,387 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:30:33,387 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:30:33,388 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:30:33,388 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:30:33,388 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:30:33,388 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:30:33,389 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:30:33,389 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:30:33,505 INFO    wandb-upload_45:61499 [upload_job.py:push():131] Uploaded file /tmp/tmpy99efl05wandb/m1mhio79-media/images/train_vis_plot_step_1_89_1cf4ad2989f580e2188a.png
+2023-12-24 23:30:33,551 INFO    wandb-upload_13:61499 [upload_job.py:push():131] Uploaded file /tmp/tmpy99efl05wandb/2e1xi4cc-media/images/train_vis_plot_step_1_92_b77d56479c58e6ac59ce.png
+2023-12-24 23:30:33,919 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:30:33,920 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:30:33,921 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:30:33,921 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:30:33,922 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:30:33,922 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:30:33,922 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:30:33,923 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:30:33,923 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:30:33,923 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:30:33,923 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:30:33,924 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:30:34,310 INFO    Thread-12 :61499 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/tianyang/Robocake/wandb/residual_model_v100v4/0/wandb/run-20231224_232934-e7t43g1z/files/wandb-summary.json
+2023-12-24 23:30:34,380 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:30:34,380 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:30:34,381 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:30:34,381 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:30:34,382 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:30:34,383 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:30:34,383 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:30:34,383 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:30:34,383 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:30:34,384 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:30:34,384 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:30:34,384 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:30:34,778 INFO    wandb-upload_47:61499 [upload_job.py:push():131] Uploaded file /tmp/tmpy99efl05wandb/7bslz905-media/images/train_vis_plot_step_1_90_ebc76e7e1c983ebc97ee.png
+2023-12-24 23:30:34,819 INFO    wandb-upload_48:61499 [upload_job.py:push():131] Uploaded file /tmp/tmpy99efl05wandb/moetvkbu-media/images/train_vis_plot_step_1_91_af1635a5373ceb083b24.png
+2023-12-24 23:30:34,909 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:30:34,910 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:30:34,910 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:30:34,911 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:30:34,912 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:30:34,912 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:30:34,912 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:30:34,913 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:30:34,913 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:30:34,913 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:30:34,913 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:30:34,914 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:30:35,311 INFO    Thread-12 :61499 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/tianyang/Robocake/wandb/residual_model_v100v4/0/wandb/run-20231224_232934-e7t43g1z/files/wandb-summary.json
+2023-12-24 23:30:35,311 INFO    Thread-12 :61499 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/tianyang/Robocake/wandb/residual_model_v100v4/0/wandb/run-20231224_232934-e7t43g1z/files/output.log
+2023-12-24 23:30:35,422 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:30:35,423 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:30:35,424 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:30:35,424 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:30:35,425 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:30:35,425 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:30:35,426 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:30:35,426 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:30:35,426 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:30:35,426 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:30:35,426 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:30:35,427 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:30:35,626 DEBUG   SystemMonitor:61499 [system_monitor.py:_start():172] Starting system metrics aggregation loop
+2023-12-24 23:30:35,629 DEBUG   SenderThread:61499 [sender.py:send():382] send: stats
+2023-12-24 23:30:35,903 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:30:35,903 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:30:35,904 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:30:35,904 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:30:35,905 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:30:35,906 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:30:35,906 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:30:35,906 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:30:35,907 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:30:35,907 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:30:35,907 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:30:35,907 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:30:36,312 INFO    Thread-12 :61499 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/tianyang/Robocake/wandb/residual_model_v100v4/0/wandb/run-20231224_232934-e7t43g1z/files/wandb-summary.json
+2023-12-24 23:30:37,313 INFO    Thread-12 :61499 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/tianyang/Robocake/wandb/residual_model_v100v4/0/wandb/run-20231224_232934-e7t43g1z/files/output.log
+2023-12-24 23:30:37,909 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: status_report
+2023-12-24 23:30:39,047 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: stop_status
+2023-12-24 23:30:39,048 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: stop_status
+2023-12-24 23:30:39,053 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: internal_messages
+2023-12-24 23:30:39,315 INFO    Thread-12 :61499 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/tianyang/Robocake/wandb/residual_model_v100v4/0/wandb/run-20231224_232934-e7t43g1z/files/output.log
+2023-12-24 23:30:40,315 INFO    Thread-12 :61499 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/tianyang/Robocake/wandb/residual_model_v100v4/0/wandb/run-20231224_232934-e7t43g1z/files/output.log
+2023-12-24 23:30:42,082 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:30:42,083 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:30:42,084 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:30:42,084 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:30:42,085 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:30:42,086 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:30:42,086 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:30:42,086 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:30:42,087 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:30:42,087 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:30:42,087 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:30:42,087 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:30:42,317 INFO    Thread-12 :61499 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/tianyang/Robocake/wandb/residual_model_v100v4/0/wandb/run-20231224_232934-e7t43g1z/files/wandb-summary.json
+2023-12-24 23:30:42,317 INFO    Thread-12 :61499 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/tianyang/Robocake/wandb/residual_model_v100v4/0/wandb/run-20231224_232934-e7t43g1z/files/output.log
+2023-12-24 23:30:43,088 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: status_report
+2023-12-24 23:30:45,269 DEBUG   SenderThread:61499 [sender.py:send():382] send: files
+2023-12-24 23:30:45,269 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file media/images/valid_vis_plot_step_0_126_37f702fde88fc57b6eed.png with policy now
+2023-12-24 23:30:45,269 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:30:45,270 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:30:45,271 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:30:45,274 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:30:45,285 DEBUG   SenderThread:61499 [sender.py:send():382] send: files
+2023-12-24 23:30:45,285 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file media/images/valid_vis_plot_step_0_127_9dcdb1c6c0ebd24f9bf7.png with policy now
+2023-12-24 23:30:45,285 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:30:45,286 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:30:45,286 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:30:45,287 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:30:45,301 DEBUG   SenderThread:61499 [sender.py:send():382] send: files
+2023-12-24 23:30:45,301 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:30:45,301 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file media/images/valid_vis_plot_step_0_128_0b562579048093bfcc11.png with policy now
+2023-12-24 23:30:45,302 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:30:45,302 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:30:45,303 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:30:45,317 DEBUG   SenderThread:61499 [sender.py:send():382] send: files
+2023-12-24 23:30:45,317 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file media/images/valid_vis_plot_step_0_129_18263114aa8c2e2b2415.png with policy now
+2023-12-24 23:30:45,317 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:30:45,318 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:30:45,319 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:30:45,319 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:30:45,320 INFO    Thread-12 :61499 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/tianyang/Robocake/wandb/residual_model_v100v4/0/wandb/run-20231224_232934-e7t43g1z/files/wandb-summary.json
+2023-12-24 23:30:45,321 INFO    Thread-12 :61499 [dir_watcher.py:_on_file_created():271] file/dir created: /home/tianyang/Robocake/wandb/residual_model_v100v4/0/wandb/run-20231224_232934-e7t43g1z/files/media/images/valid_vis_plot_step_0_126_37f702fde88fc57b6eed.png
+2023-12-24 23:30:45,321 INFO    Thread-12 :61499 [dir_watcher.py:_on_file_created():271] file/dir created: /home/tianyang/Robocake/wandb/residual_model_v100v4/0/wandb/run-20231224_232934-e7t43g1z/files/media/images/valid_vis_plot_step_0_129_18263114aa8c2e2b2415.png
+2023-12-24 23:30:45,321 INFO    Thread-12 :61499 [dir_watcher.py:_on_file_created():271] file/dir created: /home/tianyang/Robocake/wandb/residual_model_v100v4/0/wandb/run-20231224_232934-e7t43g1z/files/media/images/valid_vis_plot_step_0_128_0b562579048093bfcc11.png
+2023-12-24 23:30:45,321 INFO    Thread-12 :61499 [dir_watcher.py:_on_file_created():271] file/dir created: /home/tianyang/Robocake/wandb/residual_model_v100v4/0/wandb/run-20231224_232934-e7t43g1z/files/media/images/valid_vis_plot_step_0_127_9dcdb1c6c0ebd24f9bf7.png
+2023-12-24 23:30:45,321 INFO    Thread-12 :61499 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/tianyang/Robocake/wandb/residual_model_v100v4/0/wandb/run-20231224_232934-e7t43g1z/files/media/images
+2023-12-24 23:30:46,400 INFO    wandb-upload_52:61499 [upload_job.py:push():131] Uploaded file /tmp/tmpy99efl05wandb/bnhlz5mn-media/images/valid_vis_plot_step_0_129_18263114aa8c2e2b2415.png
+2023-12-24 23:30:46,565 INFO    wandb-upload_51:61499 [upload_job.py:push():131] Uploaded file /tmp/tmpy99efl05wandb/i6d7hbqp-media/images/valid_vis_plot_step_0_128_0b562579048093bfcc11.png
+2023-12-24 23:30:46,570 INFO    wandb-upload_50:61499 [upload_job.py:push():131] Uploaded file /tmp/tmpy99efl05wandb/2hxgvcvx-media/images/valid_vis_plot_step_0_127_9dcdb1c6c0ebd24f9bf7.png
+2023-12-24 23:30:47,098 INFO    wandb-upload_49:61499 [upload_job.py:push():131] Uploaded file /tmp/tmpy99efl05wandb/86gny9xd-media/images/valid_vis_plot_step_0_126_37f702fde88fc57b6eed.png
+2023-12-24 23:30:47,782 INFO    wandb-upload_2:61499 [upload_job.py:push():131] Uploaded file /tmp/tmpy99efl05wandb/b1ai6tad-media/images/valid_vis_plot_step_0_129_18263114aa8c2e2b2415.png
+2023-12-24 23:30:47,807 INFO    wandb-upload_16:61499 [upload_job.py:push():131] Uploaded file /tmp/tmpy99efl05wandb/nq62zcfx-media/images/valid_vis_plot_step_0_128_0b562579048093bfcc11.png
+2023-12-24 23:30:48,156 DEBUG   SenderThread:61499 [sender.py:send():382] send: files
+2023-12-24 23:30:48,156 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:30:48,156 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file media/images/valid_vis_plot_step_1_130_37f702fde88fc57b6eed.png with policy now
+2023-12-24 23:30:48,157 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:30:48,157 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: status_report
+2023-12-24 23:30:48,157 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:30:48,158 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:30:48,172 DEBUG   SenderThread:61499 [sender.py:send():382] send: files
+2023-12-24 23:30:48,172 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file media/images/valid_vis_plot_step_1_131_9dcdb1c6c0ebd24f9bf7.png with policy now
+2023-12-24 23:30:48,172 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:30:48,173 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:30:48,173 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:30:48,174 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:30:48,188 DEBUG   SenderThread:61499 [sender.py:send():382] send: files
+2023-12-24 23:30:48,188 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:30:48,188 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file media/images/valid_vis_plot_step_1_132_0b562579048093bfcc11.png with policy now
+2023-12-24 23:30:48,189 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:30:48,189 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:30:48,190 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:30:48,204 DEBUG   SenderThread:61499 [sender.py:send():382] send: files
+2023-12-24 23:30:48,204 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:30:48,204 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file media/images/valid_vis_plot_step_1_133_18263114aa8c2e2b2415.png with policy now
+2023-12-24 23:30:48,205 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:30:48,205 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:30:48,206 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:30:48,215 INFO    wandb-upload_55:61499 [upload_job.py:push():131] Uploaded file /tmp/tmpy99efl05wandb/y8m9j6jb-media/images/valid_vis_plot_step_0_127_9dcdb1c6c0ebd24f9bf7.png
+2023-12-24 23:30:48,325 INFO    Thread-12 :61499 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/tianyang/Robocake/wandb/residual_model_v100v4/0/wandb/run-20231224_232934-e7t43g1z/files/wandb-summary.json
+2023-12-24 23:30:48,325 INFO    Thread-12 :61499 [dir_watcher.py:_on_file_created():271] file/dir created: /home/tianyang/Robocake/wandb/residual_model_v100v4/0/wandb/run-20231224_232934-e7t43g1z/files/media/images/valid_vis_plot_step_1_130_37f702fde88fc57b6eed.png
+2023-12-24 23:30:48,326 INFO    Thread-12 :61499 [dir_watcher.py:_on_file_created():271] file/dir created: /home/tianyang/Robocake/wandb/residual_model_v100v4/0/wandb/run-20231224_232934-e7t43g1z/files/media/images/valid_vis_plot_step_1_132_0b562579048093bfcc11.png
+2023-12-24 23:30:48,326 INFO    Thread-12 :61499 [dir_watcher.py:_on_file_created():271] file/dir created: /home/tianyang/Robocake/wandb/residual_model_v100v4/0/wandb/run-20231224_232934-e7t43g1z/files/media/images/valid_vis_plot_step_1_131_9dcdb1c6c0ebd24f9bf7.png
+2023-12-24 23:30:48,326 INFO    Thread-12 :61499 [dir_watcher.py:_on_file_created():271] file/dir created: /home/tianyang/Robocake/wandb/residual_model_v100v4/0/wandb/run-20231224_232934-e7t43g1z/files/media/images/valid_vis_plot_step_1_133_18263114aa8c2e2b2415.png
+2023-12-24 23:30:48,326 INFO    Thread-12 :61499 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/tianyang/Robocake/wandb/residual_model_v100v4/0/wandb/run-20231224_232934-e7t43g1z/files/media/images
+2023-12-24 23:30:48,530 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:30:48,530 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:30:48,531 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:30:48,531 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:30:48,532 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:30:48,532 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:30:48,533 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:30:48,533 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:30:48,533 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:30:48,533 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:30:48,534 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:30:48,534 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:30:48,901 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:30:48,902 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:30:48,902 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:30:48,903 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:30:48,903 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:30:48,904 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:30:48,904 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:30:48,904 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:30:48,905 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:30:48,905 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:30:48,905 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:30:48,905 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:30:48,950 INFO    wandb-upload_56:61499 [upload_job.py:push():131] Uploaded file /tmp/tmpy99efl05wandb/t6mcv8mo-media/images/valid_vis_plot_step_0_126_37f702fde88fc57b6eed.png
+2023-12-24 23:30:49,202 INFO    wandb-upload_57:61499 [upload_job.py:push():131] Uploaded file /tmp/tmpy99efl05wandb/daim80rh-media/images/valid_vis_plot_step_1_130_37f702fde88fc57b6eed.png
+2023-12-24 23:30:49,203 INFO    wandb-upload_58:61499 [upload_job.py:push():131] Uploaded file /tmp/tmpy99efl05wandb/b0qfauvh-media/images/valid_vis_plot_step_1_131_9dcdb1c6c0ebd24f9bf7.png
+2023-12-24 23:30:49,217 INFO    wandb-upload_59:61499 [upload_job.py:push():131] Uploaded file /tmp/tmpy99efl05wandb/rerypk94-media/images/valid_vis_plot_step_1_132_0b562579048093bfcc11.png
+2023-12-24 23:30:49,237 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:30:49,237 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:30:49,238 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:30:49,238 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:30:49,239 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:30:49,239 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:30:49,240 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:30:49,240 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:30:49,240 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:30:49,240 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:30:49,241 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:30:49,241 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:30:49,248 INFO    wandb-upload_60:61499 [upload_job.py:push():131] Uploaded file /tmp/tmpy99efl05wandb/rhivnz7n-media/images/valid_vis_plot_step_1_133_18263114aa8c2e2b2415.png
+2023-12-24 23:30:49,326 INFO    Thread-12 :61499 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/tianyang/Robocake/wandb/residual_model_v100v4/0/wandb/run-20231224_232934-e7t43g1z/files/wandb-summary.json
+2023-12-24 23:30:49,326 INFO    Thread-12 :61499 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/tianyang/Robocake/wandb/residual_model_v100v4/0/wandb/run-20231224_232934-e7t43g1z/files/output.log
+2023-12-24 23:30:49,560 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:30:49,560 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:30:49,561 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:30:49,561 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:30:49,562 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:30:49,563 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:30:49,563 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:30:49,563 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:30:49,563 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:30:49,564 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:30:49,564 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:30:49,564 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:30:49,895 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:30:49,895 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:30:49,896 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:30:49,896 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:30:49,897 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:30:49,897 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:30:49,898 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:30:49,898 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:30:49,898 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:30:49,898 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:30:49,899 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:30:49,899 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:30:50,220 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:30:50,220 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:30:50,221 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:30:50,222 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:30:50,222 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:30:50,223 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:30:50,223 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:30:50,223 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:30:50,223 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:30:50,224 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:30:50,224 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:30:50,224 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:30:50,316 INFO    wandb-upload_61:61499 [upload_job.py:push():131] Uploaded file /tmp/tmpy99efl05wandb/8hvcghpr-media/images/valid_vis_plot_step_1_131_9dcdb1c6c0ebd24f9bf7.png
+2023-12-24 23:30:50,327 INFO    Thread-12 :61499 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/tianyang/Robocake/wandb/residual_model_v100v4/0/wandb/run-20231224_232934-e7t43g1z/files/wandb-summary.json
+2023-12-24 23:30:50,387 INFO    wandb-upload_18:61499 [upload_job.py:push():131] Uploaded file /tmp/tmpy99efl05wandb/x5gdizst-media/images/valid_vis_plot_step_1_130_37f702fde88fc57b6eed.png
+2023-12-24 23:30:50,796 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:30:50,796 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:30:50,797 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:30:50,797 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:30:50,799 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:30:50,799 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:30:50,799 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:30:50,800 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:30:50,800 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:30:50,800 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:30:50,800 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:30:50,801 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:30:51,328 INFO    Thread-12 :61499 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/tianyang/Robocake/wandb/residual_model_v100v4/0/wandb/run-20231224_232934-e7t43g1z/files/wandb-summary.json
+2023-12-24 23:30:51,328 INFO    Thread-12 :61499 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/tianyang/Robocake/wandb/residual_model_v100v4/0/wandb/run-20231224_232934-e7t43g1z/files/output.log
+2023-12-24 23:30:51,350 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:30:51,350 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:30:51,351 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:30:51,351 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:30:51,352 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:30:51,353 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:30:51,353 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:30:51,353 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:30:51,354 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:30:51,354 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:30:51,354 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:30:51,354 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:30:51,427 INFO    wandb-upload_63:61499 [upload_job.py:push():131] Uploaded file /tmp/tmpy99efl05wandb/2mstri8z-media/images/valid_vis_plot_step_1_132_0b562579048093bfcc11.png
+2023-12-24 23:30:51,808 INFO    wandb-upload_35:61499 [upload_job.py:push():131] Uploaded file /tmp/tmpy99efl05wandb/9qy4pox0-media/images/valid_vis_plot_step_1_133_18263114aa8c2e2b2415.png
+2023-12-24 23:30:51,825 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:30:51,826 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:30:51,827 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:30:51,827 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:30:51,828 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:30:51,828 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:30:51,829 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:30:51,829 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:30:51,829 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:30:51,829 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:30:51,830 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:30:51,830 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:30:52,311 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:30:52,311 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:30:52,312 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:30:52,312 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:30:52,313 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:30:52,314 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:30:52,314 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:30:52,314 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:30:52,315 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:30:52,315 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:30:52,315 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:30:52,315 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:30:52,328 INFO    Thread-12 :61499 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/tianyang/Robocake/wandb/residual_model_v100v4/0/wandb/run-20231224_232934-e7t43g1z/files/wandb-summary.json
+2023-12-24 23:30:53,316 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: status_report
+2023-12-24 23:30:53,329 INFO    Thread-12 :61499 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/tianyang/Robocake/wandb/residual_model_v100v4/0/wandb/run-20231224_232934-e7t43g1z/files/output.log
+2023-12-24 23:30:54,047 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: stop_status
+2023-12-24 23:30:54,047 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: stop_status
+2023-12-24 23:30:54,051 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: internal_messages
+2023-12-24 23:30:56,332 INFO    Thread-12 :61499 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/tianyang/Robocake/wandb/residual_model_v100v4/0/wandb/run-20231224_232934-e7t43g1z/files/output.log
+2023-12-24 23:30:57,332 INFO    Thread-12 :61499 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/tianyang/Robocake/wandb/residual_model_v100v4/0/wandb/run-20231224_232934-e7t43g1z/files/output.log
+2023-12-24 23:30:58,333 INFO    Thread-12 :61499 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/tianyang/Robocake/wandb/residual_model_v100v4/0/wandb/run-20231224_232934-e7t43g1z/files/output.log
+2023-12-24 23:30:58,342 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:30:58,343 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:30:58,344 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:30:58,344 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:30:58,345 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:30:58,345 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: status_report
+2023-12-24 23:30:58,346 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:30:58,346 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:30:58,346 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:30:58,346 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:30:58,347 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:30:58,347 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:30:58,347 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:30:59,334 INFO    Thread-12 :61499 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/tianyang/Robocake/wandb/residual_model_v100v4/0/wandb/run-20231224_232934-e7t43g1z/files/wandb-summary.json
+2023-12-24 23:31:01,707 DEBUG   SenderThread:61499 [sender.py:send():382] send: files
+2023-12-24 23:31:01,708 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:31:01,708 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file media/images/train_vis_plot_step_0_167_b701dffc1a2ac9984570.png with policy now
+2023-12-24 23:31:01,709 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:31:01,709 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:31:01,710 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:31:01,724 DEBUG   SenderThread:61499 [sender.py:send():382] send: files
+2023-12-24 23:31:01,724 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:31:01,724 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file media/images/train_vis_plot_step_0_168_38ee22a7ebb93f9615de.png with policy now
+2023-12-24 23:31:01,725 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:31:01,725 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:31:01,726 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:31:01,741 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:31:01,741 DEBUG   SenderThread:61499 [sender.py:send():382] send: files
+2023-12-24 23:31:01,741 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file media/images/train_vis_plot_step_0_169_17bd8537c98db897eeaf.png with policy now
+2023-12-24 23:31:01,742 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:31:01,742 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:31:01,742 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:31:01,757 DEBUG   SenderThread:61499 [sender.py:send():382] send: files
+2023-12-24 23:31:01,757 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file media/images/train_vis_plot_step_0_170_d2106e7fbef792d0c69b.png with policy now
+2023-12-24 23:31:01,757 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:31:01,758 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:31:01,758 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:31:01,759 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:31:02,336 INFO    Thread-12 :61499 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/tianyang/Robocake/wandb/residual_model_v100v4/0/wandb/run-20231224_232934-e7t43g1z/files/wandb-summary.json
+2023-12-24 23:31:02,337 INFO    Thread-12 :61499 [dir_watcher.py:_on_file_created():271] file/dir created: /home/tianyang/Robocake/wandb/residual_model_v100v4/0/wandb/run-20231224_232934-e7t43g1z/files/media/images/train_vis_plot_step_0_167_b701dffc1a2ac9984570.png
+2023-12-24 23:31:02,337 INFO    Thread-12 :61499 [dir_watcher.py:_on_file_created():271] file/dir created: /home/tianyang/Robocake/wandb/residual_model_v100v4/0/wandb/run-20231224_232934-e7t43g1z/files/media/images/train_vis_plot_step_0_168_38ee22a7ebb93f9615de.png
+2023-12-24 23:31:02,337 INFO    Thread-12 :61499 [dir_watcher.py:_on_file_created():271] file/dir created: /home/tianyang/Robocake/wandb/residual_model_v100v4/0/wandb/run-20231224_232934-e7t43g1z/files/media/images/train_vis_plot_step_0_170_d2106e7fbef792d0c69b.png
+2023-12-24 23:31:02,338 INFO    Thread-12 :61499 [dir_watcher.py:_on_file_created():271] file/dir created: /home/tianyang/Robocake/wandb/residual_model_v100v4/0/wandb/run-20231224_232934-e7t43g1z/files/media/images/train_vis_plot_step_0_169_17bd8537c98db897eeaf.png
+2023-12-24 23:31:02,338 INFO    Thread-12 :61499 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/tianyang/Robocake/wandb/residual_model_v100v4/0/wandb/run-20231224_232934-e7t43g1z/files/media/images
+2023-12-24 23:31:02,657 INFO    wandb-upload_37:61499 [upload_job.py:push():131] Uploaded file /tmp/tmpy99efl05wandb/g6c0fdxh-media/images/train_vis_plot_step_0_170_d2106e7fbef792d0c69b.png
+2023-12-24 23:31:02,756 INFO    wandb-upload_34:61499 [upload_job.py:push():131] Uploaded file /tmp/tmpy99efl05wandb/wu0z7dke-media/images/train_vis_plot_step_0_167_b701dffc1a2ac9984570.png
+2023-12-24 23:31:02,780 INFO    wandb-upload_17:61499 [upload_job.py:push():131] Uploaded file /tmp/tmpy99efl05wandb/yzj2cqwu-media/images/train_vis_plot_step_0_168_38ee22a7ebb93f9615de.png
+2023-12-24 23:31:02,789 INFO    wandb-upload_39:61499 [upload_job.py:push():131] Uploaded file /tmp/tmpy99efl05wandb/jwqcmr4t-media/images/train_vis_plot_step_0_169_17bd8537c98db897eeaf.png
+2023-12-24 23:31:03,759 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: status_report
+2023-12-24 23:31:03,962 INFO    wandb-upload_41:61499 [upload_job.py:push():131] Uploaded file /tmp/tmpy99efl05wandb/1gvk35me-media/images/train_vis_plot_step_0_170_d2106e7fbef792d0c69b.png
+2023-12-24 23:31:03,977 INFO    wandb-upload_42:61499 [upload_job.py:push():131] Uploaded file /tmp/tmpy99efl05wandb/e2cvzjvk-media/images/train_vis_plot_step_0_169_17bd8537c98db897eeaf.png
+2023-12-24 23:31:04,642 DEBUG   SenderThread:61499 [sender.py:send():382] send: files
+2023-12-24 23:31:04,642 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file media/images/train_vis_plot_step_1_171_b701dffc1a2ac9984570.png with policy now
+2023-12-24 23:31:04,642 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:31:04,643 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:31:04,643 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:31:04,644 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:31:04,658 DEBUG   SenderThread:61499 [sender.py:send():382] send: files
+2023-12-24 23:31:04,658 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file media/images/train_vis_plot_step_1_172_38ee22a7ebb93f9615de.png with policy now
+2023-12-24 23:31:04,658 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:31:04,659 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:31:04,659 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:31:04,660 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:31:04,674 DEBUG   SenderThread:61499 [sender.py:send():382] send: files
+2023-12-24 23:31:04,674 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:31:04,674 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file media/images/train_vis_plot_step_1_173_17bd8537c98db897eeaf.png with policy now
+2023-12-24 23:31:04,675 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:31:04,675 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:31:04,676 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:31:04,690 DEBUG   SenderThread:61499 [sender.py:send():382] send: files
+2023-12-24 23:31:04,690 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:31:04,690 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file media/images/train_vis_plot_step_1_174_d2106e7fbef792d0c69b.png with policy now
+2023-12-24 23:31:04,691 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:31:04,692 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:31:04,692 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:31:04,938 INFO    wandb-upload_15:61499 [upload_job.py:push():131] Uploaded file /tmp/tmpy99efl05wandb/o0x8clcn-media/images/train_vis_plot_step_0_168_38ee22a7ebb93f9615de.png
+2023-12-24 23:31:05,013 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:31:05,014 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:31:05,014 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:31:05,014 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:31:05,014 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:31:05,015 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:31:05,016 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:31:05,016 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:31:05,016 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:31:05,016 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:31:05,017 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:31:05,017 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:31:05,101 INFO    wandb-upload_21:61499 [upload_job.py:push():131] Uploaded file /tmp/tmpy99efl05wandb/y5nvbzl5-media/images/train_vis_plot_step_0_167_b701dffc1a2ac9984570.png
+2023-12-24 23:31:05,339 INFO    Thread-12 :61499 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/tianyang/Robocake/wandb/residual_model_v100v4/0/wandb/run-20231224_232934-e7t43g1z/files/wandb-summary.json
+2023-12-24 23:31:05,339 INFO    Thread-12 :61499 [dir_watcher.py:_on_file_created():271] file/dir created: /home/tianyang/Robocake/wandb/residual_model_v100v4/0/wandb/run-20231224_232934-e7t43g1z/files/media/images/train_vis_plot_step_1_171_b701dffc1a2ac9984570.png
+2023-12-24 23:31:05,339 INFO    Thread-12 :61499 [dir_watcher.py:_on_file_created():271] file/dir created: /home/tianyang/Robocake/wandb/residual_model_v100v4/0/wandb/run-20231224_232934-e7t43g1z/files/media/images/train_vis_plot_step_1_173_17bd8537c98db897eeaf.png
+2023-12-24 23:31:05,340 INFO    Thread-12 :61499 [dir_watcher.py:_on_file_created():271] file/dir created: /home/tianyang/Robocake/wandb/residual_model_v100v4/0/wandb/run-20231224_232934-e7t43g1z/files/media/images/train_vis_plot_step_1_172_38ee22a7ebb93f9615de.png
+2023-12-24 23:31:05,340 INFO    Thread-12 :61499 [dir_watcher.py:_on_file_created():271] file/dir created: /home/tianyang/Robocake/wandb/residual_model_v100v4/0/wandb/run-20231224_232934-e7t43g1z/files/media/images/train_vis_plot_step_1_174_d2106e7fbef792d0c69b.png
+2023-12-24 23:31:05,340 INFO    Thread-12 :61499 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/tianyang/Robocake/wandb/residual_model_v100v4/0/wandb/run-20231224_232934-e7t43g1z/files/media/images
+2023-12-24 23:31:05,537 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:31:05,538 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:31:05,538 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:31:05,539 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:31:05,539 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:31:05,540 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:31:05,540 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:31:05,541 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:31:05,541 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:31:05,541 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:31:05,541 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:31:05,542 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:31:05,631 DEBUG   SenderThread:61499 [sender.py:send():382] send: stats
+2023-12-24 23:31:05,695 INFO    wandb-upload_43:61499 [upload_job.py:push():131] Uploaded file /tmp/tmpy99efl05wandb/hfv6kcwo-media/images/train_vis_plot_step_1_172_38ee22a7ebb93f9615de.png
+2023-12-24 23:31:05,700 INFO    wandb-upload_14:61499 [upload_job.py:push():131] Uploaded file /tmp/tmpy99efl05wandb/oxfs7i5i-media/images/train_vis_plot_step_1_174_d2106e7fbef792d0c69b.png
+2023-12-24 23:31:05,705 INFO    wandb-upload_23:61499 [upload_job.py:push():131] Uploaded file /tmp/tmpy99efl05wandb/sg3zle92-media/images/train_vis_plot_step_1_171_b701dffc1a2ac9984570.png
+2023-12-24 23:31:05,712 INFO    wandb-upload_11:61499 [upload_job.py:push():131] Uploaded file /tmp/tmpy99efl05wandb/gtj0wmh3-media/images/train_vis_plot_step_1_173_17bd8537c98db897eeaf.png
+2023-12-24 23:31:06,101 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:31:06,102 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:31:06,103 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:31:06,103 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:31:06,104 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:31:06,107 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:31:06,107 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:31:06,107 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:31:06,108 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:31:06,108 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:31:06,108 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:31:06,109 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:31:06,340 INFO    Thread-12 :61499 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/tianyang/Robocake/wandb/residual_model_v100v4/0/wandb/run-20231224_232934-e7t43g1z/files/wandb-summary.json
+2023-12-24 23:31:06,642 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:31:06,643 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:31:06,643 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:31:06,644 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:31:06,645 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:31:06,645 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:31:06,646 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:31:06,646 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:31:06,646 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:31:06,646 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:31:06,647 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:31:06,647 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:31:06,818 INFO    wandb-upload_26:61499 [upload_job.py:push():131] Uploaded file /tmp/tmpy99efl05wandb/gbm43fee-media/images/train_vis_plot_step_1_172_38ee22a7ebb93f9615de.png
+2023-12-24 23:31:06,846 INFO    wandb-upload_27:61499 [upload_job.py:push():131] Uploaded file /tmp/tmpy99efl05wandb/itz2acob-media/images/train_vis_plot_step_1_174_d2106e7fbef792d0c69b.png
+2023-12-24 23:31:07,220 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:31:07,220 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:31:07,221 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:31:07,222 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:31:07,222 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:31:07,223 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:31:07,223 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:31:07,223 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:31:07,224 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:31:07,224 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:31:07,224 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:31:07,224 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:31:07,341 INFO    Thread-12 :61499 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/tianyang/Robocake/wandb/residual_model_v100v4/0/wandb/run-20231224_232934-e7t43g1z/files/wandb-summary.json
+2023-12-24 23:31:07,341 INFO    Thread-12 :61499 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/tianyang/Robocake/wandb/residual_model_v100v4/0/wandb/run-20231224_232934-e7t43g1z/files/output.log
+2023-12-24 23:31:07,759 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:31:07,759 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:31:07,760 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:31:07,761 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:31:07,761 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:31:07,762 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:31:07,762 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:31:07,762 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:31:07,763 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:31:07,763 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:31:07,763 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:31:07,763 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:31:08,030 INFO    wandb-upload_48:61499 [upload_job.py:push():131] Uploaded file /tmp/tmpy99efl05wandb/923hnx9x-media/images/train_vis_plot_step_1_171_b701dffc1a2ac9984570.png
+2023-12-24 23:31:08,076 INFO    wandb-upload_29:61499 [upload_job.py:push():131] Uploaded file /tmp/tmpy99efl05wandb/ldm5t2wb-media/images/train_vis_plot_step_1_173_17bd8537c98db897eeaf.png
+2023-12-24 23:31:08,241 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:31:08,242 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:31:08,243 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:31:08,243 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:31:08,244 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:31:08,244 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:31:08,245 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:31:08,245 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:31:08,245 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:31:08,246 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:31:08,246 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:31:08,246 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:31:08,343 INFO    Thread-12 :61499 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/tianyang/Robocake/wandb/residual_model_v100v4/0/wandb/run-20231224_232934-e7t43g1z/files/wandb-summary.json
+2023-12-24 23:31:08,861 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:31:08,862 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:31:08,863 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:31:08,863 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:31:08,864 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:31:08,864 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: status_report
+2023-12-24 23:31:08,865 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:31:08,865 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:31:08,865 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:31:08,866 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:31:08,866 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:31:08,866 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:31:08,867 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:31:09,051 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: internal_messages
+2023-12-24 23:31:09,057 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: stop_status
+2023-12-24 23:31:09,057 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: stop_status
+2023-12-24 23:31:09,344 INFO    Thread-12 :61499 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/tianyang/Robocake/wandb/residual_model_v100v4/0/wandb/run-20231224_232934-e7t43g1z/files/wandb-summary.json
+2023-12-24 23:31:09,344 INFO    Thread-12 :61499 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/tianyang/Robocake/wandb/residual_model_v100v4/0/wandb/run-20231224_232934-e7t43g1z/files/output.log
+2023-12-24 23:31:09,356 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:31:09,357 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:31:09,357 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:31:09,358 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:31:09,358 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:31:09,359 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:31:09,359 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:31:09,359 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:31:09,397 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:31:09,397 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:31:09,398 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:31:09,398 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:31:09,865 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:31:09,865 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:31:09,866 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:31:09,866 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:31:09,867 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:31:09,867 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:31:09,868 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:31:09,868 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:31:09,868 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:31:09,868 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:31:09,868 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:31:09,869 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:31:10,345 INFO    Thread-12 :61499 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/tianyang/Robocake/wandb/residual_model_v100v4/0/wandb/run-20231224_232934-e7t43g1z/files/wandb-summary.json
+2023-12-24 23:31:11,346 INFO    Thread-12 :61499 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/tianyang/Robocake/wandb/residual_model_v100v4/0/wandb/run-20231224_232934-e7t43g1z/files/output.log
+2023-12-24 23:31:13,348 INFO    Thread-12 :61499 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/tianyang/Robocake/wandb/residual_model_v100v4/0/wandb/run-20231224_232934-e7t43g1z/files/output.log
+2023-12-24 23:31:14,006 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: status_report
+2023-12-24 23:31:14,349 INFO    Thread-12 :61499 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/tianyang/Robocake/wandb/residual_model_v100v4/0/wandb/run-20231224_232934-e7t43g1z/files/output.log
+2023-12-24 23:31:16,019 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:31:16,019 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:31:16,020 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:31:16,020 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:31:16,021 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:31:16,021 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:31:16,022 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:31:16,022 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:31:16,022 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:31:16,022 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:31:16,023 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:31:16,023 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:31:16,351 INFO    Thread-12 :61499 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/tianyang/Robocake/wandb/residual_model_v100v4/0/wandb/run-20231224_232934-e7t43g1z/files/wandb-summary.json
+2023-12-24 23:31:18,353 INFO    Thread-12 :61499 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/tianyang/Robocake/wandb/residual_model_v100v4/0/wandb/run-20231224_232934-e7t43g1z/files/output.log
+2023-12-24 23:31:19,024 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: status_report
+2023-12-24 23:31:19,186 DEBUG   SenderThread:61499 [sender.py:send():382] send: files
+2023-12-24 23:31:19,186 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file media/images/valid_vis_plot_step_0_208_182091aa63e50524b6cd.png with policy now
+2023-12-24 23:31:19,186 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:31:19,187 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:31:19,188 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:31:19,188 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:31:19,202 DEBUG   SenderThread:61499 [sender.py:send():382] send: files
+2023-12-24 23:31:19,203 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:31:19,203 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file media/images/valid_vis_plot_step_0_209_3f8c1a395bceb4640857.png with policy now
+2023-12-24 23:31:19,204 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:31:19,204 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:31:19,204 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:31:19,219 DEBUG   SenderThread:61499 [sender.py:send():382] send: files
+2023-12-24 23:31:19,219 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file media/images/valid_vis_plot_step_0_210_0d9bc3cb28702ed0e288.png with policy now
+2023-12-24 23:31:19,219 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:31:19,220 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:31:19,220 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:31:19,221 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:31:19,235 DEBUG   SenderThread:61499 [sender.py:send():382] send: files
+2023-12-24 23:31:19,235 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file media/images/valid_vis_plot_step_0_211_a4a43754a94d5be9ac39.png with policy now
+2023-12-24 23:31:19,235 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:31:19,236 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:31:19,236 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:31:19,237 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:31:19,353 INFO    Thread-12 :61499 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/tianyang/Robocake/wandb/residual_model_v100v4/0/wandb/run-20231224_232934-e7t43g1z/files/wandb-summary.json
+2023-12-24 23:31:19,354 INFO    Thread-12 :61499 [dir_watcher.py:_on_file_created():271] file/dir created: /home/tianyang/Robocake/wandb/residual_model_v100v4/0/wandb/run-20231224_232934-e7t43g1z/files/media/images/valid_vis_plot_step_0_211_a4a43754a94d5be9ac39.png
+2023-12-24 23:31:19,354 INFO    Thread-12 :61499 [dir_watcher.py:_on_file_created():271] file/dir created: /home/tianyang/Robocake/wandb/residual_model_v100v4/0/wandb/run-20231224_232934-e7t43g1z/files/media/images/valid_vis_plot_step_0_210_0d9bc3cb28702ed0e288.png
+2023-12-24 23:31:19,354 INFO    Thread-12 :61499 [dir_watcher.py:_on_file_created():271] file/dir created: /home/tianyang/Robocake/wandb/residual_model_v100v4/0/wandb/run-20231224_232934-e7t43g1z/files/media/images/valid_vis_plot_step_0_209_3f8c1a395bceb4640857.png
+2023-12-24 23:31:19,355 INFO    Thread-12 :61499 [dir_watcher.py:_on_file_created():271] file/dir created: /home/tianyang/Robocake/wandb/residual_model_v100v4/0/wandb/run-20231224_232934-e7t43g1z/files/media/images/valid_vis_plot_step_0_208_182091aa63e50524b6cd.png
+2023-12-24 23:31:19,355 INFO    Thread-12 :61499 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/tianyang/Robocake/wandb/residual_model_v100v4/0/wandb/run-20231224_232934-e7t43g1z/files/media/images
+2023-12-24 23:31:20,605 INFO    wandb-upload_51:61499 [upload_job.py:push():131] Uploaded file /tmp/tmpy99efl05wandb/g5v2imz7-media/images/valid_vis_plot_step_0_209_3f8c1a395bceb4640857.png
+2023-12-24 23:31:20,616 INFO    wandb-upload_25:61499 [upload_job.py:push():131] Uploaded file /tmp/tmpy99efl05wandb/l5y0q1lp-media/images/valid_vis_plot_step_0_208_182091aa63e50524b6cd.png
+2023-12-24 23:31:20,660 INFO    wandb-upload_54:61499 [upload_job.py:push():131] Uploaded file /tmp/tmpy99efl05wandb/rme1dsn1-media/images/valid_vis_plot_step_0_211_a4a43754a94d5be9ac39.png
+2023-12-24 23:31:21,154 INFO    wandb-upload_24:61499 [upload_job.py:push():131] Uploaded file /tmp/tmpy99efl05wandb/2i8ii322-media/images/valid_vis_plot_step_0_210_0d9bc3cb28702ed0e288.png
+2023-12-24 23:31:21,825 DEBUG   SenderThread:61499 [sender.py:send():382] send: files
+2023-12-24 23:31:21,825 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:31:21,825 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file media/images/valid_vis_plot_step_1_212_182091aa63e50524b6cd.png with policy now
+2023-12-24 23:31:21,826 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:31:21,826 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:31:21,827 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:31:21,841 DEBUG   SenderThread:61499 [sender.py:send():382] send: files
+2023-12-24 23:31:21,841 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file media/images/valid_vis_plot_step_1_213_3f8c1a395bceb4640857.png with policy now
+2023-12-24 23:31:21,841 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:31:21,842 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:31:21,842 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:31:21,843 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:31:21,857 DEBUG   SenderThread:61499 [sender.py:send():382] send: files
+2023-12-24 23:31:21,858 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:31:21,858 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file media/images/valid_vis_plot_step_1_214_0d9bc3cb28702ed0e288.png with policy now
+2023-12-24 23:31:21,858 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:31:21,859 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:31:21,859 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:31:21,874 DEBUG   SenderThread:61499 [sender.py:send():382] send: files
+2023-12-24 23:31:21,874 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:31:21,874 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file media/images/valid_vis_plot_step_1_215_a4a43754a94d5be9ac39.png with policy now
+2023-12-24 23:31:21,875 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:31:21,875 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:31:21,876 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:31:22,167 INFO    wandb-upload_49:61499 [upload_job.py:push():131] Uploaded file /tmp/tmpy99efl05wandb/4z4apwbv-media/images/valid_vis_plot_step_0_209_3f8c1a395bceb4640857.png
+2023-12-24 23:31:22,194 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:31:22,194 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:31:22,195 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:31:22,195 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:31:22,196 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:31:22,196 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:31:22,196 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:31:22,197 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:31:22,197 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:31:22,197 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:31:22,197 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:31:22,197 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:31:22,356 INFO    Thread-12 :61499 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/tianyang/Robocake/wandb/residual_model_v100v4/0/wandb/run-20231224_232934-e7t43g1z/files/wandb-summary.json
+2023-12-24 23:31:22,357 INFO    Thread-12 :61499 [dir_watcher.py:_on_file_created():271] file/dir created: /home/tianyang/Robocake/wandb/residual_model_v100v4/0/wandb/run-20231224_232934-e7t43g1z/files/media/images/valid_vis_plot_step_1_212_182091aa63e50524b6cd.png
+2023-12-24 23:31:22,357 INFO    Thread-12 :61499 [dir_watcher.py:_on_file_created():271] file/dir created: /home/tianyang/Robocake/wandb/residual_model_v100v4/0/wandb/run-20231224_232934-e7t43g1z/files/media/images/valid_vis_plot_step_1_215_a4a43754a94d5be9ac39.png
+2023-12-24 23:31:22,357 INFO    Thread-12 :61499 [dir_watcher.py:_on_file_created():271] file/dir created: /home/tianyang/Robocake/wandb/residual_model_v100v4/0/wandb/run-20231224_232934-e7t43g1z/files/media/images/valid_vis_plot_step_1_214_0d9bc3cb28702ed0e288.png
+2023-12-24 23:31:22,357 INFO    Thread-12 :61499 [dir_watcher.py:_on_file_created():271] file/dir created: /home/tianyang/Robocake/wandb/residual_model_v100v4/0/wandb/run-20231224_232934-e7t43g1z/files/media/images/valid_vis_plot_step_1_213_3f8c1a395bceb4640857.png
+2023-12-24 23:31:22,358 INFO    Thread-12 :61499 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/tianyang/Robocake/wandb/residual_model_v100v4/0/wandb/run-20231224_232934-e7t43g1z/files/media/images
+2023-12-24 23:31:22,539 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:31:22,540 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:31:22,541 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:31:22,541 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:31:22,542 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:31:22,542 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:31:22,542 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:31:22,543 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:31:22,543 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:31:22,543 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:31:22,543 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:31:22,543 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:31:22,890 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:31:22,891 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:31:22,891 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:31:22,891 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:31:22,892 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:31:22,893 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:31:22,893 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:31:22,893 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:31:22,893 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:31:22,894 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:31:22,894 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:31:22,894 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:31:23,228 INFO    wandb-upload_16:61499 [upload_job.py:push():131] Uploaded file /tmp/tmpy99efl05wandb/96fos33h-media/images/valid_vis_plot_step_1_212_182091aa63e50524b6cd.png
+2023-12-24 23:31:23,243 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:31:23,244 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:31:23,245 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:31:23,245 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:31:23,246 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:31:23,246 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:31:23,247 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:31:23,247 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:31:23,247 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:31:23,247 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:31:23,247 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:31:23,248 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:31:23,357 INFO    Thread-12 :61499 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/tianyang/Robocake/wandb/residual_model_v100v4/0/wandb/run-20231224_232934-e7t43g1z/files/wandb-summary.json
+2023-12-24 23:31:23,358 INFO    Thread-12 :61499 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/tianyang/Robocake/wandb/residual_model_v100v4/0/wandb/run-20231224_232934-e7t43g1z/files/output.log
+2023-12-24 23:31:23,501 INFO    wandb-upload_1:61499 [upload_job.py:push():131] Uploaded file /tmp/tmpy99efl05wandb/si336y2o-media/images/valid_vis_plot_step_1_214_0d9bc3cb28702ed0e288.png
+2023-12-24 23:31:23,510 INFO    wandb-upload_56:61499 [upload_job.py:push():131] Uploaded file /tmp/tmpy99efl05wandb/e4xvuw7z-media/images/valid_vis_plot_step_1_215_a4a43754a94d5be9ac39.png
+2023-12-24 23:31:23,607 INFO    wandb-upload_32:61499 [upload_job.py:push():131] Uploaded file /tmp/tmpy99efl05wandb/ulyxze4a-media/images/valid_vis_plot_step_1_213_3f8c1a395bceb4640857.png
+2023-12-24 23:31:23,607 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:31:23,608 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:31:23,609 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:31:23,609 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:31:23,613 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:31:23,614 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:31:23,614 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:31:23,614 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:31:23,615 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:31:23,615 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:31:23,615 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:31:23,615 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:31:23,714 INFO    wandb-upload_2:61499 [upload_job.py:push():131] Uploaded file /tmp/tmpy99efl05wandb/pemk0iln-media/images/valid_vis_plot_step_0_208_182091aa63e50524b6cd.png
+2023-12-24 23:31:23,980 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:31:23,980 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:31:23,981 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:31:23,981 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:31:23,982 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:31:23,983 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:31:23,983 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:31:23,983 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:31:23,983 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:31:23,984 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:31:23,984 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:31:23,984 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:31:24,049 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: stop_status
+2023-12-24 23:31:24,050 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: stop_status
+2023-12-24 23:31:24,053 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: internal_messages
+2023-12-24 23:31:24,239 INFO    wandb-upload_58:61499 [upload_job.py:push():131] Uploaded file /tmp/tmpy99efl05wandb/4ium0agm-media/images/valid_vis_plot_step_0_211_a4a43754a94d5be9ac39.png
+2023-12-24 23:31:24,359 INFO    Thread-12 :61499 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/tianyang/Robocake/wandb/residual_model_v100v4/0/wandb/run-20231224_232934-e7t43g1z/files/wandb-summary.json
+2023-12-24 23:31:24,468 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: status_report
+2023-12-24 23:31:24,561 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:31:24,561 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:31:24,562 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:31:24,562 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:31:24,601 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:31:24,601 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:31:24,602 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:31:24,602 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:31:24,603 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:31:24,603 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:31:24,603 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:31:24,604 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:31:24,912 INFO    wandb-upload_59:61499 [upload_job.py:push():131] Uploaded file /tmp/tmpy99efl05wandb/5gr252yg-media/images/valid_vis_plot_step_0_210_0d9bc3cb28702ed0e288.png
+2023-12-24 23:31:25,088 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:31:25,089 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:31:25,090 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-24 23:31:25,090 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:31:25,091 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:31:25,091 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:31:25,092 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:31:25,092 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:31:25,092 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:31:25,092 DEBUG   SenderThread:61499 [sender.py:send():382] send: history
+2023-12-24 23:31:25,093 DEBUG   SenderThread:61499 [sender.py:send_request():409] send_request: summary_record
+2023-12-24 23:31:25,093 INFO    SenderThread:61499 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2023-12-24 23:31:25,257 INFO    wandb-upload_63:61499 [upload_job.py:push():131] Uploaded file /tmp/tmpy99efl05wandb/h8ngv6tq-media/images/valid_vis_plot_step_1_213_3f8c1a395bceb4640857.png
+2023-12-24 23:31:25,360 INFO    Thread-12 :61499 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/tianyang/Robocake/wandb/residual_model_v100v4/0/wandb/run-20231224_232934-e7t43g1z/files/wandb-summary.json
+2023-12-24 23:31:25,360 INFO    Thread-12 :61499 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/tianyang/Robocake/wandb/residual_model_v100v4/0/wandb/run-20231224_232934-e7t43g1z/files/output.log
+2023-12-24 23:31:25,638 INFO    wandb-upload_61:61499 [upload_job.py:push():131] Uploaded file /tmp/tmpy99efl05wandb/lnn7vmjd-media/images/valid_vis_plot_step_1_215_a4a43754a94d5be9ac39.png
+2023-12-24 23:31:25,842 INFO    wandb-upload_18:61499 [upload_job.py:push():131] Uploaded file /tmp/tmpy99efl05wandb/gr63o6sh-media/images/valid_vis_plot_step_1_214_0d9bc3cb28702ed0e288.png
+2023-12-24 23:31:26,115 INFO    wandb-upload_62:61499 [upload_job.py:push():131] Uploaded file /tmp/tmpy99efl05wandb/xcz6bktv-media/images/valid_vis_plot_step_1_212_182091aa63e50524b6cd.png
+2023-12-24 23:31:27,362 INFO    Thread-12 :61499 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/tianyang/Robocake/wandb/residual_model_v100v4/0/wandb/run-20231224_232934-e7t43g1z/files/output.log
+2023-12-24 23:31:29,661 INFO    memory    :61499 [interfaces.py:monitor():140] Process proc.memory.rssMB has exited.
+2023-12-24 23:31:29,661 DEBUG   SystemMonitor:61499 [system_monitor.py:_start():179] Finished system metrics aggregation loop
+2023-12-24 23:31:29,662 DEBUG   SystemMonitor:61499 [system_monitor.py:_start():183] Publishing last batch of metrics
+2023-12-24 23:31:29,664 DEBUG   SenderThread:61499 [sender.py:send():382] send: stats
+2023-12-24 23:31:29,668 DEBUG   HandlerThread:61499 [handler.py:handle_request():146] handle_request: status_report
+2023-12-24 23:31:30,629 INFO    MainThread:61499 [internal.py:handle_exit():76] Internal process exited

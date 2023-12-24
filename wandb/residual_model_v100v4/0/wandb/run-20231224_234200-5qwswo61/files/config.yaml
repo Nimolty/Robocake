@@ -1,0 +1,392 @@
+wandb_version: 1
+
+env:
+  desc: null
+  value: Gripper
+stage:
+  desc: null
+  value: dy
+pstep:
+  desc: null
+  value: 2
+random_seed:
+  desc: null
+  value: 42
+time_step:
+  desc: null
+  value: 119
+dt:
+  desc: null
+  value: 0.016666666666666666
+n_instance:
+  desc: null
+  value: 1
+nf_relation:
+  desc: null
+  value: 150
+nf_particle:
+  desc: null
+  value: 150
+nf_pos:
+  desc: null
+  value: 150
+nf_memory:
+  desc: null
+  value: 150
+mem_nlayer:
+  desc: null
+  value: 2
+nf_effect:
+  desc: null
+  value: 150
+stdreg:
+  desc: null
+  value: 0
+stdreg_weight:
+  desc: null
+  value: 0.0
+matched_motion:
+  desc: null
+  value: 0
+matched_motion_weight:
+  desc: null
+  value: 0.0
+valid:
+  desc: null
+  value: 1
+eval:
+  desc: null
+  value: 0
+verbose_data:
+  desc: null
+  value: 0
+verbose_model:
+  desc: null
+  value: 0
+eps:
+  desc: null
+  value: 1.0e-06
+outf_eval:
+  desc: null
+  value: ''
+controlf:
+  desc: null
+  value: ''
+outf_new:
+  desc: null
+  value: ''
+gripperf:
+  desc: null
+  value: ../simulator/plb/envs/gripper_fixed.yml
+neighbor_radius:
+  desc: null
+  value: 0.05
+gripper_extra_neighbor_radius:
+  desc: null
+  value: 0.015
+neighbor_k:
+  desc: null
+  value: 20
+shape_state_dim:
+  desc: null
+  value: 14
+attr_dim:
+  desc: null
+  value: 3
+state_dim:
+  desc: null
+  value: 3
+relation_dim:
+  desc: null
+  value: 0
+physics_param_range:
+  desc: null
+  value:
+  - -5.0
+  - -5.0
+vis_width:
+  desc: null
+  value: 160
+vis_height:
+  desc: null
+  value: 120
+data_type:
+  desc: null
+  value: ngrip_fixed
+gt_particles:
+  desc: null
+  value: 0
+shape_aug:
+  desc: null
+  value: 1
+loss_type:
+  desc: null
+  value: emd_chamfer_h
+h_weight:
+  desc: null
+  value: 0.0
+emd_weight:
+  desc: null
+  value: 0.9
+chamfer_weight:
+  desc: null
+  value: 0.1
+p_rigid:
+  desc: null
+  value: 1.0
+n_his:
+  desc: null
+  value: 4
+sequence_length:
+  desc: null
+  value: 6
+n_rollout:
+  desc: null
+  value: 0
+train_valid_ratio:
+  desc: null
+  value: 0.9
+num_workers:
+  desc: null
+  value: 4
+log_per_iter:
+  desc: null
+  value: 100
+ckp_per_iter:
+  desc: null
+  value: 500
+prior_n_epoch:
+  desc: null
+  value: 100
+residual_n_epoch:
+  desc: null
+  value: 5000
+beta1:
+  desc: null
+  value: 0.9
+lr:
+  desc: null
+  value: 0.0001
+optimizer:
+  desc: null
+  value: Adam
+max_grad_norm:
+  desc: null
+  value: 1.0
+batch_size:
+  desc: null
+  value: 4
+gen_data:
+  desc: null
+  value: 0
+gen_stat:
+  desc: null
+  value: 0
+gen_vision:
+  desc: null
+  value: 0
+resume:
+  desc: null
+  value: 0
+resume_epoch:
+  desc: null
+  value: 0
+resume_iter:
+  desc: null
+  value: 0
+resume_prior_path:
+  desc: null
+  value: /home/tianyang/Robocake/prior/dump_ngrip_fixed_desktop/3/prior_net_epoch_99_iter_1325/prior_model.pth
+resume_residual_path:
+  desc: null
+  value: ''
+augment_ratio:
+  desc: null
+  value: 0.05
+pyflex:
+  desc: null
+  value: 1
+vis:
+  desc: null
+  value: plt
+model_path:
+  desc: null
+  value: ''
+opt_algo:
+  desc: null
+  value: max
+control_algo:
+  desc: null
+  value: fix
+predict_horizon:
+  desc: null
+  value: 2
+shooting_size:
+  desc: null
+  value: 200
+shooting_batch_size:
+  desc: null
+  value: 4
+reward_type:
+  desc: null
+  value: emd_chamfer_h
+use_sim:
+  desc: null
+  value: 0
+gt_action:
+  desc: null
+  value: 0
+gt_state_goal:
+  desc: null
+  value: 0
+subgoal:
+  desc: null
+  value: 0
+correction:
+  desc: null
+  value: 0
+n_grips:
+  desc: null
+  value: 3
+debug:
+  desc: null
+  value: 0
+shape_type:
+  desc: null
+  value: ''
+goal_shape_name:
+  desc: null
+  value: ''
+outf_control:
+  desc: null
+  value: ''
+eval_epoch:
+  desc: null
+  value: -1
+eval_iter:
+  desc: null
+  value: -1
+eval_set:
+  desc: null
+  value: train
+eval_prior_path:
+  desc: null
+  value: ''
+algo:
+  desc: null
+  value: sac
+env_name:
+  desc: null
+  value: gripper_fixed-v1
+path:
+  desc: null
+  value: ./tmp
+seed:
+  desc: null
+  value: 0
+num_steps:
+  desc: null
+  value: null
+rllr:
+  desc: null
+  value: 0.1
+optim:
+  desc: null
+  value: Adam
+dataf:
+  desc: null
+  value: /nvme/tianyang/residual_robocake_data/data_ngrip_fixed
+outf:
+  desc: null
+  value: /nvme/tianyang/residual_robocake_data/dump_ngrip_fixed/0
+local_rank:
+  desc: null
+  value: 0
+team_name:
+  desc: null
+  value: nimolty-and-his-codes
+project_name:
+  desc: null
+  value: Robocake
+experiment_name:
+  desc: null
+  value: residual_model_v100v4
+scenario_name:
+  desc: null
+  value: nimolty
+run_dir:
+  desc: null
+  value: /home/tianyang/Robocake/wandb
+exp_id:
+  desc: null
+  value: 0
+wandb_vis_log_per_iter:
+  desc: null
+  value: 200
+wandb_train_log_per_iter:
+  desc: null
+  value: 500
+wandb_valid_log_per_iter:
+  desc: null
+  value: 200
+data_names:
+  desc: null
+  value:
+  - positions
+  - shape_quats
+  - scene_params
+mean_p:
+  desc: null
+  value:
+  - 0.50932539
+  - 0.11348496
+  - 0.49837578
+std_p:
+  desc: null
+  value:
+  - 0.06474939
+  - 0.04888084
+  - 0.05906044
+mean_d:
+  desc: null
+  value:
+  - -0.00284736
+  - 0.00286124
+  - -0.00130389
+std_d:
+  desc: null
+  value:
+  - 0.01755744
+  - 0.01663332
+  - 0.01677678
+_wandb:
+  desc: null
+  value:
+    python_version: 3.7.16
+    cli_version: 0.16.1
+    framework: torch
+    is_jupyter_run: false
+    is_kaggle_kernel: false
+    start_time: 1703432520.744672
+    t:
+      1:
+      - 1
+      - 5
+      - 51
+      - 53
+      - 55
+      2:
+      - 1
+      - 5
+      - 51
+      - 53
+      - 55
+      3:
+      - 13
+      - 16
+      - 23
+      4: 3.7.16
+      5: 0.16.1
+      8:
+      - 5
+      13: linux-x86_64

@@ -213,7 +213,7 @@ def main(args):
                             pred_pos = torch.cat([pred_pos_p, gt_pos[:, n_particle:]], 1)
                             
                             if i % args.vis_per_iter == 0:
-                                plt_render_image_split(pred_pos.detach().cpu().numpy(), gt_pos.detach().cpu().numpy(), n_particle, pstep_idx=i)
+                                plt_render_image_split(pred_pos.detach().cpu().numpy(), gt_pos.detach().cpu().numpy(), n_particle, pstep_idx=j)
 
 
                             # gt_motion_norm (normalized): B x (n_p + n_s) x state_dim

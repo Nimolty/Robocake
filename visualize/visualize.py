@@ -422,6 +422,7 @@ def plt_render_image_split(curr_shape, target_shape, n_particle, pstep_idx):
         plt.tight_layout()
         # plt.show()
         plt.savefig(f'visualize/step_{str(pstep_idx)}_bs_{str(step)}.png')
+    plt.close()
 
 if __name__ == "__main__":
     curr_shape = np.random.random((4, 331, 3))
