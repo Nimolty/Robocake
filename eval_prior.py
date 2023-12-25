@@ -21,12 +21,12 @@ def prior_evaluate(args, device, use_gpu, prior_model=None):
 
     ########################## set path ##########################
     prior_output_dir = os.path.dirname(args.eval_prior_path)
-    prior_eval_out_path = os.path.join(prior_output_dir, f"eval_{str(args.exp_id)}")
+    prior_eval_out_path = os.path.join(prior_output_dir, f"eval_{str(args.exp_id)}", args.eval_data_class)
     exists_or_mkdir(os.path.join(prior_eval_out_path, "plot"))
     exists_or_mkdir(os.path.join(prior_eval_out_path, "render"))
     tee = Tee(os.path.join(prior_eval_out_path , 'eval.log'), 'w')
     data_names = args.data_names
-    eval_data_class = "test"
+    eval_data_class = args.eval_data_class
     
     
     ########################## create model ##########################
@@ -48,8 +48,11 @@ def prior_evaluate(args, device, use_gpu, prior_model=None):
     chamfer_loss = ChamferLoss()
     h_loss = HausdorffLoss()
     loss_list_over_episodes = []
+    eval_data_list = glob.glob(os.path.join(args.dataf, eval_data_class, "*"))
 
-    for idx_episode in tqdm(range(args.n_rollout)):
+
+    for this_eval_data in tqdm(eval_data_list):
+        idx_episode = int(this_eval_data.split('/')[-1])
         loss_list = []
 
         print("Prior Rollout %d / %d" % (idx_episode, args.n_rollout))

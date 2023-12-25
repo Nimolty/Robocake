@@ -28,6 +28,7 @@ parser.add_argument('--matched_motion_weight', type=float, default=0.0)
 
 parser.add_argument('--valid', type=int, default=1)
 parser.add_argument('--eval', type=int, default=0)
+parser.add_argument("--eval_data_class", type=str, default="test")
 parser.add_argument('--verbose_data', type=int, default=0)
 parser.add_argument('--verbose_model', type=int, default=0)
 parser.add_argument('--eps', type=float, default=1e-6)
