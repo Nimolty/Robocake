@@ -10,7 +10,10 @@ import random
 import scipy
 import sys
 import time
+import shutil
+import glob
 import torch
+from tqdm import tqdm
 
 from collections import defaultdict
 from itertools import product
@@ -106,10 +109,43 @@ def exists_or_mkdir(path):
         return False
     else:
         return True  
-    
+
+
 #################### parallel training ####################
 def reduce_mean(losses, num_gpus):
     rt = losses.clone()
     dist.all_reduce(rt, op=dist.reduce_op.SUM)
     rt /= num_gpus
     return rt
+
+
+def move(source_root_dir, target_root_dir, max_num):
+    exists_or_mkdir(target_root_dir)
+    E_dict = {"E_00500_02000": {"interval": [500, 2000], "num":0},
+              "E_03000_06000": {"interval": [3000, 6000], "num":0},
+              "E_07000_10000": {"interval": [7000, 10000], "num":0},
+                }
+    
+    source_path_list = glob.glob(os.path.join(source_root_dir, "*"))
+    for source_path in tqdm(source_path_list):
+        this_path_list = glob.glob(os.path.join(source_path, "*"))
+        if len(this_path_list) != 240:
+            continue
+        else:
+            physics_params = np.load(os.path.join(source_path, "physics_params.npy"), allow_pickle=True).item()
+            this_E = physics_params["E"]
+            for key in E_dict:
+                lower, upper = E_dict[key]["interval"]
+                curr_num =E_dict[key]["num"]
+                if (lower <= this_E <= upper) and curr_num < max_num:
+                    curr_num += 1
+                    destination_folder = os.path.join(target_root_dir, key)
+                    exists_or_mkdir(destination_folder)
+                    shutil.move(source_path, destination_folder)
+        
+
+
+if __name__ == "__main__":
+    source_root_dir = f"/nvme/tianyang/sample_Robocake_data"
+    target_root_dir = f"/nvme/tianyang/split_test_Robocake_data"
+    move(source_root_dir, target_root_dir, max_num=20)
