@@ -897,6 +897,12 @@ def main(args):
                     o3d.io.write_point_cloud(os.path.join(rollout_path, f"{j:03d}_gripper1.pcd"), gripper1 , write_ascii=True) 
                     o3d.io.write_point_cloud(os.path.join(rollout_path, f"{j:03d}_gripper2.pcd"), gripper2 , write_ascii=True) 
                     o3d.io.write_point_cloud(os.path.join(rollout_path, f"{j:03d}_cube.pcd"), cube , write_ascii=True) 
+                    with open(os.path.join(rollout_path, f"{j:03d}_depth_prim.npy"), 'wb') as f:
+                        np.save(f, d_and_p[4:6])
+                    with open(os.path.join(rollout_path, f"{j:03d}_gtp.npy"), 'wb') as f:
+                        np.save(f, gt_pos)
+
+
                 else:
                     pass
             else:
