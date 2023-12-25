@@ -236,7 +236,7 @@ def main(args):
                             # set_trace()
                             # print(torch.where(memory_init !=0))
 
-                            pred_pos_p, pred_motion_norm, std_cluster = residual_model(residual_inputs, j)
+                            pred_pos_p, pred_motion_norm, std_cluster = residual_model(residual_inputs, j, args.remove_his_particles)
                             # concatenate the state of the shapes
                             # pred_pos (unnormalized): B x (n_p + n_s) x state_dim
                             gt_pos = particles[:, args.n_his + j]

@@ -43,6 +43,7 @@ parser.add_argument('--gripperf', default='../simulator/plb/envs/gripper_fixed.y
 parser.add_argument('--neighbor_radius', type=float, default=0.05)
 parser.add_argument('--gripper_extra_neighbor_radius', type=float, default=0.015)
 parser.add_argument('--neighbor_k', type=float, default=20)
+parser.add_argument("--remove_his_particles", type=int, default=0)
 
 # shape state:
 # [x, y, z, x_last, y_last, z_last, quat(4), quat_last(4)]
