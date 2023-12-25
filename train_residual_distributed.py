@@ -321,7 +321,7 @@ def main(args):
                 if i % args.wandb_vis_log_per_iter == 0 and dist.get_rank() == 0:
                     for pstep_idx, pos in enumerate(pos_list):
                         pred_pos_np, gt_pos_np = pos
-                        plt_render_image_split(pred_pos.detach().cpu().numpy(), gt_pos.detach().cpu().numpy(), n_particle, pstep_idx=pstep_idx)
+                        plt_render_image_split(pred_pos.detach().cpu().numpy(), gt_pos.detach().cpu().numpy(), n_particle, pstep_idx=pstep_idx, vis_dir=args.vis_dir)
                         for step in range(B): 
                             wandb.log({f"{phase}_vis_plot_step_{str(pstep_idx)}": wandb.Image(f'visualize/step_{str(pstep_idx)}_bs_{str(step)}.png')})
                     
