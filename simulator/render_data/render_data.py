@@ -114,7 +114,7 @@ def render_single_physics_data():
     zero_pad = np.array([0,0,0])
 
     time_now = datetime.now().strftime("%d-%b-%Y-%H:%M:%S.%f")
-    rollout_dir = f"{root_dir}/dataset/{task_name}{env_type}{suffix}_{time_now}"
+    rollout_dir = f"{root_dir}/dataset/{task_name}{env_type}_{suffix}_{time_now}"
 
     while i < n_vid: 
         print(f"+++++++++++++++++++{i}+++++++++++++++++++++")
@@ -186,7 +186,7 @@ def render_single_physics_data():
 ########################## render shape control multi-physics data ##########################
 def render_multi_physics_data(
                             n_vid=100, E_low=1000, E_upper=8000, E_interval=50, nu_low=0.2, nu_upper=0.4, nu_interval=0.05,
-                            yield_stress=200, task_name = 'ngrip', env_type = '_fixed'
+                            yield_stress=200, task_name = 'ngrip', env_type = '_fixed', suffix=""
                             ):
     # gripper_fixed.yml
     cfg = load(f"../plb/envs/gripper{env_type}.yml") 
@@ -231,7 +231,7 @@ def render_multi_physics_data(
 
     i = 0
     # n_vid = 100
-    suffix = ''
+    # suffix = ''
     n_grips = 3
     zero_pad = np.array([0,0,0])
 
@@ -329,5 +329,25 @@ def render_multi_physics_data(
 if __name__ == "__main__":
     # render_example()
     # render_single_physics_data()
-    render_multi_physics_data(n_vid=500, E_low=1000, E_upper=8000, E_interval=50, nu_low=0.2, nu_upper=0.4, nu_interval=0.005)
+    import argparse
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--n_vid", type=int, default=100)
+    parser.add_argument("--E_low", type=int, default=1000)
+    parser.add_argument("--E_upper", type=int, default=8000)
+    parser.add_argument("--E_interval", type=int, default=50)
+    parser.add_argument("--nu_low", type=float, default=0.2)
+    parser.add_argument("--nu_upper", type=float, default=0.4)
+    parser.add_argument("--nu_interval", type=float, default=0.005)
+    parser.add_argument("--suffix", type=str, default="train")
+
+    args = parser.parse_args()
+
+    render_multi_physics_data(n_vid=args.n_vid, 
+                              E_low=args.E_low, 
+                              E_upper=args.E_upper,
+                              E_interval=args.E_interval, 
+                              nu_low=args.nu_low, 
+                              nu_upper=args.nu_upper, 
+                              nu_interval=args.nu_interval,
+                              suffix=args.suffix)
     pass    
