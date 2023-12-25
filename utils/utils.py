@@ -136,13 +136,13 @@ def move(source_root_dir, target_root_dir, max_num):
             this_E = physics_params["E"]
             for key in E_dict:
                 lower, upper = E_dict[key]["interval"]
-                curr_num =E_dict[key]["num"]
+                curr_num = E_dict[key]["num"]
                 if (lower <= this_E <= upper) and curr_num < max_num:
-                    curr_num += 1
+                    E_dict[key]["num"] += 1
                     destination_folder = os.path.join(target_root_dir, key)
                     exists_or_mkdir(destination_folder)
                     shutil.move(source_path, destination_folder)
-        
+
 
 
 if __name__ == "__main__":
