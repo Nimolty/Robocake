@@ -141,6 +141,7 @@ parser.add_argument('--eval_epoch', type=int, default=-1, help='pretrained model
 parser.add_argument('--eval_iter', type=int, default=-1, help='pretrained model')
 parser.add_argument('--eval_set', default='train')
 parser.add_argument('--eval_prior_path', type=str, default='')
+parser.add_argument('--eval_residual_path', type=str, default='')
 
 ### only useful for rl
 parser.add_argument("--algo", type=str, default='sac')
@@ -165,7 +166,7 @@ parser.add_argument("--team_name", type=str, default="nimolty-and-his-codes")
 parser.add_argument("--project_name", type=str, default="Robocake")
 parser.add_argument("--experiment_name", type=str,default="prior_model_desktop")
 parser.add_argument("--scenario_name", type=str, default="nimolty")
-parser.add_argument("--run_dir", type=str, default="/home/tianyang/Robocake/wandb")
+parser.add_argument("--run_dir", type=str, default="/nvme/tianyang/wandb")
 parser.add_argument("--exp_id", type=int, default=0)
 parser.add_argument("--wandb_vis_log_per_iter", type=int, default=500)
 parser.add_argument("--wandb_train_log_per_iter", type=int, default=500)

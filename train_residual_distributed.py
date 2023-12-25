@@ -15,7 +15,7 @@ from tqdm import tqdm
 from datasets.dataset import DoughDataset
 from utils.robocraft_utils import prepare_input, get_scene_info, get_env_group
 from metrics.metric import ChamferLoss, EarthMoverLoss, HausdorffLoss
-from utils.optim import get_lr, count_parameters, my_collate, AverageMeter, Tee, get_optimizer
+from utils.optim import get_lr, count_parameters, my_collate, AverageMeter, Tee, get_optimizer, distributed_concat
 from utils.utils import set_seed, matched_motion, load_checkpoint, save_checkpoint, exists_or_mkdir, reduce_mean, load_model
 from visualize.visualize import plt_render, plt_render_image_split
 from pdb import set_trace
@@ -227,6 +227,7 @@ def main(args):
                             # pred_pos (unnormalized): B x n_p x state_dim
                             # pred_motion_norm (normalized): B x n_p x state_dim
                             prior_pred_pos_p, _, _ = prior_model(inputs, j)
+                            
                             gt_pos = particles[:, args.n_his + j]
                             gt_pos_p = gt_pos[:, :n_particle]
                             prior_pred_pos = torch.cat([prior_pred_pos_p, gt_pos[:, n_particle:]], 1).unsqueeze(1)
@@ -278,17 +279,6 @@ def main(args):
                             residual_meter_loss_raw.update(loss_raw.item(), B)
                     
 
-
-                if i % args.log_per_iter == 0:
-                    print()
-                    print('residual %s epoch[%d/%d] iter[%d/%d] LR: %.6f, loss: %.6f (%.6f), loss_raw: %.8f (%.8f)' % (
-                        phase, residual_epoch, args.residual_n_epoch, i, len(dataloaders[phase]), get_lr(residual_optimizer),
-                        loss.item(), residual_meter_loss.avg, loss_raw.item(), residual_meter_loss_raw.avg))
-                    print('std_cluster', std_cluster)
-                    if phase == 'train':
-                        residual_training_stats['loss'].append(loss.item())
-                        residual_training_stats['loss_raw'].append(loss_raw.item())
-                        residual_training_stats['iters'].append(residual_epoch * len(dataloaders[phase]) + i)
                     # with open(args.outf + '/train.npy', 'wb') as f:
                     #     np.save(f, training_stats)
                 if phase == "train":
@@ -304,6 +294,18 @@ def main(args):
                 loss = reduce_mean(loss, num_gpus)
                 emd_l = reduce_mean(emd_l, num_gpus)
                 chamfer_l = reduce_mean(chamfer_l, num_gpus)
+
+                if i % args.log_per_iter == 0:
+                    print()
+                    print('residual %s epoch[%d/%d] iter[%d/%d] LR: %.6f, loss: %.6f (%.6f), loss_raw: %.8f (%.8f)' % (
+                        phase, residual_epoch, args.residual_n_epoch, i, len(dataloaders[phase]), get_lr(residual_optimizer),
+                        loss.item(), residual_meter_loss.avg, loss_raw.item(), residual_meter_loss_raw.avg))
+                    print('std_cluster', std_cluster)
+                    if phase == 'train':
+                        # torch.distributed.barrier()
+                        residual_training_stats['loss'].append(loss.item())
+                        residual_training_stats['loss_raw'].append(loss_raw.item())
+                        residual_training_stats['iters'].append(residual_epoch * len(dataloaders[phase]) + i)
                 
                 if phase == "train":
                     if i % args.wandb_train_log_per_iter == 0 and dist.get_rank() == 0:  
@@ -327,9 +329,11 @@ def main(args):
 
                 if phase == 'train' and i > 0 and ((residual_epoch * len(dataloaders[phase])) + i) % args.ckp_per_iter == 0:
                     model_path = '%s/residual_net_epoch_%d_iter_%d' % (args.outf, residual_epoch, i)
-                    exists_or_mkdir(model_path)
-                    model_path = os.path.join(model_path, f"residual_model.pth")
-                    save_checkpoint(epoch=residual_epoch, model=residual_model, optimizer=residual_optimizer, step=residual_total_step, save_path=model_path)
+                    # exists_or_mkdir(model_path)
+                    if dist.get_rank() == 0:
+                        exists_or_mkdir(model_path)
+                        model_path = os.path.join(model_path, f"residual_model.pth")
+                        save_checkpoint(epoch=residual_epoch, model=residual_model, optimizer=residual_optimizer, step=residual_total_step, save_path=model_path)
                     # torch.save(prior_model.state_dict(), model_path)
                     residual_rollout_epoch = residual_epoch
                     residual_rollout_iter = i
@@ -337,18 +341,23 @@ def main(args):
 
             print('residual %s epoch[%d/%d] Loss: %.6f, Best valid: %.6f' % (
                 phase, residual_epoch, args.residual_n_epoch, residual_meter_loss.avg, residual_best_valid_loss))
-
-            with open(args.outf + '/residual_train.npy','wb') as f:
-                np.save(f, residual_training_stats)
+            
+            if dist.get_rank() == 0:
+                with open(args.outf + '/residual_train.npy','wb') as f:
+                    np.save(f, residual_training_stats)
 
             if phase == 'valid':
-                scheduler.step(residual_meter_loss.avg)
-                if residual_meter_loss.avg < residual_best_valid_loss:
-                    residual_best_valid_loss = residual_meter_loss.avg
-                    best_model_path = '%s/residual_net_best' % (args.outf)
-                    exists_or_mkdir(best_model_path)
-                    best_model_path = os.path.join(best_model_path, "best_residual_model.pth")
-                    save_checkpoint(epoch=residual_epoch, model=residual_model, optimizer=residual_optimizer, step=residual_total_step, save_path=best_model_path)
+                torch.distributed.barrier()
+                residual_meter_loss_avg_gather = distributed_concat(torch.from_numpy(np.array([residual_meter_loss.avg])).to(device))
+                residual_meter_loss_avg_mean = np.mean(residual_meter_loss_avg_gather.detach().cpu().numpy().tolist())
+                scheduler.step(residual_meter_loss_avg_mean)
+                if residual_meter_loss_avg_mean < residual_best_valid_loss:
+                    residual_best_valid_loss = residual_meter_loss_avg_mean
+                    if dist.get_rank() == 0:
+                        best_model_path = '%s/residual_net_best' % (args.outf)
+                        exists_or_mkdir(best_model_path)
+                        best_model_path = os.path.join(best_model_path, "best_residual_model.pth")
+                        save_checkpoint(epoch=residual_epoch, model=residual_model, optimizer=residual_optimizer, step=residual_total_step, save_path=best_model_path)
     
     if dist.get_rank() == 0:             
         wandb.finish()

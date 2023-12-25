@@ -6,10 +6,14 @@ import torch
 from configs.config import gen_args
 from metrics.metric import ChamferLoss, EarthMoverLoss, HausdorffLoss
 from utils.robocraft_utils import prepare_input, get_scene_info, get_env_group, load_data
-from utils.utils import set_seed, exists_or_mkdir, load_checkpoint
+from utils.utils import set_seed, exists_or_mkdir, load_checkpoint, load_single_model
 from utils.optim import count_parameters, Tee
 from visualize.visualize import plt_render, train_plot_curves, eval_plot_curves
-from models.robocraft_model import Prior_Model
+from models.prior_model_distributed import Prior_Model
+
+# tqdm
+from tqdm import tqdm
+from pdb import set_trace
 
 def prior_evaluate(args, device, use_gpu, prior_model=None):
     set_seed(args.random_seed)
@@ -17,11 +21,12 @@ def prior_evaluate(args, device, use_gpu, prior_model=None):
 
     ########################## set path ##########################
     prior_output_dir = os.path.dirname(args.eval_prior_path)
-    prior_eval_out_path = os.path.join(prior_output_dir, 'eval')
+    prior_eval_out_path = os.path.join(prior_output_dir, f"eval_{str(args.exp_id)}")
     exists_or_mkdir(os.path.join(prior_eval_out_path, "plot"))
     exists_or_mkdir(os.path.join(prior_eval_out_path, "render"))
     tee = Tee(os.path.join(prior_eval_out_path , 'eval.log'), 'w')
     data_names = args.data_names
+    eval_data_class = "test"
     
     
     ########################## create model ##########################
@@ -35,7 +40,7 @@ def prior_evaluate(args, device, use_gpu, prior_model=None):
     print("Loading network from %s" % args.eval_prior_path)
     if args.stage == 'dy':
         prior_checkpoint = load_checkpoint(args.resume_prior_path, device)
-        prior_model.load_state_dict(prior_checkpoint['model_state_dict'])
+        prior_model = load_single_model(prior_model, prior_checkpoint['model_state_dict'])
     else:
         AssertionError("Unsupported stage %s, using other evaluation scripts" % args.stage)
     prior_model.eval()
@@ -44,7 +49,7 @@ def prior_evaluate(args, device, use_gpu, prior_model=None):
     h_loss = HausdorffLoss()
     loss_list_over_episodes = []
 
-    for idx_episode in range(args.n_rollout):
+    for idx_episode in tqdm(range(args.n_rollout)):
         loss_list = []
 
         print("Prior Rollout %d / %d" % (idx_episode, args.n_rollout))
@@ -56,8 +61,13 @@ def prior_evaluate(args, device, use_gpu, prior_model=None):
         data_list = []
         p_gt = []
         p_sample = []
-        frame_list = sorted(glob.glob(os.path.join(args.dataf, 'train', str(idx_episode).zfill(3), 'shape_*.h5')))
-        gt_frame_list = sorted(glob.glob(os.path.join(args.dataf, 'train', str(idx_episode).zfill(3), 'shape_gt_*.h5')))
+        frame_list = sorted(glob.glob(os.path.join(args.dataf, eval_data_class, str(idx_episode).zfill(3), 'shape_*.h5')))
+        gt_frame_list = sorted(glob.glob(os.path.join(args.dataf, eval_data_class, str(idx_episode).zfill(3), 'shape_gt_*.h5')))
+        physics_params_path = os.path.join(args.dataf, eval_data_class, str(idx_episode).zfill(3), "physics_params.npy")
+        physics_params = np.load(physics_params_path, allow_pickle=True).item()
+        # print(type(physics_params))
+        # set_trace()
+
         args.time_step = (len(frame_list) - len(gt_frame_list))
         for step in range(args.time_step):
             gt_frame_name = 'gt_' + str(step) + '.h5'
@@ -66,8 +76,8 @@ def prior_evaluate(args, device, use_gpu, prior_model=None):
                 gt_frame_name = 'shape_' + gt_frame_name
                 frame_name = 'shape_' + frame_name
 
-            gt_data_path = os.path.join(args.dataf, 'train', str(idx_episode).zfill(3), gt_frame_name)
-            data_path = os.path.join(args.dataf, 'train', str(idx_episode).zfill(3), frame_name)
+            gt_data_path = os.path.join(args.dataf, eval_data_class, str(idx_episode).zfill(3), gt_frame_name)
+            data_path = os.path.join(args.dataf, eval_data_class, str(idx_episode).zfill(3), frame_name)
 
             try:
                 gt_data = load_data(data_names, gt_data_path)
@@ -116,7 +126,7 @@ def prior_evaluate(args, device, use_gpu, prior_model=None):
         ed_idx = args.time_step
 
         with torch.no_grad():
-            for step_id in range(st_idx, ed_idx):
+            for step_id in tqdm(range(st_idx, ed_idx)):
                 # print(step_id)
                 if step_id == st_idx:
                     if args.gt_particles:
@@ -146,9 +156,9 @@ def prior_evaluate(args, device, use_gpu, prior_model=None):
                 # pred_pos (unnormalized): B x n_p x state_dim
                 # pred_motion_norm (normalized): B x n_p x state_dim
                 if args.sequence_length > args.n_his + 1:
-                    pred_pos_p, pred_motion_norm, std_cluster = prior_model.predict_dynamics(inputs, (step_id - args.n_his))
+                    pred_pos_p, pred_motion_norm, std_cluster = prior_model(inputs, (step_id - args.n_his))
                 else:
-                    pred_pos_p, pred_motion_norm, std_cluster = prior_model.predict_dynamics(inputs)
+                    pred_pos_p, pred_motion_norm, std_cluster = prior_model(inputs)
 
                 # concatenate the state of the shapes
                 # pred_pos (unnormalized): B x (n_p + n_s) x state_dim
@@ -195,7 +205,7 @@ def prior_evaluate(args, device, use_gpu, prior_model=None):
         render_path = os.path.join(prior_eval_out_path, 'render', f'vid_{idx_episode}_plt.gif')
 
         if args.vis == 'plt':
-            plt_render([p_gt, p_sample, p_pred], n_particle, render_path)
+            plt_render([p_gt, p_sample, p_pred], n_particle, render_path, physics_params)
         else:
             raise NotImplementedError
 
@@ -227,4 +237,9 @@ if __name__ == "__main__":
     args = gen_args()
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     use_gpu = (device == torch.device("cuda"))
+
+    args.outf = os.path.join(args.outf, str(args.exp_id))
+    exists_or_mkdir(args.dataf)
+    args.eval_prior_path  = args.outf
+
     prior_evaluate(args, device, use_gpu)
