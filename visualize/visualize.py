@@ -78,14 +78,17 @@ def visualize_points(ax, all_points, n_particles):
     return points, shapes
 
 
-def plt_render(particles_set, n_particle, render_path):
+def plt_render(particles_set, n_particle, render_path, physics_params):
     # particles_set[0] = np.concatenate((particles_set[0][:, :n_particle], particles_set[1][:, n_particle:]), axis=1)
+    yield_stress = "{:03d}".format(physics_params["yield_stress"])
+    E = "{:.4f}".format(physics_params["E"])
+    nu = "{:.4f}".format(physics_params["nu"])
     n_frames = particles_set[0].shape[0]
     rows = 3
     cols = 3
 
     fig, big_axes = plt.subplots(rows, 1, figsize=(9, 9))
-    row_titles = ['GT', 'Sample', 'Prediction']
+    row_titles = [f"GT_ys_{yield_stress}_E_{E}_nu_{nu}", 'Sample', 'Prediction']
     views = [(90, 90), (0, 90), (45, 135)]
     plot_info_all = {}
     for i in range(rows):
@@ -123,6 +126,7 @@ def plt_render(particles_set, n_particle, render_path):
 
     # plt.show()
     anim.save(render_path, writer=animation.PillowWriter(fps=10))
+    plt.close()
 
 
 def plt_render_frames_rm(particles_set, n_particle, render_path):
@@ -379,7 +383,7 @@ def plt_render_image_blend(curr_shape, target_shape, n_particle, render_path):
         # plt.show()
         plt.savefig(f'{render_path}_{str(step).zfill(3)}.pdf')
 
-def plt_render_image_split(curr_shape, target_shape, n_particle, pstep_idx):
+def plt_render_image_split(curr_shape, target_shape, n_particle, pstep_idx, vis_dir="visualize"):
     # curr_shape : [B, N, 3]
     # target_shape : [B, N, 3]
     all_shape = [curr_shape, target_shape]
@@ -421,11 +425,11 @@ def plt_render_image_split(curr_shape, target_shape, n_particle, pstep_idx):
                 
         plt.tight_layout()
         # plt.show()
-        plt.savefig(f'visualize/step_{str(pstep_idx)}_bs_{str(step)}.png')
+        plt.savefig(f'{vis_dir}/step_{str(pstep_idx)}_bs_{str(step)}.png')
     plt.close()
 
 if __name__ == "__main__":
-    curr_shape = np.random.random((4, 331, 3))
+    curr_shape = np.random.random((4, 331, 3)) 
     target_shape = np.random.random((4, 331, 3))
     # print(pts1.shape)
     # particles_set = [pts1, pts2]
