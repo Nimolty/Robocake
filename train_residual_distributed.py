@@ -322,7 +322,7 @@ def main(args):
                     for pstep_idx, pos in enumerate(pos_list):
                         pred_pos_np, gt_pos_np = pos
                         plt_render_image_split(pred_pos.detach().cpu().numpy(), gt_pos.detach().cpu().numpy(), n_particle, pstep_idx=pstep_idx)
-                        for step in range(B):
+                        for step in range(B): 
                             wandb.log({f"{phase}_vis_plot_step_{str(pstep_idx)}": wandb.Image(f'visualize/step_{str(pstep_idx)}_bs_{str(step)}.png')})
                     
                 

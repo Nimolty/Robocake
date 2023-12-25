@@ -429,7 +429,7 @@ def plt_render_image_split(curr_shape, target_shape, n_particle, pstep_idx, vis_
     plt.close()
 
 if __name__ == "__main__":
-    curr_shape = np.random.random((4, 331, 3))
+    curr_shape = np.random.random((4, 331, 3)) 
     target_shape = np.random.random((4, 331, 3))
     # print(pts1.shape)
     # particles_set = [pts1, pts2]
