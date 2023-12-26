@@ -180,7 +180,7 @@ class DynamicsPredictor(nn.Module):
 
         ######################## we don't remove n_his-1 previous history delta movement ########################
         if remove_his_particles:
-            print("removing historical particles")
+            # print("removing historical particles")
             state_res_norm[:, :, :301, :] = 0
         #################################################
 
@@ -445,6 +445,6 @@ class Residual_Model(nn.Module):
         return:
         ret - predicted position of all particles, shape (n_particles, 3)
         """
-        ret = self.dynamics_predictor(inputs, self.stat, self.args.verbose_model, j=j, remove_his_particles=0)
+        ret = self.dynamics_predictor(inputs, self.stat, self.args.verbose_model, j=j, remove_his_particles=remove_his_particles)
         return ret
 
