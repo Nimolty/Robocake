@@ -142,7 +142,7 @@ class DynamicsPredictor(nn.Module):
         return rot
 
     # @profile
-    def forward(self, inputs, stat, verbose=0, j=0):
+    def forward(self, inputs, stat, verbose=0, j=0, remove_his_particles=0):
         args = self.args
         verbose = args.verbose_model
         mean_p, std_p, mean_d, std_d = stat
@@ -179,7 +179,9 @@ class DynamicsPredictor(nn.Module):
         state_res_norm = (state[:, 1:n_his] - state[:, 0:n_his-1] - mean_d) / std_d
 
         ######################## we don't remove n_his-1 previous history delta movement ########################
-        #state_res_norm[:, :, :301, :] = 0
+        if remove_his_particles:
+            # print("removing historical particles")
+            state_res_norm[:, :, :301, :] = 0
         #################################################
 
         # current state cur norm
@@ -438,11 +440,11 @@ class Residual_Model(nn.Module):
             mem = mem.cuda()
         return mem
 
-    def forward(self, inputs, j=0):
+    def forward(self, inputs, j=0, remove_his_particles=0):
         """
         return:
         ret - predicted position of all particles, shape (n_particles, 3)
         """
-        ret = self.dynamics_predictor(inputs, self.stat, self.args.verbose_model, j=j)
+        ret = self.dynamics_predictor(inputs, self.stat, self.args.verbose_model, j=j, remove_his_particles=remove_his_particles)
         return ret
 

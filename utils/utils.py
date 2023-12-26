@@ -122,7 +122,7 @@ def reduce_mean(losses, num_gpus):
 def move(source_root_dir, target_root_dir, max_num):
     exists_or_mkdir(target_root_dir)
     E_dict = {"E_00500_02000": {"interval": [500, 2000], "num":0},
-              "E_03000_06000": {"interval": [3000, 6000], "num":0},
+              # "E_03000_06000": {"interval": [3000, 6000], "num":0},
               "E_07000_10000": {"interval": [7000, 10000], "num":0},
                 }
     
@@ -148,4 +148,4 @@ def move(source_root_dir, target_root_dir, max_num):
 if __name__ == "__main__":
     source_root_dir = f"/nvme/tianyang/sample_Robocake_data"
     target_root_dir = f"/nvme/tianyang/split_test_Robocake_data"
-    move(source_root_dir, target_root_dir, max_num=20)
+    move(source_root_dir, target_root_dir, max_num=8)

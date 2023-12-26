@@ -236,7 +236,7 @@ def main(args):
                             # set_trace()
                             # print(torch.where(memory_init !=0))
 
-                            pred_pos_p, pred_motion_norm, std_cluster = residual_model(residual_inputs, j)
+                            pred_pos_p, pred_motion_norm, std_cluster = residual_model(residual_inputs, j, args.remove_his_particles)
                             # concatenate the state of the shapes
                             # pred_pos (unnormalized): B x (n_p + n_s) x state_dim
                             gt_pos = particles[:, args.n_his + j]
@@ -321,9 +321,9 @@ def main(args):
                 if i % args.wandb_vis_log_per_iter == 0 and dist.get_rank() == 0:
                     for pstep_idx, pos in enumerate(pos_list):
                         pred_pos_np, gt_pos_np = pos
-                        plt_render_image_split(pred_pos.detach().cpu().numpy(), gt_pos.detach().cpu().numpy(), n_particle, pstep_idx=pstep_idx)
+                        plt_render_image_split(pred_pos.detach().cpu().numpy(), gt_pos.detach().cpu().numpy(), n_particle, pstep_idx=pstep_idx, vis_dir=args.vis_dir)
                         for step in range(B): 
-                            wandb.log({f"{phase}_vis_plot_step_{str(pstep_idx)}": wandb.Image(f'visualize/step_{str(pstep_idx)}_bs_{str(step)}.png')})
+                            wandb.log({f"{phase}_vis_plot_step_{str(pstep_idx)}": wandb.Image(f'{args.vis_dir}/step_{str(pstep_idx)}_bs_{str(step)}.png')})
                     
                 
 
@@ -369,8 +369,10 @@ if __name__ == '__main__':
     args = gen_args()
     set_seed(args.random_seed)
     args.outf = os.path.join(args.outf, str(args.exp_id))
+    args.vis_dir = os.path.join(args.outf, "visualize")
     exists_or_mkdir(args.dataf)
     exists_or_mkdir(args.outf)
+    exists_or_mkdir(args.vis_dir)
     # os.system('mkdir -p ' + args.dataf)
     # os.system('mkdir -p ' + args.outf)
 
