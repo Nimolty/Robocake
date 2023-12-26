@@ -142,7 +142,7 @@ class DynamicsPredictor(nn.Module):
         return rot
 
     # @profile
-    def forward(self, inputs, stat, verbose=0, j=0):
+    def forward(self, inputs, stat, verbose=0, j=0, remove_his_particles=1):
         args = self.args
         verbose = args.verbose_model
         mean_p, std_p, mean_d, std_d = stat
@@ -175,7 +175,11 @@ class DynamicsPredictor(nn.Module):
         # [0, n_his - 1): state_residual
         # [n_his - 1, n_his): the current position
         state_res_norm = (state[:, 1:] - state[:, :-1] - mean_d) / std_d
-        state_res_norm[:, :, :301, :] = 0
+        
+        if remove_his_particles:
+            state_res_norm[:, :remove_his_particles, :301, :] = 0
+        
+        
         state_cur_norm = (state[:, -1:] - mean_p) / std_p
         state_norm = torch.cat([state_res_norm, state_cur_norm], 1)
         # state_norm_t (normalized): B x N x (n_his * state_dim)
@@ -423,12 +427,12 @@ class Prior_Model(nn.Module):
             mem = mem.cuda()
         return mem
 
-    def forward(self, inputs, j=0):
+    def forward(self, inputs, j=0,remove_his_particles=1):
         """
         return:
         ret - predicted position of all particles, shape (n_particles, 3)
         """
-        ret = self.dynamics_predictor(inputs, self.stat, self.args.verbose_model, j=j)
+        ret = self.dynamics_predictor(inputs, self.stat, self.args.verbose_model, j=j, remove_his_particles=remove_his_particles)
         return ret
 
 

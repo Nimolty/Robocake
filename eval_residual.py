@@ -178,7 +178,7 @@ def residual_evaluate(args, device, use_gpu, prior_model=None, residual_model=No
                 # set_trace()
                 prior_pred_pos = torch.cat([prior_pred_pos_p, gt_pos[:, n_particle:]], 1).unsqueeze(1)
                 residual_inputs = [attr, state_cur, Rr_cur, Rs_cur, Rn_cur, memory_init, group_info, cluster_onehot, prior_pred_pos]
-                pred_pos_p, pred_motion_norm, std_cluster = residual_model(residual_inputs, j=0)
+                pred_pos_p, pred_motion_norm, std_cluster = residual_model(residual_inputs, j=0, remove_his_particles=args.remove_his_particles)
 
                 # concatenate the state of the shapes
                 # pred_pos (unnormalized): B x (n_p + n_s) x state_dim
@@ -230,10 +230,13 @@ def residual_evaluate(args, device, use_gpu, prior_model=None, residual_model=No
             pass
 
     # plot the loss curves for training and evaluating
-    with open(os.path.join(args.outf, 'residual_train.npy'), 'rb') as f:
-        train_log = np.load(f, allow_pickle=True)
-        train_log = train_log[None][0]
-        train_plot_curves(train_log['iters'], train_log['loss'], path=os.path.join(residual_eval_out_path, 'plot', 'train_loss_curves.png'))
+    try:
+        with open(os.path.join(args.outf, 'residual_train.npy'), 'rb') as f:
+            train_log = np.load(f, allow_pickle=True)
+            train_log = train_log[None][0]
+            train_plot_curves(train_log['iters'], train_log['loss'], path=os.path.join(residual_eval_out_path, 'plot', 'train_loss_curves.png'))
+    except:
+        pass
 
     loss_list_over_episodes = np.array(loss_list_over_episodes)
     loss_mean = np.mean(loss_list_over_episodes, axis=0)
