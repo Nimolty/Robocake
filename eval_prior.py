@@ -20,8 +20,9 @@ def prior_evaluate(args, device, use_gpu, prior_model=None):
 
 
     ########################## set path ##########################
+    prior_epoch_name = args.resume_prior_path.split('/')[-2]
     prior_output_dir = os.path.dirname(args.eval_prior_path)
-    prior_eval_out_path = os.path.join(prior_output_dir, f"eval_{str(args.exp_id)}", args.eval_data_class)
+    prior_eval_out_path = os.path.join(prior_output_dir, f"eval_{str(args.exp_id)}", prior_epoch_name, args.eval_data_class)
     exists_or_mkdir(os.path.join(prior_eval_out_path, "plot"))
     exists_or_mkdir(os.path.join(prior_eval_out_path, "render"))
     tee = Tee(os.path.join(prior_eval_out_path , 'eval.log'), 'w')
@@ -210,13 +211,16 @@ def prior_evaluate(args, device, use_gpu, prior_model=None):
         if args.vis == 'plt':
             plt_render([p_gt, p_sample, p_pred], n_particle, render_path, physics_params)
         else:
-            raise NotImplementedError
+            pass
 
     # plot the loss curves for training and evaluating
-    with open(os.path.join(args.outf, 'prior_train.npy'), 'rb') as f:
-        train_log = np.load(f, allow_pickle=True)
-        train_log = train_log[None][0]
-        train_plot_curves(train_log['iters'], train_log['loss'], path=os.path.join(prior_eval_out_path, 'plot', 'train_loss_curves.png'))
+    try:
+        with open(os.path.join(args.outf, 'prior_train.npy'), 'rb') as f:
+            train_log = np.load(f, allow_pickle=True)
+            train_log = train_log[None][0]
+            train_plot_curves(train_log['iters'], train_log['loss'], path=os.path.join(prior_eval_out_path, 'plot', 'train_loss_curves.png'))
+    except:
+        pass
 
     loss_list_over_episodes = np.array(loss_list_over_episodes)
     loss_mean = np.mean(loss_list_over_episodes, axis=0)

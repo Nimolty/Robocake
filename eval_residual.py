@@ -21,8 +21,9 @@ def residual_evaluate(args, device, use_gpu, prior_model=None, residual_model=No
 
 
     ########################## set path ##########################
+    residual_epoch_name = args.resume_residual_path.split('/')[-2]
     residual_output_dir = os.path.dirname(args.eval_residual_path)
-    residual_eval_out_path = os.path.join(residual_output_dir, f"eval_{str(args.exp_id)}", args.eval_data_class)
+    residual_eval_out_path = os.path.join(residual_output_dir, f"eval_{str(args.exp_id)}", residual_epoch_name, args.eval_data_class)
     exists_or_mkdir(os.path.join(residual_eval_out_path, "plot"))
     exists_or_mkdir(os.path.join(residual_eval_out_path, "render"))
     tee = Tee(os.path.join(residual_eval_out_path , 'eval.log'), 'w')
@@ -226,7 +227,7 @@ def residual_evaluate(args, device, use_gpu, prior_model=None, residual_model=No
         if args.vis == 'plt':
             plt_render([p_gt, p_sample, p_pred], n_particle, render_path, physics_params)
         else:
-            raise NotImplementedError
+            pass
 
     # plot the loss curves for training and evaluating
     with open(os.path.join(args.outf, 'residual_train.npy'), 'rb') as f:
