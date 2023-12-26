@@ -21,8 +21,9 @@ def residual_evaluate(args, device, use_gpu, prior_model=None, residual_model=No
 
 
     ########################## set path ##########################
+    residual_epoch_name = args.resume_residual_path.split('/')[-2]
     residual_output_dir = os.path.dirname(args.eval_residual_path)
-    residual_eval_out_path = os.path.join(residual_output_dir, f"eval_{str(args.exp_id)}", args.eval_data_class)
+    residual_eval_out_path = os.path.join(residual_output_dir, f"eval_{str(args.exp_id)}", residual_epoch_name, args.eval_data_class)
     exists_or_mkdir(os.path.join(residual_eval_out_path, "plot"))
     exists_or_mkdir(os.path.join(residual_eval_out_path, "render"))
     tee = Tee(os.path.join(residual_eval_out_path , 'eval.log'), 'w')
@@ -177,7 +178,7 @@ def residual_evaluate(args, device, use_gpu, prior_model=None, residual_model=No
                 # set_trace()
                 prior_pred_pos = torch.cat([prior_pred_pos_p, gt_pos[:, n_particle:]], 1).unsqueeze(1)
                 residual_inputs = [attr, state_cur, Rr_cur, Rs_cur, Rn_cur, memory_init, group_info, cluster_onehot, prior_pred_pos]
-                pred_pos_p, pred_motion_norm, std_cluster = residual_model(residual_inputs, j=0)
+                pred_pos_p, pred_motion_norm, std_cluster = residual_model(residual_inputs, j=0, remove_his_particles=args.remove_his_particles)
 
                 # concatenate the state of the shapes
                 # pred_pos (unnormalized): B x (n_p + n_s) x state_dim
@@ -226,13 +227,16 @@ def residual_evaluate(args, device, use_gpu, prior_model=None, residual_model=No
         if args.vis == 'plt':
             plt_render([p_gt, p_sample, p_pred], n_particle, render_path, physics_params)
         else:
-            raise NotImplementedError
+            pass
 
     # plot the loss curves for training and evaluating
-    with open(os.path.join(args.outf, 'residual_train.npy'), 'rb') as f:
-        train_log = np.load(f, allow_pickle=True)
-        train_log = train_log[None][0]
-        train_plot_curves(train_log['iters'], train_log['loss'], path=os.path.join(residual_eval_out_path, 'plot', 'train_loss_curves.png'))
+    try:
+        with open(os.path.join(args.outf, 'residual_train.npy'), 'rb') as f:
+            train_log = np.load(f, allow_pickle=True)
+            train_log = train_log[None][0]
+            train_plot_curves(train_log['iters'], train_log['loss'], path=os.path.join(residual_eval_out_path, 'plot', 'train_loss_curves.png'))
+    except:
+        pass
 
     loss_list_over_episodes = np.array(loss_list_over_episodes)
     loss_mean = np.mean(loss_list_over_episodes, axis=0)
