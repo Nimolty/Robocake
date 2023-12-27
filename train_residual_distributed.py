@@ -226,7 +226,7 @@ def main(args):
 
                             # pred_pos (unnormalized): B x n_p x state_dim
                             # pred_motion_norm (normalized): B x n_p x state_dim
-                            prior_pred_pos_p, _, _ = prior_model(inputs, j)
+                            prior_pred_pos_p, _, _ = prior_model(inputs, j, args.prior_remove_his_particles)
                             
                             gt_pos = particles[:, args.n_his + j]
                             gt_pos_p = gt_pos[:, :n_particle]

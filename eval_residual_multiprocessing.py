@@ -181,14 +181,14 @@ def inference(residual_model, prior_model, this_eval_data, eval_data_class,
             # else:
             #     pred_pos_p, pred_motion_norm, std_cluster = prior_model(inputs)
                 
-            prior_pred_pos_p, _, _ = prior_model(inputs, j=0)
+            prior_pred_pos_p, _, _ = prior_model(inputs, j=0, prior_remove_his_particles=args.prior_remove_his_particles)
             gt_pos = p_sample[step_id].unsqueeze(0).to(device)
             # gt_pos_p = gt_pos[:, :n_particle]
 
             # set_trace()
             prior_pred_pos = torch.cat([prior_pred_pos_p, gt_pos[:, n_particle:]], 1).unsqueeze(1)
             residual_inputs = [attr, state_cur, Rr_cur, Rs_cur, Rn_cur, memory_init, group_info, cluster_onehot, prior_pred_pos]
-            pred_pos_p, pred_motion_norm, std_cluster = residual_model(residual_inputs, j=0)
+            pred_pos_p, pred_motion_norm, std_cluster = residual_model(residual_inputs, j=0,remove_his_particles=args.remove_his_particles)
 
             # concatenate the state of the shapes
             # pred_pos (unnormalized): B x (n_p + n_s) x state_dim
@@ -276,7 +276,7 @@ if __name__ == "__main__":
     args.eval_residual_path  = args.outf
 
     residual_model, prior_model, eval_data_list, residual_eval_out_path = prepare_model_and_data(args, device, use_gpu)
-    num_processes = 16
+    num_processes = 8
     
     # set before any multi process pool
     mp.set_start_method('spawn', force=True)

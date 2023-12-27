@@ -221,7 +221,7 @@ def main(args):
 
                             # pred_pos (unnormalized): B x n_p x state_dim
                             # pred_motion_norm (normalized): B x n_p x state_dim 
-                            pred_pos_p, pred_motion_norm, std_cluster = prior_model(inputs, j, args.remove_his_particles)
+                            pred_pos_p, pred_motion_norm, std_cluster = prior_model(inputs, j, args.prior_remove_his_particles)
 
                             # concatenate the state of the shapes
                             # pred_pos (unnormalized): B x (n_p + n_s) x state_dim
