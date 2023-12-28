@@ -3,6 +3,10 @@ import matplotlib.pyplot as plt
 import matplotlib
 import numpy as np
 import wandb
+import glob
+import os
+from tqdm import tqdm
+import matplotlib.pyplot as plt
 
 matplotlib.rcParams["legend.loc"] = 'lower right'
 
@@ -20,6 +24,9 @@ def train_plot_curves(iters, loss, path=''):
         plt.savefig(path)
     else:
         plt.show()
+
+
+    
 
 
 def eval_plot_curves(loss_mean, loss_std, colors=['orange', 'royalblue'], 
@@ -428,15 +435,174 @@ def plt_render_image_split(curr_shape, target_shape, n_particle, pstep_idx, vis_
         plt.savefig(f'{vis_dir}/step_{str(pstep_idx)}_bs_{str(step)}.png')
     plt.close()
 
+from pdb import set_trace
+def eval_all_epoch(eval_root_dir, eval_intervals = ["E_00500_02000", "E_03000_06000", "E_07000_10000"], max_epoch=60):
+    all_eval_dir = glob.glob(os.path.join(eval_root_dir, "*"))
+    loss_dict = {}
+    for eval_interval in eval_intervals:
+        loss_dict[eval_interval] = {"final_frame_emd": [[] for i in range(max_epoch)], 
+                                     "final_frame_emd_interval": [[] for i in range(max_epoch)],
+                                     "final_frame_cd": [[] for i in range(max_epoch)], 
+                                     "final_frame_cd_interval": [[] for i in range(max_epoch)],
+                                     "all_frame_emd" : [[] for i in range(max_epoch)], 
+                                     "all_frame_emd_interval": [[] for i in range(max_epoch)],
+                                     "all_frame_cd" : [[] for i in range(max_epoch)],  
+                                     "all_frame_cd_interval": [[] for i in range(max_epoch)]
+                                    } 
+        
+        for this_eval_dir in tqdm(all_eval_dir):
+            this_log_path = os.path.join(this_eval_dir, eval_interval, "eval.log")
+            try:
+                log_lines = []
+                epoch_name = int(this_eval_dir.split('/')[-1].split('_')[3])
+                print(epoch_name)
+            
+                # print(epoch_name)
+                with open(this_log_path, "r", encoding="utf-8") as file:
+                    for line in file:
+                        log_lines.append(line.strip())
+                # print(log_lines)
+                final_frame_emd = round(float(log_lines[3].split(" ")[6]), 4)
+                final_frame_emd_interval = round(float(log_lines[3].split(" ")[8][:-1]), 4)
+                final_frame_cd = round(float(log_lines[4].split(" ")[6]), 4)
+                final_frame_cd_interval = round(float(log_lines[4].split(" ")[8][:-1]), 4)
+                
+                all_frame_emd = round(float(log_lines[7].split(" ")[5]), 4)
+                # print(all_frame_emd)
+                # print(log_lines[7].split(" "))
+                all_frame_emd_interval = round(float(log_lines[7].split(" ")[7][:-1]), 4)
+                # print(all_frame_emd_interval)
+                # print(log_lines)
+                all_frame_cd = round(float(log_lines[8].split(" ")[5]), 4)
+               #  print(all_frame_cd)
+                all_frame_cd_interval = round(float(log_lines[8].split(" ")[7][:-1]), 4)
+                #print(all_frame_cd_interval)
+                #set_trace()
+                # print(all_frame_emd)
+                # print(all_frame_emd_interval)
+                # print(all_frame_cd)
+                # print(all_frame_cd_interval)
+                loss_dict[eval_interval]["final_frame_emd"][epoch_name].append(final_frame_emd)
+                loss_dict[eval_interval]["final_frame_emd_interval"][epoch_name].append(final_frame_emd_interval)
+                loss_dict[eval_interval]["final_frame_cd"][epoch_name].append(final_frame_cd)
+                loss_dict[eval_interval]["final_frame_cd_interval"][epoch_name].append(final_frame_cd_interval)
+                loss_dict[eval_interval]["all_frame_emd"][epoch_name].append(all_frame_emd)
+                loss_dict[eval_interval]["all_frame_emd_interval"][epoch_name].append(all_frame_emd_interval)
+                loss_dict[eval_interval]["all_frame_cd"][epoch_name].append(all_frame_cd)
+                loss_dict[eval_interval]["all_frame_cd_interval"][epoch_name].append(all_frame_cd_interval)
+                # print(loss_dict)
+                
+            except:
+                pass
+    # print(loss_dict)
+    return_loss_dict = {}
+    for eval_interval in eval_intervals:
+        return_loss_dict[eval_interval] = {"final_frame_emd": [0.0 for i in range(max_epoch)], 
+                                     "final_frame_emd_interval": [0.0 for i in range(max_epoch)],
+                                     "final_frame_cd": [0.0 for i in range(max_epoch)], 
+                                     "final_frame_cd_interval": [0.0 for i in range(max_epoch)],
+                                     "all_frame_emd" : [0.0 for i in range(max_epoch)], 
+                                     "all_frame_emd_interval": [0.0 for i in range(max_epoch)],
+                                     "all_frame_cd" : [0.0 for i in range(max_epoch)],  
+                                     "all_frame_cd_interval": [0.0 for i in range(max_epoch)]
+                                    } 
+        for k in loss_dict[eval_interval]:
+            # print(loss_dict[eval_interval][k])
+            for i, stat in enumerate(loss_dict[eval_interval][k]):
+            
+                if stat:
+                    return_loss_dict[eval_interval][k][i] = np.mean(stat)
+                else:
+                    pass
+                    
+    # print(return_loss_dict)
+    return return_loss_dict
+def draw_subplots(return_loss_dicts, eval_intervals = ["E_00500_02000", "E_03000_06000", "E_07000_10000"]):
+    for eval_interval in eval_intervals:
+        fig, axs = plt.subplots(2, 2, figsize=(10,10))
+        # print(return_loss_dict[eval_interval])
+        # print(range(len(return_loss_dict[eval_interval]["final_frame_emd"])))
+        # print(return_loss_dict[eval_interval]["final_frame_emd"])
+        for key, return_loss_dict in return_loss_dicts.items():
+            axs[0, 0].plot(range(len(return_loss_dict[eval_interval]["final_frame_emd"])), return_loss_dict[eval_interval]["final_frame_emd"],
+                          label=f"{key}_final_frame_emd"
+                          )
+            axs[0, 0].fill_between(range(len(return_loss_dict[eval_interval]["final_frame_emd"])),
+                                  # np.array(return_loss_dict[eval_interval]["final_frame_emd"]),
+                                  np.array(return_loss_dict[eval_interval]["final_frame_emd"]) - np.array(return_loss_dict[eval_interval]["final_frame_emd_interval"]),
+                                  np.array(return_loss_dict[eval_interval]["final_frame_emd"]) + np.array(return_loss_dict[eval_interval]["final_frame_emd_interval"]),
+                                  alpha=0.2
+                                  )
+                                  
+            axs[0, 0].set_title('Final Frame EMD')
+            axs[0, 0].legend()
+            
+            
+            axs[0, 1].plot(range(len(return_loss_dict[eval_interval]["final_frame_cd"])), return_loss_dict[eval_interval]["final_frame_cd"],
+                          label=f"{key}_final_frame_cd"
+                          )
+            axs[0, 1].fill_between(range(len(return_loss_dict[eval_interval]["final_frame_cd"])),
+                                   # return_loss_dict[eval_interval]["final_frame_cd"],
+                                   np.array(return_loss_dict[eval_interval]["final_frame_cd"]) - np.array(return_loss_dict[eval_interval]["final_frame_cd_interval"]),
+                                   np.array(return_loss_dict[eval_interval]["final_frame_cd"]) + np.array(return_loss_dict[eval_interval]["final_frame_cd_interval"]),                              
+                                   alpha=0.2
+                                  )
+            axs[0, 1].set_title('Final Frame CD')
+            axs[0, 1].legend()
+            
+            
+            axs[1, 0].plot(range(len(return_loss_dict[eval_interval]["all_frame_emd"])), return_loss_dict[eval_interval]["all_frame_emd"],
+                          label=f"{key}_all_frame_emd"
+                          )
+            axs[1, 0].fill_between(range(len(return_loss_dict[eval_interval]["all_frame_emd"])),
+                                  # np.array(return_loss_dict[eval_interval]["all_frame_emd"]),
+                                  np.array(return_loss_dict[eval_interval]["all_frame_emd"]) - np.array(return_loss_dict[eval_interval]["all_frame_emd_interval"]),
+                                  np.array(return_loss_dict[eval_interval]["all_frame_emd"]) + np.array(return_loss_dict[eval_interval]["all_frame_emd_interval"]),
+                                  alpha=0.2
+                                  
+                                  )
+            axs[1, 0].set_title('All Frame EMD')
+            axs[1, 0].legend()
+            
+            
+            axs[1, 1].plot(range(len(return_loss_dict[eval_interval]["all_frame_cd"])), return_loss_dict[eval_interval]["all_frame_cd"],
+                          label=f"{key}_all_frame_cd"
+                          )
+            axs[1, 1].fill_between(range(len(return_loss_dict[eval_interval]["all_frame_cd"])),
+                                # np.array(return_loss_dict[eval_interval]["all_frame_cd"]),
+                                np.array(return_loss_dict[eval_interval]["all_frame_cd"]) - np.array(return_loss_dict[eval_interval]["all_frame_cd_interval"]),
+                                np.array(return_loss_dict[eval_interval]["all_frame_cd"]) + np.array(return_loss_dict[eval_interval]["all_frame_cd_interval"]),
+                                alpha=0.2
+                                )
+            axs[1, 1].set_title('All Frame CD')
+            axs[1, 1].legend()
+        
+    
+        plt.tight_layout()
+    
+    
+        plt.savefig(f"{eval_interval}.png")
+
+        
+        
+    
+    
+
 if __name__ == "__main__":
-    curr_shape = np.random.random((4, 331, 3)) 
-    target_shape = np.random.random((4, 331, 3))
-    # print(pts1.shape)
-    # particles_set = [pts1, pts2]
-    n_particle = 300
-    render_path = f"./plt"
-    # plt_render_training(particles_set, n_particle, render_path)
-    plt_render_image_split(curr_shape, target_shape, n_particle, render_path)
+    pass
+#    curr_shape = np.random.random((4, 331, 3)) 
+#    target_shape = np.random.random((4, 331, 3))
+#    # print(pts1.shape)
+#    # particles_set = [pts1, pts2]
+#    n_particle = 300
+#    render_path = f"./plt"
+#    # plt_render_training(particles_set, n_particle, render_path)
+#    plt_render_image_split(curr_shape, target_shape, n_particle, render_path)
+    eval_root_dir_1 = f"/nvme/tianyang/residual_robocake_data/dump_ngrip_fixed_prior_multi/eval_0"
+    eval_root_dir_2 = f"/nvme/tianyang/residual_robocake_data/dump_ngrip_fixed/eval_0"
+    loss_dict_1 = eval_all_epoch(eval_root_dir_1)
+    loss_dict_2 = eval_all_epoch(eval_root_dir_2)
+    draw_subplots({"multi_material_prior": loss_dict_1, "multi_material_residual": loss_dict_2})
 
 
 
