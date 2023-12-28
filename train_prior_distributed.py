@@ -12,7 +12,7 @@ from torch.utils.data import DataLoader
 ### load utils ###
 from configs.config import gen_args
 from tqdm import tqdm
-from datasets.dataset import DoughDataset
+from datasets.dataset import DoughDataset, TestDoughDataset
 from utils.robocraft_utils import prepare_input, get_scene_info, get_env_group
 from metrics.metric import ChamferLoss, EarthMoverLoss, HausdorffLoss
 from utils.optim import get_lr, count_parameters, my_collate, AverageMeter, Tee, get_optimizer, distributed_concat
@@ -30,6 +30,9 @@ from torch import distributed as dist
 ###   socket   ###
 import wandb
 import socket
+
+### load eval functions ###
+from eval_prior_multiprocessing import prepare_model_and_data, inference_after_training, print_eval
 
 
 
@@ -74,6 +77,20 @@ def main(args):
         num_workers=args.num_workers,
         pin_memory=True,
         collate_fn=my_collate) for phase in phases} # TODO: understand the logics of my_collate
+    
+
+    for eval_data_class in args.eval_data_class_list:
+        test_root_dir = os.path.join(args.dataf, eval_data_class)
+        this_test_dataset = TestDoughDataset(test_root_dir, args)
+        datasets[eval_data_class] = this_test_dataset
+        samplers[eval_data_class] = DistributedSampler(datasets[eval_data_class])
+        dataloaders[eval_data_class] = DataLoader(
+        datasets[eval_data_class],
+        sampler=samplers[eval_data_class],
+        batch_size=1,
+        num_workers=args.num_workers,
+        pin_memory=True
+        )
 
     ########################## create model ##########################
     prior_model = Prior_Model(args, device).to(device)
@@ -324,11 +341,35 @@ def main(args):
                     model_path = '%s/prior_net_epoch_%d_iter_%d' % (args.outf, prior_epoch, i)
                     if dist.get_rank() == 0:
                         exists_or_mkdir(model_path)
-                        model_path = os.path.join(model_path, "prior_model.pth")
-                        save_checkpoint(epoch=prior_epoch, model=prior_model, optimizer=prior_optimizer, step=prior_total_step, save_path=model_path)
+                        this_model_path = os.path.join(model_path, "prior_model.pth")
+                        save_checkpoint(epoch=prior_epoch, model=prior_model, optimizer=prior_optimizer, step=prior_total_step, save_path=this_model_path)
                     # torch.save(prior_model.state_dict(), model_path)
+                    args.resume_prior_path =  os.path.join(model_path, f"prior_model.pth")
                     prior_rollout_epoch = prior_epoch
                     prior_rollout_iter = i
+                    if args.eval_ckp_per_iter:
+                        for eval_data_class in args.eval_data_class_list:
+                            args.eval_data_class = eval_data_class
+                            loss_list_over_episodes = []
+                            for test_i, data_dict in enumerate(tqdm(dataloaders[eval_data_class])):
+                                prior_model, _, prior_eval_out_path = prepare_model_and_data(args, device, use_gpu, 
+                                                                                        prior_model=prior_model)
+                                loss_list = inference_after_training(prior_model, args, data_dict, prior_eval_out_path, use_gpu, device)
+                                loss_list_over_episodes.append(loss_list)
+                            
+                            torch.distributed.barrier()
+                            loss_list_over_episodes_gather = distributed_concat(torch.from_numpy(np.array(loss_list_over_episodes)).to(device))
+                            loss_list_over_episodes = loss_list_over_episodes_gather.detach().cpu().numpy().tolist()
+                            result_dict = print_eval(args, prior_eval_out_path, loss_list_over_episodes)
+                            if dist.get_rank() == 0:
+                                wandb.log({f"{eval_data_class} Last Frame EMD" : result_dict["Last Frame EMD"]})
+                                wandb.log({f"{eval_data_class} Last Frame CD" : result_dict["Last Frame CD"]})
+                                wandb.log({f"{eval_data_class} Last Frame HD" : result_dict["Last Frame HD"]})
+                                wandb.log({f"{eval_data_class} Over Episodes EMD" : result_dict["Over Episodes EMD"]})
+                                wandb.log({f"{eval_data_class} Over Episodes CD" : result_dict["Over Episodes CD"]})
+                                wandb.log({f"{eval_data_class} Over Episodes HD" : result_dict["Over Episodes HD"]})
+
+                        prior_model.train(phase=="train")
 
 
             print('Prior %s epoch[%d/%d] Loss: %.6f, Best valid: %.6f' % (
