@@ -169,9 +169,9 @@ def inference(prior_model, this_eval_data, eval_data_class,
             # pred_pos (unnormalized): B x n_p x state_dim
             # pred_motion_norm (normalized): B x n_p x state_dim
             if args.sequence_length > args.n_his + 1:
-                pred_pos_p, pred_motion_norm, std_cluster = prior_model(inputs, (step_id - args.n_his))
+                pred_pos_p, pred_motion_norm, std_cluster = prior_model(inputs, (step_id - args.n_his), prior_remove_his_particles=args.prior_remove_his_particles)
             else:
-                pred_pos_p, pred_motion_norm, std_cluster = prior_model(inputs)
+                pred_pos_p, pred_motion_norm, std_cluster = prior_model(inputs,prior_remove_his_particles=args.prior_remove_his_particles)
 
             # concatenate the state of the shapes
             # pred_pos (unnormalized): B x (n_p + n_s) x state_dim

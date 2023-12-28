@@ -29,6 +29,7 @@ parser.add_argument('--matched_motion_weight', type=float, default=0.0)
 parser.add_argument('--valid', type=int, default=1)
 parser.add_argument('--eval', type=int, default=0)
 parser.add_argument("--eval_data_class", type=str, default="test")
+# parser.add_argument("--eval_data_class_list", type=list, default=)
 parser.add_argument('--verbose_data', type=int, default=0)
 parser.add_argument('--verbose_model', type=int, default=0)
 parser.add_argument('--eps', type=float, default=1e-6)
@@ -82,6 +83,7 @@ parser.add_argument('--p_rigid', type=float, default=1.0)
 # use a flexible number of frames for each training iteration
 parser.add_argument('--n_his', type=int, default=4)
 parser.add_argument('--sequence_length', type=int, default=6)
+parser.add_argument("--residual_input_next_action",type=str, default="GT")
 
 parser.add_argument('--n_rollout', type=int, default=0)
 parser.add_argument('--train_valid_ratio', type=float, default=0.9)
@@ -146,6 +148,8 @@ parser.add_argument('--eval_iter', type=int, default=-1, help='pretrained model'
 parser.add_argument('--eval_set', default='train')
 parser.add_argument('--eval_prior_path', type=str, default='')
 parser.add_argument('--eval_residual_path', type=str, default='')
+parser.add_argument("--eval_ckp_per_iter", type=int, default=0)
+parser.add_argument("--eval_num_processes", type=int, default=8)
 
 ### only useful for rl
 parser.add_argument("--algo", type=str, default='sac')
@@ -196,5 +200,7 @@ def gen_args():
 
     args.mean_d = np.array([-0.00284736, 0.00286124, -0.00130389])
     args.std_d = np.array([0.01755744, 0.01663332, 0.01677678])
+
+    args.eval_data_class_list = ["E_00500_02000", "E_03000_06000", "E_07000_10000"]
 
     return args

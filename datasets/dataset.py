@@ -194,3 +194,93 @@ class DoughDataset(Dataset):
                 cluster_onehot = None
         if args.stage in ['dy']:
             return attr, particles, n_particle, n_shape, scene_params, Rr, Rs, Rn, cluster_onehot
+        
+
+class TestDoughDataset(Dataset):
+    def __init__(self, test_root_dir, args):
+        self.args = args
+        self.data_names = self.args.data_names
+        self.test_root_dir = test_root_dir
+        self.test_data_dir = glob.glob(os.path.join(self.test_root_dir, "*"))
+        self.test_data_dir.sort()
+        # print(self.test_data_dir)
+        
+    
+    def __len__(self):
+        return len(self.test_data_dir)
+    
+    def __getitem__(self, idx):
+        idx_episode = int(self.test_data_dir[idx].split('/')[-1])
+        print("Residual Rollout %d / %d" % (idx_episode, len(self.test_data_dir)))
+        n_particle, n_shape = 0, 0
+        gt_data_list = []
+        data_list = []
+        p_gt = []
+        p_sample = []
+        frame_list = sorted(glob.glob(os.path.join(self.test_data_dir[idx], 'shape_*.h5')))
+        gt_frame_list = sorted(glob.glob(os.path.join(self.test_data_dir[idx], 'shape_gt_*.h5')))
+        physics_params_path = os.path.join(self.test_data_dir[idx], "physics_params.npy")
+        physics_params = np.load(physics_params_path, allow_pickle=True).item()
+
+        time_step = (len(frame_list) - len(gt_frame_list))
+
+
+        for step in range(time_step):
+            gt_frame_name = 'gt_' + str(step) + '.h5'
+            frame_name = str(step) + '.h5'
+            if self.args.shape_aug:
+                gt_frame_name = 'shape_' + gt_frame_name
+                frame_name = 'shape_' + frame_name
+
+            gt_data_path = os.path.join(self.test_data_dir[idx], gt_frame_name)
+            data_path = os.path.join(self.test_data_dir[idx], frame_name)
+
+            try:
+                gt_data = load_data(self.data_names, gt_data_path)
+                load_gt = True
+            except FileNotFoundError:
+                load_gt = False
+            
+            data = load_data(self.data_names, data_path)
+
+            if n_particle == 0 and n_shape == 0:
+                n_particle, n_shape, scene_params = get_scene_info(data)
+                scene_params = torch.FloatTensor(scene_params).unsqueeze(0)
+
+            if self.args.verbose_data:
+                print("n_particle", n_particle)
+                print("n_shape", n_shape)
+
+            if load_gt: 
+                gt_data_list.append(gt_data)
+            data_list.append(data)
+
+            if load_gt: 
+                p_gt.append(gt_data[0])
+
+            new_state = data[0]
+
+            p_sample.append(new_state)
+
+        data_dict = {"p_gt": p_gt, 
+                     "p_sample": p_sample,
+                     "scene_params": scene_params,
+                     "n_particle": n_particle,
+                     "n_shape": n_shape, 
+                     "physics_params": physics_params,
+                     "idx_episode": idx_episode
+                    }
+
+        return data_dict
+        pass
+
+
+
+if __name__ == "__main__":
+    test_root_dir = f"/nvme/tianyang/residual_robocake_data/data_ngrip_fixed/E_07000_10000"
+    testdoughdataset = TestDoughDataset(test_root_dir)
+    # print("length", len(testdoughdataset))
+
+
+
+        

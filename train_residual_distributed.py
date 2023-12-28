@@ -12,7 +12,7 @@ from torch.utils.data import DataLoader
 ### load utils ###
 from configs.config import gen_args
 from tqdm import tqdm
-from datasets.dataset import DoughDataset
+from datasets.dataset import DoughDataset, TestDoughDataset
 from utils.robocraft_utils import prepare_input, get_scene_info, get_env_group
 from metrics.metric import ChamferLoss, EarthMoverLoss, HausdorffLoss
 from utils.optim import get_lr, count_parameters, my_collate, AverageMeter, Tee, get_optimizer, distributed_concat
@@ -27,19 +27,24 @@ from models.residual_model_distributed import Residual_Model
 ### parallel training ###
 from torch.utils.data.distributed import DistributedSampler
 from torch import distributed as dist
+import torch.multiprocessing as mp
 import wandb
 import socket
+
+### load eval functions ###
+from eval_residual_multiprocessing import prepare_model_and_data, inference_after_training, print_eval
 
 
 def main(args):
     ########################## set local rank ##########################
-    if args.local_rank != -1:
-        torch.cuda.set_device(args.local_rank)
-        device=torch.device("cuda",args.local_rank)
-        torch.distributed.init_process_group(backend="nccl", init_method='env://')
-        use_gpu = True
-    else:
-        raise NotImplementedError
+    
+    # print("args.local_rank", args.local_rank)
+    torch.cuda.set_device(args.local_rank)
+    device=torch.device("cuda",args.local_rank)
+    torch.distributed.init_process_group(backend="nccl", init_method='env://', rank=args.local_rank)
+    print(f"args.local_rank_{args.local_rank}_dist_{dist.get_rank()}")
+    use_gpu = True 
+
     ##########################      wandb      ##########################
     if dist.get_rank() == 0:
         run_dir = os.path.join(args.run_dir, args.experiment_name, str(args.exp_id))
@@ -59,6 +64,7 @@ def main(args):
     datasets = {phase: DoughDataset(args, phase) for phase in phases}
     samplers = {phase: DistributedSampler(datasets[phase]) for phase in phases}
 
+
     # for phase in phases:
     #     datasets[phase].load_data(args.env)
 
@@ -70,6 +76,19 @@ def main(args):
         num_workers=args.num_workers,
         pin_memory=True,
         collate_fn=my_collate) for phase in phases} # TODO: understand the logics of my_collate
+    
+    for eval_data_class in args.eval_data_class_list:
+        test_root_dir = os.path.join(args.dataf, eval_data_class)
+        this_test_dataset = TestDoughDataset(test_root_dir, args)
+        datasets[eval_data_class] = this_test_dataset
+        samplers[eval_data_class] = DistributedSampler(datasets[eval_data_class])
+        dataloaders[eval_data_class] = DataLoader(
+        datasets[eval_data_class],
+        sampler=samplers[eval_data_class],
+        batch_size=1,
+        num_workers=args.num_workers,
+        pin_memory=True
+        )
 
     ########################## create model ##########################
     prior_model = Prior_Model(args, device).to(device)
@@ -150,8 +169,8 @@ def main(args):
             residual_meter_loss_param = AverageMeter()
 
             for i, data in enumerate(tqdm(dataloaders[phase], desc=f'Epoch {residual_epoch}/{args.residual_n_epoch}')):
-#                if i > 10:
-#                    break
+                # if i > 10:
+                #     break
                 if args.stage == 'dy':
                     # attrs: B x (n_p + n_s) x attr_dim
                     # particles: B x seq_length x (n_p + n_s) x state_dim
@@ -230,7 +249,14 @@ def main(args):
                             
                             gt_pos = particles[:, args.n_his + j]
                             gt_pos_p = gt_pos[:, :n_particle]
-                            prior_pred_pos = torch.cat([prior_pred_pos_p, gt_pos[:, n_particle:]], 1).unsqueeze(1)
+
+                            if args.residual_input_next_action == "GT":
+                                prior_pred_pos = torch.cat([prior_pred_pos_p, gt_pos[:, n_particle:]], 1).unsqueeze(1)
+                            elif args.residual_input_next_action == "ZERO":
+                                prior_pred_pos = torch.cat([prior_pred_pos_p, torch.zeros_like(gt_pos[:, n_particle:]).float()], 1).unsqueeze(1)
+                            elif args.residual_input_next_action == "LAST_GT":
+                                prior_pred_pos = torch.cat([prior_pred_pos_p, particles[:, args.n_his + j - 1][:, n_particle:]], 1).unsqueeze(1)
+                            
                             residual_inputs = [attrs, state_cur, Rr_cur, Rs_cur, Rn_cur, memory_init, groups_gt, cluster_onehot, prior_pred_pos]
 
                             # set_trace()
@@ -332,11 +358,38 @@ def main(args):
                     # exists_or_mkdir(model_path)
                     if dist.get_rank() == 0:
                         exists_or_mkdir(model_path)
-                        model_path = os.path.join(model_path, f"residual_model.pth")
-                        save_checkpoint(epoch=residual_epoch, model=residual_model, optimizer=residual_optimizer, step=residual_total_step, save_path=model_path)
-                    # torch.save(prior_model.state_dict(), model_path)
+                        this_model_path = os.path.join(model_path, f"residual_model.pth")
+                        save_checkpoint(epoch=residual_epoch, model=residual_model, optimizer=residual_optimizer, step=residual_total_step, save_path=this_model_path)
+                    args.resume_residual_path =  os.path.join(model_path, f"residual_model.pth")
+                                
                     residual_rollout_epoch = residual_epoch
                     residual_rollout_iter = i
+
+                    if args.eval_ckp_per_iter:
+                        for eval_data_class in args.eval_data_class_list:
+                            args.eval_data_class = eval_data_class
+                            loss_list_over_episodes = []
+                            for test_i, data_dict in enumerate(tqdm(dataloaders[eval_data_class])):
+                                residual_model, prior_model, _, residual_eval_out_path = prepare_model_and_data(args, device, use_gpu, 
+                                                                                        prior_model=prior_model, residual_model=residual_model)
+                                loss_list = inference_after_training(residual_model, prior_model, args, data_dict, residual_eval_out_path, use_gpu, device)
+                                loss_list_over_episodes.append(loss_list)
+                            
+                            torch.distributed.barrier()
+                            loss_list_over_episodes_gather = distributed_concat(torch.from_numpy(np.array(loss_list_over_episodes)).to(device))
+                            loss_list_over_episodes = loss_list_over_episodes_gather.detach().cpu().numpy().tolist()
+                            result_dict = print_eval(args, residual_eval_out_path, loss_list_over_episodes)
+                            if dist.get_rank() == 0:
+                                wandb.log({f"{eval_data_class} Last Frame EMD" : result_dict["Last Frame EMD"]})
+                                wandb.log({f"{eval_data_class} Last Frame CD" : result_dict["Last Frame CD"]})
+                                wandb.log({f"{eval_data_class} Last Frame HD" : result_dict["Last Frame HD"]})
+                                wandb.log({f"{eval_data_class} Over Episodes EMD" : result_dict["Over Episodes EMD"]})
+                                wandb.log({f"{eval_data_class} Over Episodes CD" : result_dict["Over Episodes CD"]})
+                                wandb.log({f"{eval_data_class} Over Episodes HD" : result_dict["Over Episodes HD"]})
+
+                        residual_model.train(phase=="train")
+                        prior_model.eval()
+
 
 
             print('residual %s epoch[%d/%d] Loss: %.6f, Best valid: %.6f' % (
@@ -379,6 +432,11 @@ if __name__ == '__main__':
     tee = Tee(os.path.join(args.outf, 'train.log'), 'w')
 
 
+    # main(args)
+
+    # mp.set_start_method('spawn')  # 设置子进程的启动方法
     main(args)
+    # world_size = 1
+    # mp.spawn(main, args=(args,), nprocs=world_size)
 
 
