@@ -1,0 +1,16 @@
+CUDA_VISIBLE_DEVICES=0 python control_residual.py \
+                        --stage control \
+                        --data_type ngrip_fixed \
+                        --resume_prior_path  /home/nimolty/Nimolty_Research/Basic_Settings/Robocake/dump/dump_ngrip_fixed_desktop/3/prior_net_epoch_99_iter_1325/prior_model.pth \
+                        --resume_residual_path /home/nimolty/Nimolty_Research/Basic_Settings/Robocake/dump/dump_ngrip_fixed/0/residual_net_epoch_49_iter_1721/residual_model.pth \
+                        --dataf /home/nimolty/Nimolty_Research/Basic_Settings/Robocake/data/data_ngrip_fixed \
+                        --shooting_size 200 \
+                        --control_algo predict \
+                        --n_grips 5 \
+                        --predict_horizon 2 \
+                        --opt_algo GD \
+                        --correction 1 \
+                        --shape_type alphabet \
+                        --goal_shape_name A \
+                        --debug 1 \
+                        --residual_input_next_action ZERO
