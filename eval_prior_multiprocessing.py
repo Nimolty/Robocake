@@ -10,7 +10,7 @@ from utils.utils import set_seed, exists_or_mkdir, load_checkpoint, load_single_
 from utils.optim import count_parameters, Tee
 from visualize.visualize import plt_render, train_plot_curves, eval_plot_curves
 from models.prior_model_distributed import Prior_Model
-
+import torch.distributed as dist
 # parallel
 import torch.multiprocessing as mp
 
@@ -26,8 +26,12 @@ def prepare_model_and_data(args, device, use_gpu, prior_model=None):
     prior_epoch_name = args.resume_prior_path.split('/')[-2]
     prior_output_dir = os.path.dirname(args.outf)
     prior_eval_out_path = os.path.join(prior_output_dir, f"eval_{str(args.exp_id)}", prior_epoch_name, args.eval_data_class)
-    exists_or_mkdir(os.path.join(prior_eval_out_path, "plot"))
-    exists_or_mkdir(os.path.join(prior_eval_out_path, "render"))
+    if dist.get_rank() == 0:
+        exists_or_mkdir(os.path.join(prior_eval_out_path, "plot"))
+        exists_or_mkdir(os.path.join(prior_eval_out_path, "render"))
+        dist.barrier()
+    else:
+        dist.barrier()
     tee = Tee(os.path.join(prior_eval_out_path , 'eval.log'), 'w')
     data_names = args.data_names
     eval_data_class = args.eval_data_class

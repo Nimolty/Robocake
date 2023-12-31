@@ -28,8 +28,12 @@ def prepare_model_and_data(args, device, use_gpu, prior_model=None, residual_mod
     residual_epoch_name = args.resume_residual_path.split('/')[-2]
     residual_output_dir = os.path.dirname(args.outf)
     residual_eval_out_path = os.path.join(residual_output_dir, f"eval_{str(args.exp_id)}", residual_epoch_name, args.eval_data_class)
-    exists_or_mkdir(os.path.join(residual_eval_out_path, "plot"))
-    exists_or_mkdir(os.path.join(residual_eval_out_path, "render"))
+    if dist.get_rank() == 0:
+        exists_or_mkdir(os.path.join(residual_eval_out_path, "plot"))
+        exists_or_mkdir(os.path.join(residual_eval_out_path, "render"))
+        dist.barrier()
+    else:
+        dist.barrier()
     tee = Tee(os.path.join(residual_eval_out_path , 'eval.log'), 'w')
     data_names = args.data_names
     eval_data_class = args.eval_data_class
