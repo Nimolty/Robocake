@@ -319,13 +319,6 @@ def render_multi_physics_data(
 
 
 
-
-
-
-
-
-
-
 if __name__ == "__main__":
     # render_example()
     # render_single_physics_data()

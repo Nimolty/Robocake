@@ -14,6 +14,7 @@ import shutil
 import glob
 import torch
 from tqdm import tqdm
+from pdb import set_trace
 
 from collections import defaultdict
 from itertools import product
@@ -98,6 +99,8 @@ def load_single_model(model, load_model_state_dict):
       if not (k in state_dict):
         print('No param {}.'.format(k))
         state_dict[k] = model_state_dict[k]
+
+    # set_trace()
     model.load_state_dict(state_dict, strict=True)
     return model   
 

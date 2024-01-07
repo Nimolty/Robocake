@@ -38,7 +38,7 @@ parser.add_argument('--eps', type=float, default=1e-6)
 parser.add_argument('--outf_eval', default='')
 parser.add_argument('--controlf', default='')
 parser.add_argument('--outf_new', default='')
-parser.add_argument('--gripperf', default='../simulator/plb/envs/gripper_fixed.yml')
+parser.add_argument('--gripperf', default='simulator/plb/envs/gripper_fixed.yml')
 
 # for ablation study
 parser.add_argument('--neighbor_radius', type=float, default=0.05)
@@ -150,6 +150,12 @@ parser.add_argument('--eval_prior_path', type=str, default='')
 parser.add_argument('--eval_residual_path', type=str, default='')
 parser.add_argument("--eval_ckp_per_iter", type=int, default=0)
 parser.add_argument("--eval_num_processes", type=int, default=8)
+
+'''
+shape control
+'''
+parser.add_argument("--sc_material_E", type=float, default=5000.0)
+parser.add_argument("--sc_material_nu", type=float, default=0.2)
 
 ### only useful for rl
 parser.add_argument("--algo", type=str, default='sac')

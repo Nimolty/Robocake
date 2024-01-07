@@ -1,3 +1,5 @@
+
+
 CUDA_VISIBLE_DEVICES=0 python eval_prior.py \
                     	--stage dy \
                     	--data_type ngrip_fixed \

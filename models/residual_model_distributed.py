@@ -244,8 +244,11 @@ class DynamicsPredictor(nn.Module):
         # receiver_attr, sender_attr
         # attrs_r: B x n_rel x -1
         # attrs_s: B x n_rel x -1
+        # set_trace()
         attrs_r = Rr_cur.bmm(attrs)
         attrs_s = Rs_cur.bmm(attrs)
+
+        
         # receiver_state, sender_state
         # state_norm_r: B x n_rel x -1
         # state_norm_s: B x n_rel x -1

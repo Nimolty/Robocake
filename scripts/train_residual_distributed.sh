@@ -57,7 +57,7 @@ CUDA_VISIBLE_DEVICES=0,1,2,3 python -m torch.distributed.launch --nproc_per_node
   --batch_size 8 \
   --num_worker 8 \
   --residual_input_next_action ZERO \
-  --ecal_ckp_per_iter 1 \
+  --eval_ckp_per_iter 1 \
   --vis None
 
 CUDA_VISIBLE_DEVICES=4,5,6,7 python -m torch.distributed.launch --nproc_per_node=4 --master_port 30212 /home/tianyang/Robocake/train_residual_distributed.py \
@@ -74,5 +74,5 @@ CUDA_VISIBLE_DEVICES=4,5,6,7 python -m torch.distributed.launch --nproc_per_node
   --batch_size 8 \
   --num_worker 8 \
   --residual_input_next_action LAST_GT \
-  --ecal_ckp_per_iter 1 \
+  --eval_ckp_per_iter 1 \
   --vis None
