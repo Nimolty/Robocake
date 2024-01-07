@@ -560,9 +560,9 @@ class Planner(object):
                 state_goal = self.get_state_goal(self.args.n_grips - 1)
                 n_grips_sample = grip_num - i
 
-            set_trace()
+            # set_trace()
             init_pose_seqs_pool, act_seqs_pool = self.sample_action_params(n_grips_sample) # sample action params 
-            set_trace()
+            # set_trace()
             # init_pose_seqs_pool.shape : [4, n_grips_sample, 11, 14]
             # 4 : sample_size, 11 : primitive_size, 14 : primitive_1.xyz + [1,0,0,0] + primitive_2.xyz + [1,0,0,0]
             # act_seqs_pool.shape : [4, n_grips_sample, 40, 12]
@@ -579,9 +579,9 @@ class Planner(object):
             # import pdb; pdb.set_trace()
             # init_pose_seq_cur.shape : [n_grips_sample, 11 ,14]
             # act_seq_cur.shape : [1, 1, 12]  
-            set_trace()
+            # set_trace()
             state_cur_sim = self.sim_rollout(init_pose_seq_cur.unsqueeze(0), act_seq_cur.unsqueeze(0))[0].squeeze() # sim_rollout in simulator
-            set_trace()
+            # set_trace()
             # state_cur_sim.shape.shape : [4, 331, 3]
             # 4 : sample_size, 331 : all_states, 3 : xyz positions
 
@@ -603,11 +603,11 @@ class Planner(object):
 
             print(f"state_cur: {state_cur.shape}, state_goal: {state_goal.shape}")
 
-            set_trace()
+            # set_trace()
             reward_seqs, model_state_seqs = self.rollout(init_pose_seqs_pool, act_seqs_pool, state_cur, state_goal)
             # state_cur.shape [4, 300, 3]
             # state_goal.shape [1, 300, 3]
-            set_trace()
+            # set_trace()
             # reward_seqs.shape : [self.sample_size]
             # model_state_seqs.shape : [self.sample_size, self.n_grip_sample * (self.len_per_grip + self.len_per_grip_back), n_particle, 3]
             print('sampling: max: %.4f, mean: %.4f, std: %.4f' % (torch.max(reward_seqs), torch.mean(reward_seqs), torch.std(reward_seqs)))
@@ -630,7 +630,7 @@ class Planner(object):
                 with torch.set_grad_enabled(True):
                     init_pose_seq_opt, act_seq_opt, loss_opt, state_seq_opt = self.optimize_action_GD(
                         init_pose_seqs_pool, act_seqs_pool, reward_seqs, state_cur, state_goal)
-                set_trace()
+                # set_trace()
             
             elif self.args.opt_algo == "CEM_GD":
                 for j in range(task_params["CEM_opt_iter"]):
@@ -1057,7 +1057,7 @@ class Planner(object):
         reward_seqs,
         state_cur,
         state_goal,
-        lr=1e-1,
+        lr=1e-2,
         best_k_ratio=0.1
     ):
         # reward_seqs.shape : [self.sample_size]
@@ -1166,13 +1166,15 @@ class Planner(object):
                 loss_list.append([epoch, loss.item()])
                 
                 loss.backward()
-                # gripper_rates.grad[start_idx + i] /= task_params["len_per_grip"]
+                gripper_rates.grad[start_idx + i] /= task_params["len_per_grip"]
+                # set_trace()
 
                 epoch += 1
 
                 return loss
 
             loss = optimizer.step(closure)
+            # set_trace()
 
             loss_list_all.append(loss_list)
 
@@ -1255,7 +1257,9 @@ def main():
         print("Please specify a valid goal shape name!")
         raise ValueError
 
-    control_out_dir = os.path.join(args.outf, 'control', shape_goal_dir, test_name)
+    prior_epoch_name = (args.resume_prior_path).split("/")[-2]
+    material_name = f"E_{args.sc_material_E}_nu_{args.sc_material_nu}"
+    control_out_dir = os.path.join(args.outf, 'control',  prior_epoch_name, shape_goal_dir, material_name, test_name)
     os.system('rm -r ' + control_out_dir)
     os.system('mkdir -p ' + control_out_dir)
 
@@ -1289,7 +1293,7 @@ def main():
             env.simulator.mu.fill(_mu)
             env.simulator.lam.fill(_lam)
 
-        set_parameters(env, yield_stress=200, E=5e3, nu=0.2) # 200， 5e3, 0.2
+        set_parameters(env, yield_stress=200, E=args.sc_material_E, nu=args.sc_material_nu) # 200， 5e3, 0.2
 
         def update_camera(env):
             env.renderer.camera_pos[0] = 0.5 #np.array([float(i) for i in (0.5, 2.5, 0.5)]) #(0.5, 2.5, 0.5)  #.from_numpy(np.array([[0.5, 2.5, 0.5]]))

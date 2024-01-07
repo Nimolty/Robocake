@@ -443,6 +443,9 @@ class Planner(object):
             task_params["CEM_gripper_rate_sample_size"] = 4
 
 
+        # set_trace()
+
+
     def trajectory_optimization(self):
         state_goal_final = self.get_state_goal(self.args.n_grips - 1)
         visualize_points(state_goal_final[-1], self.n_particle, os.path.join(self.rollout_path, f'goal_particles'))
@@ -578,6 +581,9 @@ class Planner(object):
 
             reward_seqs, model_state_seqs = self.rollout(init_pose_seqs_pool, act_seqs_pool, state_cur, state_goal)
             print('sampling: max: %.4f, mean: %.4f, std: %.4f' % (torch.max(reward_seqs), torch.mean(reward_seqs), torch.std(reward_seqs)))
+
+
+            # set_trace()
 
             if self.args.opt_algo == 'max':
                 init_pose_seq_opt, act_seq_opt, loss_opt, state_seq_opt = self.optimize_action_max(
@@ -832,8 +838,8 @@ class Planner(object):
                 elif self.args.residual_input_next_action == "LAST_GT":
                     prior_pred_pos = torch.cat([prior_pred_pos_p, state_cur[:, -1, self.n_particle:]], 1).unsqueeze(1)
                 
-                inputs = [attrs, state_cur, Rr_cur, Rs_cur, Rn_cur, memory_init, group_gt, None, prior_pred_pos]
-
+                inputs = [attrs, state_cur, Rr_curs, Rs_curs, Rn_curs, memory_init, group_gt, None, prior_pred_pos]
+                # set_trace()
                 pred_pos, pred_motion_norm, std_cluster = self.residual_model(inputs, remove_his_particles=self.args.remove_his_particles)
 
                 shape1 += act_seqs[:, i, j, :3].unsqueeze(1).expand(-1, task_params["n_shapes_per_gripper"], -1) * 0.02
@@ -1005,7 +1011,7 @@ class Planner(object):
         reward_seqs,
         state_cur,
         state_goal,
-        lr=1e-1,
+        lr=1e-2,
         best_k_ratio=0.1
     ):
         idx = torch.argsort(reward_seqs)
@@ -1044,10 +1050,13 @@ class Planner(object):
         reward_list = None
         model_state_seq_list = None
 
+        # set_trace()
+
         for b in range(n_batch):
             print(f"Batch {b}/{n_batch}:")
 
-            optimizer = torch.optim.LBFGS([mid_points, angles, gripper_rates], lr=lr, tolerance_change=1e-5, line_search_fn="strong_wolfe")
+            optimizer = torch.optim.LBFGS([mid_points, angles, gripper_rates], lr=lr, tolerance_change=1e-7, line_search_fn="strong_wolfe")
+            print("lr", lr)
             
             start_idx = b * task_params["GD_batch_size"]
             end_idx = (b + 1) * task_params["GD_batch_size"]
@@ -1097,15 +1106,20 @@ class Planner(object):
 
                 loss = torch.sum(torch.neg(reward_seqs))
                 loss_list.append([epoch, loss.item()])
+                # set_trace()
                 
-                loss.backward()
                 # gripper_rates.grad[start_idx + i] /= task_params["len_per_grip"]
+                loss.backward()
+                # set_trace()
+                gripper_rates.grad[start_idx + i] /= task_params["len_per_grip"]
 
                 epoch += 1
+                # set_trace()
 
                 return loss
 
             loss = optimizer.step(closure)
+            # set_trace()
 
             loss_list_all.append(loss_list)
 
@@ -1122,6 +1136,7 @@ class Planner(object):
 
         # pdb.set_trace()
         idx = torch.argsort(reward_list)
+        # set_trace()
         loss_opt = torch.neg(reward_list[idx[-1]]).view(1)
         mid_point_clipped_opt = []
         init_pose_seq_opt = []
@@ -1142,6 +1157,8 @@ class Planner(object):
         print(f"Optimal set of params:\nmid_point: {torch.tensor(mid_point_clipped_opt)}")
         print(f"angle: {angles[idx[-1]]}\nz_angle: {z_angles[idx[-1]]}\ngripper_rate: {gripper_rate_opt}")
         print(f"Optimal init pose seq: {init_pose_seq_opt[:, task_params['gripper_mid_pt'], :7]}")
+
+        # set_trace()
 
         return init_pose_seq_opt, act_seq_opt, loss_opt, model_state_seq_list[idx[-1]]
 
@@ -1169,6 +1186,8 @@ def main():
         (task_params['sample_radius'] * 2 - (task_params['gripper_gap_limits'][1] + 2 * task_params['tool_size'])) / (2 * task_params['len_per_grip'])
     ]
 
+    # set_trace()
+
     if len(args.controlf) > 0:
         args.outf = args.controlf
 
@@ -1187,8 +1206,10 @@ def main():
     else:
         print("Please specify a valid goal shape name!")
         raise ValueError
-
-    control_out_dir = os.path.join(args.outf, 'control', shape_goal_dir, test_name)
+    
+    residual_epoch_name = (args.resume_residual_path).split("/")[-2]
+    material_name = f"E_{args.sc_material_E}_nu_{args.sc_material_nu}"
+    control_out_dir = os.path.join(args.outf, 'control', residual_epoch_name, shape_goal_dir, material_name, test_name)
     os.system('rm -r ' + control_out_dir)
     os.system('mkdir -p ' + control_out_dir)
 
@@ -1222,7 +1243,7 @@ def main():
             env.simulator.mu.fill(_mu)
             env.simulator.lam.fill(_lam)
 
-        set_parameters(env, yield_stress=200, E=5e3, nu=0.2) # 200， 5e3, 0.2
+        set_parameters(env, yield_stress=200, E=args.sc_material_E, nu=args.sc_material_nu) # 200， 5e3, 0.2
 
         def update_camera(env):
             env.renderer.camera_pos[0] = 0.5 #np.array([float(i) for i in (0.5, 2.5, 0.5)]) #(0.5, 2.5, 0.5)  #.from_numpy(np.array([[0.5, 2.5, 0.5]]))
