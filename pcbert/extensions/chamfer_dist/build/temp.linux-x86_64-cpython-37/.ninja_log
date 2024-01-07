@@ -1,0 +1,5 @@
+# ninja log v5
+1	22252	1704533255661776599	/home/tianyang/Point-BERT/extensions/chamfer_dist/build/temp.linux-x86_64-cpython-37/chamfer_cuda.o	2c40759466bc99f3
+23	50229	1704533340834774261	/home/tianyang/Point-BERT/extensions/chamfer_dist/build/temp.linux-x86_64-cpython-37/chamfer.o	e0e113196c4ee31c
+5	20819	1704629551871133340	/home/tianyang/Robocake/pcbert/extensions/chamfer_dist/build/temp.linux-x86_64-cpython-37/chamfer_cuda.o	626a75e5fd6b0cfe
+5	31649	1704629562703133043	/home/tianyang/Robocake/pcbert/extensions/chamfer_dist/build/temp.linux-x86_64-cpython-37/chamfer.o	f05cac3c4d74c109
