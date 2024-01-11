@@ -76,6 +76,7 @@ def main(args):
         batch_size=args.batch_size,
         num_workers=args.num_workers,
         pin_memory=True,
+        drop_last= phase=="train", 
         collate_fn=my_collate) for phase in phases} # TODO: understand the logics of my_collate
     
 
